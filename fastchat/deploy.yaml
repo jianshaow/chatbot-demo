@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fastchat-demo
+  namespace: demo
+spec:
+  selector:
+    matchLabels:
+      app: fastchat-demo
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: fastchat-demo
+    spec:
+      restartPolicy: Always
+      containers:
+      - name: controller
+        image: jianshao/fastchat-demo:0.0.1
+        ports:
+        - containerPort: 5000
+        command: ['python', '-m', 'fastchat.serve.controller']
+      - name: worker
+        image: jianshao/fastchat-demo:0.0.1
+        ports:
+        - containerPort: 5000
+        command: ['python', '-m', 'fastchat.serve.model_worker']
+      - name: web
+        image: jianshao/fastchat-demo:0.0.1
+        ports:
+        - containerPort: 5000
+        command: ['python', '-m', 'fastchat.serve.gradio_web_server']
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fastchat-demo
+  labels:
+    app: fastchat-demo
+  namespace: demo
+spec:
+  ports:
+  - name: http
+    port: 5000
+  selector:
+    app: fastchat-demo
