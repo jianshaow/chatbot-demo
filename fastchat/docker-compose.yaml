@@ -1,0 +1,32 @@
+version: "3"
+services:
+  controller:
+    image: jianshao/fastchat-demo:0.0.1
+    container_name: controller
+    restart: unless-stopped
+    command: ['python', '-m', 'fastchat.serve.controller']
+    ports:
+      - 21001:21001
+  worker:
+    image: jianshao/fastchat-demo:0.0.1
+    container_name: worker
+    restart: unless-stopped
+    command: ['python', '-m', 'fastchat.serve.model_worker', '--model-path', '/workspace/model']
+    volumes:
+      - ${model_dir}:/workspace/model
+    ports:
+      - 21002:21002
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+  web:
+    image: jianshao/fastchat-demo:0.0.1
+    container_name: web
+    restart: unless-stopped
+    command: ['python', '-m', 'fastchat.serve.gradio_web_server']
+    ports:
+      - 7860:7860
