@@ -24,12 +24,19 @@ spec:
         image: jianshao/fastchat-demo:0.0.1
         ports:
         - containerPort: 21002
-        command: ['python', '-m', 'fastchat.serve.model_worker']
+        command: ['python', '-m', 'fastchat.serve.model_worker', '--model-path', '/workspace/model']
+        volumeMounts:
+        - mountPath: /workspace/model
+          name: model-path
       - name: web
         image: jianshao/fastchat-demo:0.0.1
         ports:
         - containerPort: 7860
         command: ['python', '-m', 'fastchat.serve.gradio_web_server']
+      volumes:
+      - name: model-path
+        persistentVolumeClaim:
+          claimName: model-path-pvc
 ---
 apiVersion: v1
 kind: Service
