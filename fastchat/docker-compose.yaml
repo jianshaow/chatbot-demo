@@ -1,39 +1,37 @@
 version: "3"
 services:
   controller:
-    network: fastchat-network
     image: jianshao/fastchat-demo:0.0.1
     container_name: controller
     restart: unless-stopped
-    command: ['python', '-m', 'fastchat.serve.controller']
+    command: ['python', '-m', 'fastchat.serve.controller', '--host', '0.0.0.0']
     ports:
-      - 21001:21001
+    - 21001:21001
   worker:
-    network: fastchat-network
     image: jianshao/fastchat-demo:0.0.1
     container_name: worker
     restart: unless-stopped
-    command: ['python', '-m', 'fastchat.serve.model_worker', '--model-path', '/workspace/model']
+    depends_on:
+      - controller
+    command: ['python', '-m', 'fastchat.serve.model_worker', '--host', '0.0.0.0', '--controller-address', 'http://controller:21001', '--worker-address', 'http://worker:21002', '--model-path', '/workspace/model']
     volumes:
-      - ${model_dir}:/workspace/model
+    - ${model_dir}:/workspace/model
     ports:
-      - 21002:21002
+    - 21002:21002
     deploy:
       resources:
         reservations:
           devices:
-            - driver: nvidia
-              count: all
-              capabilities: [gpu]
+          - driver: nvidia
+            count: all
+            capabilities: [gpu]
   web:
-    network: fastchat-network
     image: jianshao/fastchat-demo:0.0.1
     container_name: web
     restart: unless-stopped
-    command: ['python', '-m', 'fastchat.serve.gradio_web_server']
+    depends_on:
+      - controller
+      - worker
+    command: ['python', '-m', 'fastchat.serve.gradio_web_server', '--controller-url', 'http://controller:21001']
     ports:
       - 7860:7860
-
-networks:
-  fastchat-network:
-    driver: bridge
