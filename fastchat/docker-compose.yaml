@@ -1,6 +1,7 @@
 version: "3"
 services:
   controller:
+    network: fastchat-network
     image: jianshao/fastchat-demo:0.0.1
     container_name: controller
     restart: unless-stopped
@@ -8,6 +9,7 @@ services:
     ports:
       - 21001:21001
   worker:
+    network: fastchat-network
     image: jianshao/fastchat-demo:0.0.1
     container_name: worker
     restart: unless-stopped
@@ -24,9 +26,14 @@ services:
               count: all
               capabilities: [gpu]
   web:
+    network: fastchat-network
     image: jianshao/fastchat-demo:0.0.1
     container_name: web
     restart: unless-stopped
     command: ['python', '-m', 'fastchat.serve.gradio_web_server']
     ports:
       - 7860:7860
+
+networks:
+  fastchat-network:
+    driver: bridge
