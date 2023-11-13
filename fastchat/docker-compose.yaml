@@ -4,46 +4,80 @@ services:
     image: jianshao/fastchat-demo:0.0.1
     container_name: controller
     restart: unless-stopped
-    command: ['python', '-m', 'fastchat.serve.controller', '--host', '0.0.0.0']
+    command:
+      - python
+      - -m
+      - fastchat.serve.controller
+      - --host
+      - 0.0.0.0
   worker-1:
     image: jianshao/fastchat-demo:0.0.1
     container_name: worker-1
     restart: unless-stopped
     depends_on:
-    - controller
-    command: ['python', '-m', 'fastchat.serve.model_worker', '--host', '0.0.0.0', '--controller-address', 'http://controller:21001', '--worker-address', 'http://worker-1:21002', '--model-path', '/workspace/model/${model_dir_1}']
+      - controller
+    command:
+      - python
+      - -m
+      - fastchat.serve.model_worker
+      - --host
+      - 0.0.0.0
+      - --controller-address
+      - http://controller:21001
+      - --worker-address
+      - http://worker-1:21002
+      - --model-path
+      - /workspace/model/${model_dir_1}
     volumes:
-    - ${model_base_dir}:/workspace/model
+      - ${model_base_dir}:/workspace/model
     deploy:
       resources:
         reservations:
           devices:
-          - driver: nvidia
-            count: all
-            capabilities: [gpu]
+            - driver: nvidia
+              count: all
+              capabilities:
+                - gpu
   worker-2:
     image: jianshao/fastchat-demo:0.0.1
     container_name: worker-2
     restart: unless-stopped
     depends_on:
-    - controller
-    command: ['python', '-m', 'fastchat.serve.model_worker', '--host', '0.0.0.0', '--controller-address', 'http://controller:21001', '--worker-address', 'http://worker-2:21002', '--model-path', '/workspace/model/${model_dir_2}']
+      - controller
+    command:
+      - python
+      - -m
+      - fastchat.serve.model_worker
+      - --host
+      - 0.0.0.0
+      - --controller-address
+      - http://controller:21001
+      - --worker-address
+      - http://worker-2:21002
+      - --model-path
+      - /workspace/model/${model_dir_2}
     volumes:
-    - ${model_base_dir}:/workspace/model
+      - ${model_base_dir}:/workspace/model
     deploy:
       resources:
         reservations:
           devices:
-          - driver: nvidia
-            count: all
-            capabilities: [gpu]
+            - driver: nvidia
+              count: all
+              capabilities:
+                - gpu
   web:
     image: jianshao/fastchat-demo:0.0.1
     container_name: web
     restart: unless-stopped
     depends_on:
-    - controller
-    - worker-1
-    command: ['python', '-m', 'fastchat.serve.gradio_web_server', '--controller-url', 'http://controller:21001']
+      - controller
+      - worker-1
+    command:
+      - python
+      - -m
+      - fastchat.serve.gradio_web_server
+      - --controller-url
+      - http://controller:21001
     ports:
-    - 7860:7860
+      - 7860:7860
