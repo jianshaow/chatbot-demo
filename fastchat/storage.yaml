@@ -1,25 +1,25 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: model-path-pv
+  name: model_base_dir-pv
   labels:
     type: local
 spec:
-  storageClassName: model-path
+  storageClassName: model_base_dir
   capacity:
     storage: 20Gi
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: "/root/huggingface/LinkSoul/Chinese-Llama-2-7b-4bit"
+    path: "~/huggingface"
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   namespace: demo
-  name: model-path-pvc
+  name: model_base_dir-pvc
 spec:
-  storageClassName: model-path
+  storageClassName: model_base_dir
   accessModes:
     - ReadWriteOnce
   resources:

@@ -19,24 +19,38 @@ spec:
         image: jianshao/fastchat-demo:0.0.1
         ports:
         - containerPort: 21001
-        command: ['python', '-m', 'fastchat.serve.controller']
+        command:
+        - python
+        - -m
+        - fastchat.serve.controller
       - name: worker
         image: jianshao/fastchat-demo:0.0.1
+        envFrom:
+        - configMapRef:
+            name: fastchat-env-cm
         ports:
         - containerPort: 21002
-        command: ['python', '-m', 'fastchat.serve.model_worker', '--model-path', '/workspace/model']
+        command:
+        - python
+        - -m
+        - fastchat.serve.model_worker
+        - --model-path
+        - /workspace/model/${model_dir}
         volumeMounts:
         - mountPath: /workspace/model
-          name: model-path
+          name: model_base_dir
       - name: web
         image: jianshao/fastchat-demo:0.0.1
         ports:
         - containerPort: 7860
-        command: ['python', '-m', 'fastchat.serve.gradio_web_server']
+        command:
+        - python
+        - -m
+        - fastchat.serve.gradio_web_server
       volumes:
-      - name: model-path
+      - name: model_base_dir
         persistentVolumeClaim:
-          claimName: model-path-pvc
+          claimName: model_base_dir
 ---
 apiVersion: v1
 kind: Service
