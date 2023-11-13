@@ -39,6 +39,9 @@ spec:
         volumeMounts:
         - mountPath: /workspace/model
           name: model_base_dir
+        resources:
+          limits:
+            nvidia.com/gpu: all
       - name: web
         image: jianshao/fastchat-demo:0.0.1
         ports:
