@@ -1,0 +1,42 @@
+version: "3"
+services:
+  controller:
+    image: jianshao/fastchat-demo:0.0.1
+    container_name: controller
+    restart: unless-stopped
+    command:
+      - python
+      - -m
+      - fastchat.serve.controller
+      - --host
+      - 0.0.0.0
+  worker:
+    image: jianshao/fastchat-demo:0.0.1
+    container_name: worker
+    restart: unless-stopped
+    depends_on:
+      - controller
+    command:
+      - python
+      - -m
+      - fastchat.serve.model_worker
+      - --host
+      - 0.0.0.0
+      - --controller-address
+      - http://controller:21001
+      - --worker-address
+      - http://worker:21002
+      - --model-path
+      - /workspace/model/${model_dir_1}
+      - --model-path
+      - /workspace/model/${model_dir_2}
+    volumes:
+      - ${model_base_dir}:/workspace/model
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities:
+                - gpu

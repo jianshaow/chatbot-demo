@@ -18,10 +18,15 @@ export image_ver=0.0.1
 docker build -t jianshao/fastchat-demo:$image_ver .
 docker push jianshao/fastchat-demo:$image_ver
 ~~~
-### Test
+### Test image
 ~~~ shell
 docker run --name fastchat-cli -it --rm --gpus all \
            -v $HOME/huggingface/LinkSoul/Chinese-Llama-2-7b-4bit:/workspace/model \
            jianshao/fastchat-demo:$image_ver \
            python -m fastchat.serve.cli --model-path /workspace/model
+~~~
+
+### Run as docker compose
+~~~ shell
+docker network create -d bridge fastchat-shared-network
 ~~~
