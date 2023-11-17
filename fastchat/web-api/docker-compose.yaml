@@ -1,0 +1,19 @@
+version: "3"
+services:
+  web:
+    networks:
+      - fastchat-shared-network
+    image: jianshao/fastchat-demo:0.0.1
+    container_name: web
+    restart: unless-stopped
+    command:
+      - python
+      - -m
+      - fastchat.serve.gradio_web_server
+      - --controller-url
+      - http://controller:21001
+    ports:
+      - 7860:7860
+networks:
+  fastchat-shared-network:
+    external: true

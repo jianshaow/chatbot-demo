@@ -1,6 +1,8 @@
 version: "3"
 services:
   controller:
+    networks:
+      - fastchat-shared-network
     image: jianshao/fastchat-demo:0.0.1
     container_name: controller
     restart: unless-stopped
@@ -10,9 +12,11 @@ services:
       - fastchat.serve.controller
       - --host
       - 0.0.0.0
-  worker:
+  worker-1:
+    networks:
+      - fastchat-shared-network
     image: jianshao/fastchat-demo:0.0.1
-    container_name: worker
+    container_name: worker-1
     restart: unless-stopped
     depends_on:
       - controller
@@ -25,9 +29,37 @@ services:
       - --controller-address
       - http://controller:21001
       - --worker-address
-      - http://worker:21002
+      - http://worker-1:21002
       - --model-path
       - /workspace/model/${model_dir_1}
+    volumes:
+      - ${model_base_dir}:/workspace/model
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities:
+                - gpu
+  worker-2:
+    networks:
+      - fastchat-shared-network
+    image: jianshao/fastchat-demo:0.0.1
+    container_name: worker-2
+    restart: unless-stopped
+    depends_on:
+      - controller
+    command:
+      - python
+      - -m
+      - fastchat.serve.model_worker
+      - --host
+      - 0.0.0.0
+      - --controller-address
+      - http://controller:21001
+      - --worker-address
+      - http://worker-2:21002
       - --model-path
       - /workspace/model/${model_dir_2}
     volumes:
@@ -40,3 +72,6 @@ services:
               count: all
               capabilities:
                 - gpu
+networks:
+  fastchat-shared-network:
+    external: true
