@@ -4,7 +4,7 @@ services:
     networks:
       - fastchat-shared-network
     image: jianshao/fastchat-demo:0.0.1
-    container_name: shared.web
+    container_name: ${container_name_prefix}web
     restart: unless-stopped
     command:
       - python
@@ -20,7 +20,7 @@ services:
     networks:
       - fastchat-shared-network
     image: jianshao/fastchat-demo:0.0.1
-    container_name: shared.openai
+    container_name: ${container_name_prefix}openai
     restart: unless-stopped
     command:
       - python
@@ -36,7 +36,7 @@ services:
     networks:
       - fastchat-shared-network
     image: yidadaa/chatgpt-next-web
-    container_name: shared.chatgpt
+    container_name: ${container_name_prefix}chatgpt
     restart: unless-stopped
     depends_on:
       - openai

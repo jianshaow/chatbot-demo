@@ -4,7 +4,7 @@ services:
     networks:
       - fastchat-shared-network
     image: jianshao/fastchat-demo:0.0.1
-    container_name: shared.controller
+    container_name: ${container_name_prefix}controller
     restart: unless-stopped
     command:
       - python
@@ -16,7 +16,7 @@ services:
     networks:
       - fastchat-shared-network
     image: jianshao/fastchat-demo:0.0.1
-    container_name: shared.worker
+    container_name: ${container_name_prefix}worker
     restart: unless-stopped
     depends_on:
       - controller

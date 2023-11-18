@@ -2,7 +2,7 @@ version: "3"
 services:
   controller:
     image: jianshao/fastchat-demo:0.0.1
-    container_name: chatgpt.controller
+    container_name: ${container_name_prefix}controller
     restart: unless-stopped
     command:
       - python
@@ -12,7 +12,7 @@ services:
       - 0.0.0.0
   worker:
     image: jianshao/fastchat-demo:0.0.1
-    container_name: chatgpt.worker
+    container_name: ${container_name_prefix}worker
     restart: unless-stopped
     depends_on:
       - controller
@@ -42,7 +42,7 @@ services:
                 - gpu
   openai:
     image: jianshao/fastchat-demo:0.0.1
-    container_name: openai
+    container_name: ${container_name_prefix}openai
     restart: unless-stopped
     command:
       - python
@@ -54,7 +54,7 @@ services:
       - http://controller:21001
   chatgpt:
     image: yidadaa/chatgpt-next-web
-    container_name: chatgpt
+    container_name: ${container_name_prefix}chatgpt
     restart: unless-stopped
     depends_on:
       - openai
