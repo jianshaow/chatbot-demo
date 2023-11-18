@@ -1,0 +1,49 @@
+version: "3"
+services:
+  controller:
+    networks:
+      - fastchat-shared-network
+    image: jianshao/fastchat-demo:0.0.1
+    container_name: shared.controller
+    restart: unless-stopped
+    command:
+      - python
+      - -m
+      - fastchat.serve.controller
+      - --host
+      - 0.0.0.0
+  worker:
+    networks:
+      - fastchat-shared-network
+    image: jianshao/fastchat-demo:0.0.1
+    container_name: shared.worker
+    restart: unless-stopped
+    depends_on:
+      - controller
+    command:
+      - python
+      - -m
+      - fastchat.serve.model_worker
+      - --host
+      - 0.0.0.0
+      - --controller-address
+      - http://controller:21001
+      - --worker-address
+      - http://worker:21002
+      - --model-names
+      - gpt-3.5-turbo,chatglm3-6b
+      - --model-path
+      - /workspace/model/${model_path}
+    volumes:
+      - ${model_base_path}:/workspace/model
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities:
+                - gpu
+networks:
+  fastchat-shared-network:
+    external: true

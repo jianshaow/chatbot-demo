@@ -1,0 +1,64 @@
+version: "3"
+services:
+  controller:
+    image: jianshao/fastchat-demo:0.0.1
+    container_name: chatgpt.controller
+    restart: unless-stopped
+    command:
+      - python
+      - -m
+      - fastchat.serve.controller
+      - --host
+      - 0.0.0.0
+  worker:
+    image: jianshao/fastchat-demo:0.0.1
+    container_name: chatgpt.worker
+    restart: unless-stopped
+    depends_on:
+      - controller
+    command:
+      - python
+      - -m
+      - fastchat.serve.model_worker
+      - --host
+      - 0.0.0.0
+      - --controller-address
+      - http://controller:21001
+      - --worker-address
+      - http://worker:21002
+      - --model-names
+      - gpt-3.5-turbo
+      - --model-path
+      - /workspace/model/${model_path}
+    volumes:
+      - ${model_base_path}:/workspace/model
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities:
+                - gpu
+  openai:
+    image: jianshao/fastchat-demo:0.0.1
+    container_name: openai
+    restart: unless-stopped
+    command:
+      - python
+      - -m
+      - fastchat.serve.openai_api_server
+      - --host
+      - 0.0.0.0
+      - --controller-address
+      - http://controller:21001
+  chatgpt:
+    image: yidadaa/chatgpt-next-web
+    container_name: chatgpt
+    restart: unless-stopped
+    depends_on:
+      - openai
+    environment:
+      - BASE_URL=http://openai:8000
+    ports:
+      - 3000:3000
