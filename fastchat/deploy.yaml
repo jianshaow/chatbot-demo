@@ -16,7 +16,7 @@ spec:
       restartPolicy: Always
       containers:
       - name: controller
-        image: jianshao/fastchat-demo:0.0.1
+        image: jianshao/fastchat-demo:0.0.2
         ports:
         - containerPort: 21001
         command:
@@ -24,7 +24,7 @@ spec:
         - -m
         - fastchat.serve.controller
       - name: worker
-        image: jianshao/fastchat-demo:0.0.1
+        image: jianshao/fastchat-demo:0.0.2
         envFrom:
         - configMapRef:
             name: fastchat-env-cm
@@ -35,15 +35,14 @@ spec:
         - -m
         - fastchat.serve.model_worker
         - --model-path
-        - ${model_path}
+        - $(model_path)
+        - --device
+        - cpu
         volumeMounts:
         - mountPath: /home/devel/.cache
-          name: model_cache_dir
-        resources:
-          limits:
-            nvidia.com/gpu: all
+          name: model-cache-dir
       - name: web
-        image: jianshao/fastchat-demo:0.0.1
+        image: jianshao/fastchat-demo:0.0.2
         ports:
         - containerPort: 7860
         command:
@@ -51,9 +50,9 @@ spec:
         - -m
         - fastchat.serve.gradio_web_server
       volumes:
-      - name: model_cache_dir
+      - name: model-cache-dir
         persistentVolumeClaim:
-          claimName: model_cache_dir
+          claimName: model-cache-dir-pvc
 ---
 apiVersion: v1
 kind: Service
