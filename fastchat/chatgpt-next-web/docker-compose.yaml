@@ -1,7 +1,7 @@
 version: "3"
 services:
   controller:
-    image: jianshao/fastchat-demo:0.0.1
+    image: jianshao/fastchat-demo:0.0.2
     container_name: ${container_name_prefix}controller
     restart: unless-stopped
     command:
@@ -11,7 +11,7 @@ services:
       - --host
       - 0.0.0.0
   worker:
-    image: jianshao/fastchat-demo:0.0.1
+    image: jianshao/fastchat-demo:0.0.2
     container_name: ${container_name_prefix}worker
     restart: unless-stopped
     depends_on:
@@ -29,9 +29,9 @@ services:
       - --model-names
       - gpt-3.5-turbo
       - --model-path
-      - /workspace/model/${model_path}
+      - ${model_path}
     volumes:
-      - ${model_base_path}:/workspace/model
+      - ${model_cache_path}:/home/devel/.cache
     deploy:
       resources:
         reservations:
@@ -41,7 +41,7 @@ services:
               capabilities:
                 - gpu
   openai:
-    image: jianshao/fastchat-demo:0.0.1
+    image: jianshao/fastchat-demo:0.0.2
     container_name: ${container_name_prefix}openai
     restart: unless-stopped
     command:

@@ -35,10 +35,10 @@ spec:
         - -m
         - fastchat.serve.model_worker
         - --model-path
-        - /workspace/model/${model_dir}
+        - ${model_path}
         volumeMounts:
-        - mountPath: /workspace/model
-          name: model_base_dir
+        - mountPath: /home/devel/.cache
+          name: model_cache_dir
         resources:
           limits:
             nvidia.com/gpu: all
@@ -51,9 +51,9 @@ spec:
         - -m
         - fastchat.serve.gradio_web_server
       volumes:
-      - name: model_base_dir
+      - name: model_cache_dir
         persistentVolumeClaim:
-          claimName: model_base_dir
+          claimName: model_cache_dir
 ---
 apiVersion: v1
 kind: Service

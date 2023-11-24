@@ -4,4 +4,4 @@ metadata:
   name: fastchat-env-cm
   namespace: demo
 data:
-  model_dir: "LinkSoul/Chinese-Llama-2-7b-4bit"
+  model_path: "lmsys/vicuna-7b-v1.5"

@@ -3,7 +3,7 @@ services:
   web:
     networks:
       - fastchat-shared-network
-    image: jianshao/fastchat-demo:0.0.1
+    image: jianshao/fastchat-demo:0.0.2
     container_name: ${container_name_prefix}web
     restart: unless-stopped
     command:
@@ -19,7 +19,7 @@ services:
   openai:
     networks:
       - fastchat-shared-network
-    image: jianshao/fastchat-demo:0.0.1
+    image: jianshao/fastchat-demo:0.0.2
     container_name: ${container_name_prefix}openai
     restart: unless-stopped
     command:

@@ -1,25 +1,25 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: model_base_dir-pv
+  name: model_cache_dir-pv
   labels:
     type: local
 spec:
-  storageClassName: model_base_dir
+  storageClassName: model_cache_dir
   capacity:
     storage: 20Gi
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: "~/huggingface"
+    path: "~/.cache"
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   namespace: demo
-  name: model_base_dir-pvc
+  name: model_cache_dir-pvc
 spec:
-  storageClassName: model_base_dir
+  storageClassName: model_cache_dir
   accessModes:
     - ReadWriteOnce
   resources:
