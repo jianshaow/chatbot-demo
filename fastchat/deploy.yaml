@@ -23,6 +23,8 @@ spec:
         - python
         - -m
         - fastchat.serve.controller
+        - --host
+        - 0.0.0.0
       - name: worker
         image: jianshao/fastchat-demo:0.0.2
         envFrom:
@@ -34,6 +36,8 @@ spec:
         - python
         - -m
         - fastchat.serve.model_worker
+        - --host
+        - 0.0.0.0
         - --model-path
         - $(model_path)
         - --device
@@ -49,6 +53,8 @@ spec:
         - python
         - -m
         - fastchat.serve.gradio_web_server
+        - --model-list-mode
+        - reload
       volumes:
       - name: model-cache-dir
         persistentVolumeClaim:
