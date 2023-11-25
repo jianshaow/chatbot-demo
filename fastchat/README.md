@@ -4,8 +4,8 @@
 
 ### Prepare
 ~~~ shell
-python -m venv --system-site-packages fastchat
-source fastchat/bin/activate
+python -m venv .venv
+source .venv/bin/activate
 pip install --upgrade pip
 pip install -r requirements.txt
 ~~~
@@ -47,7 +47,7 @@ docker network create -d bridge fastchat-shared-network
 # start an unlimited resources k8s for fastchat
 minikube -p fastchat start --driver docker --container-runtime docker --gpus all --cpus no-limit --memory no-limit
 # mount the model path for reuse
-minikube -p fastchat mount --gid=1000 ~/models:/home/devel/.cache
+minikube -p fastchat mount --uid=$(id -u) --gid=$(id -g) ~/models:/home/devel/.cache
 # check the model path via ssh
 minikube -p fastchat ssh 'ls -al /home/devel'
 ~~~
