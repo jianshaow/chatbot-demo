@@ -7,6 +7,9 @@ docker-compose up -d
 ~~~
 ## kubernetes environment
 ~~~ shell
-kubectl apply -f deploy.yaml
+# for cpu only
+kubectl apply -f deploy.cpu.yaml
+# for gpu
+kubectl apply -f deploy.gpu.yaml
 ~~~
 

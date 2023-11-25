@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fastchat-demo
+  namespace: demo
+spec:
+  selector:
+    matchLabels:
+      app: fastchat-demo
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: fastchat-demo
+    spec:
+      restartPolicy: Always
+      tolerations:
+      - key: nvidia.com/gpu
+        operator: Exists
+        effect: NoSchedule
+      containers:
+      - name: controller
+        image: jianshao/fastchat-demo:0.0.2
+        ports:
+        - containerPort: 21001
+        command:
+        - python
+        - -m
+        - fastchat.serve.controller
+        - --host
+        - 0.0.0.0
+      - name: worker
+        image: jianshao/fastchat-demo:0.0.2
+        resources:
+          limits:
+            nvidia.com/gpu: 1
+        envFrom:
+        - configMapRef:
+            name: fastchat-env-cm
+        ports:
+        - containerPort: 21002
+        command:
+        - python
+        - -m
+        - fastchat.serve.model_worker
+        - --host
+        - 0.0.0.0
+        - --model-path
+        - $(model_path)
+        volumeMounts:
+        - mountPath: /home/devel/.cache
+          name: model-cache-dir
+      - name: web
+        image: jianshao/fastchat-demo:0.0.2
+        ports:
+        - containerPort: 7860
+        command:
+        - python
+        - -m
+        - fastchat.serve.gradio_web_server
+        - --model-list-mode
+        - reload
+      volumes:
+      - name: model-cache-dir
+        persistentVolumeClaim:
+          claimName: model-cache-dir-pvc
+
