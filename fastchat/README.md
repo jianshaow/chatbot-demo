@@ -53,3 +53,10 @@ minikube -p fastchat ssh ls minikube -p fastchat service -ndemo fastchat-demo
 # expose the service
 minikube -p fastchat service -ndemo fastchat-demo
 ~~~
+
+### prepare sources
+~~~ shell
+kubectl apply -f storage.yaml
+kubectl apply -f env-cm.yaml
+kubectl apply -f service.yaml
+~~~
