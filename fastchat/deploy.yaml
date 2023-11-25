@@ -59,17 +59,4 @@ spec:
       - name: model-cache-dir
         persistentVolumeClaim:
           claimName: model-cache-dir-pvc
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: fastchat-demo
-  labels:
-    app: fastchat-demo
-  namespace: demo
-spec:
-  ports:
-  - name: http
-    port: 7860
-  selector:
-    app: fastchat-demo
+

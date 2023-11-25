@@ -36,7 +36,7 @@ docker run --name fastchat-cli -it --rm --gpus all \
 
 ### Run as docker compose
 ~~~ shell
-// for shared service
+# for shared service
 docker network create -d bridge fastchat-shared-network
 ~~~
 
@@ -44,7 +44,7 @@ docker network create -d bridge fastchat-shared-network
 
 ### setup minikube
 ~~~ shell
-# start a k8s for fastchat
+# start an unlimited resources k8s for fastchat
 minikube -p fastchat start --driver docker --container-runtime docker --gpus all --cpus no-limit --memory no-limit
 # mount the model path for reuse
 minikube -p fastchat mount --gid=1000 /home/devel/.cache:/home/devel/.cache
