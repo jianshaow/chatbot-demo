@@ -44,20 +44,25 @@ docker network create -d bridge fastchat-shared-network
 
 ### setup minikube
 ~~~ shell
-# start an unlimited resources k8s for fastchat
-minikube -p fastchat start --driver docker --container-runtime docker --gpus all --cpus no-limit --memory no-limit
+# set a specific minikube profile
+export MINIKUBE_PROFILE=fastchat
+# verify profile
+minikube profile
+# start an unlimited resources k8s for fastchat(for first start)
+minikube start --driver docker --container-runtime docker --gpus all --cpus no-limit --memory no-limit
 # mount the model path for reuse
-minikube -p fastchat mount --uid=$(id -u) --gid=$(id -g) ~/models:/home/devel/.cache
+minikube mount --uid=$(id -u) --gid=$(id -g) ~/models:/home/devel/.cache
 # check the model path via ssh
-minikube -p fastchat ssh 'ls -al /home/devel'
+minikube ssh 'ls -al /home/devel'
 ~~~
 
 ### prepare sources
 ~~~ shell
+export MINIKUBE_PROFILE=fastchat
 # prepare storage, env and service
 kubectl apply -f storage.yaml
 kubectl apply -f env-cm.yaml
 kubectl apply -f service.yaml
 # expose the service
-minikube -p fastchat service -ndemo fastchat-demo
+minikube service -ndemo fastchat-demo
 ~~~
