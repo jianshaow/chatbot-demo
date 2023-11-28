@@ -53,7 +53,7 @@ services:
       - --controller-address
       - http://controller:21001
   chatgpt:
-    image: yidadaa/chatgpt-next-web
+    image: yidadaa/chatgpt-next-web:v2.9.12
     container_name: ${container_name_prefix}chatgpt
     restart: unless-stopped
     depends_on:
