@@ -1,7 +1,7 @@
 version: "3"
 services:
   controller:
-    image: jianshao/fastchat-demo:0.0.2
+    image: jianshao/fastchat-demo:${image_ver}
     container_name: ${container_name_prefix}controller
     restart: unless-stopped
     command:
@@ -11,7 +11,7 @@ services:
       - --host
       - 0.0.0.0
   worker:
-    image: jianshao/fastchat-demo:0.0.2
+    image: jianshao/fastchat-demo:${image_ver}
     container_name: ${container_name_prefix}worker
     restart: unless-stopped
     depends_on:
@@ -39,7 +39,7 @@ services:
               capabilities:
                 - gpu
   web:
-    image: jianshao/fastchat-demo:0.0.2
+    image: jianshao/fastchat-demo:${image_ver}
     container_name: ${container_name_prefix}web
     restart: unless-stopped
     depends_on:

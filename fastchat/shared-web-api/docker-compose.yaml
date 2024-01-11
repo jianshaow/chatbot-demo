@@ -3,7 +3,7 @@ services:
   web:
     networks:
       - fastchat-shared-network
-    image: jianshao/fastchat-demo:0.0.2
+    image: jianshao/fastchat-demo:${image_ver}
     container_name: ${container_name_prefix}web
     restart: unless-stopped
     command:
@@ -19,7 +19,7 @@ services:
   openai:
     networks:
       - fastchat-shared-network
-    image: jianshao/fastchat-demo:0.0.2
+    image: jianshao/fastchat-demo:${image_ver}
     container_name: ${container_name_prefix}openai
     restart: unless-stopped
     command:
@@ -35,7 +35,7 @@ services:
   chatgpt:
     networks:
       - fastchat-shared-network
-    image: yidadaa/chatgpt-next-web:v2.9.12
+    image: yidadaa/chatgpt-next-web:v2.10.1
     container_name: ${container_name_prefix}chatgpt
     restart: unless-stopped
     depends_on:
