@@ -1,2 +1,5 @@
+protobuf
+torch
+transformers[sentencepiece]
+accelerate
 llama-index
-transformers

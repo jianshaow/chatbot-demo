@@ -1,0 +1,24 @@
+{
+	"name": "GPT-LI",
+	"image": "jianshao/llamaindex-demo:0.0.1",
+	"features": {
+		"ghcr.io/devcontainers/features/git:1": {}
+	},
+	"remoteEnv": {
+		"PYTHONPATH": "."
+	},
+	"mounts": [
+		{"source": "${localEnv:HOME}/.cache", "target": "/home/devel/.cache", "type": "bind"}
+	],
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"ms-python.python",
+				"ms-python.vscode-pylance",
+				"ms-python.black-formatter",
+				"ms-python.isort",
+				"alphabotsec.vscode-eclipse-keybindings"
+			]
+		}
+	}
+}
