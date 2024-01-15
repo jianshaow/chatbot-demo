@@ -18,8 +18,10 @@ index = VectorStoreIndex.from_vector_store(
     vector_store, storage_context=storage_context, service_context=service_context
 )
 
-query_engine = index.as_query_engine()
+query_engine = index.as_query_engine(streaming=True)
 question = "What did the author do growing up?"
-print("User:", question)
+print("User:", question, sep="\n")
 response = query_engine.query(question)
-print("AI:", response)
+print("AI:")
+response.print_response_stream()
+print("\n")
