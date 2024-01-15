@@ -1,4 +1,5 @@
 protobuf
+chromadb
 torch
 transformers[sentencepiece]
 accelerate
