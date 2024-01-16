@@ -5,8 +5,8 @@ from llama_index.vector_stores import ChromaVectorStore
 from llama_index.storage.storage_context import StorageContext
 from llama_index.llms import HuggingFaceLLM
 
-db = chromadb.PersistentClient(path="LlamaIndex/chroma_local")
-chroma_collection = db.get_or_create_collection("quickstart")
+db = chromadb.PersistentClient(path="LlamaIndex/chroma_db")
+chroma_collection = db.get_or_create_collection("local")
 
 vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
 storage_context = StorageContext.from_defaults(vector_store=vector_store)
@@ -21,8 +21,8 @@ llm = HuggingFaceLLM(
     max_new_tokens=256,
     generate_kwargs={"temperature": 0.25, "do_sample": False},
     query_wrapper_prompt=query_wrapper_prompt,
-    tokenizer_name="lmsys/vicuna-7b-v1.5",
-    model_name="lmsys/vicuna-7b-v1.5",
+    tokenizer_name="llama/Llama-2-7b-chat-hf",
+    model_name="llama/Llama-2-7b-chat-hf",
     device_map="auto",
     tokenizer_kwargs={"max_length": 2048},
 )

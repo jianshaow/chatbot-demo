@@ -7,8 +7,8 @@ from llama_index.storage.storage_context import StorageContext
 os.environ["OPENAI_API_KEY"] = "EMPTY"
 os.environ["OPENAI_API_BASE"] = "http://localhost:8000/v1"
 
-db = chromadb.PersistentClient(path="LlamaIndex/chroma_openai")
-chroma_collection = db.get_or_create_collection("quickstart")
+db = chromadb.PersistentClient(path="LlamaIndex/chroma_db")
+chroma_collection = db.get_or_create_collection("openai")
 
 vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
 storage_context = StorageContext.from_defaults(vector_store=vector_store)
