@@ -20,6 +20,7 @@ services:
       - python
       - -m
       - fastchat.serve.model_worker
+      - --load-8bit
       - --host
       - 0.0.0.0
       - --controller-address
@@ -52,9 +53,9 @@ services:
       - 0.0.0.0
       - --controller-address
       - http://controller:21001
-  chatgpt:
+  nextweb:
     image: yidadaa/chatgpt-next-web:v2.10.1
-    container_name: ${container_name_prefix}chatgpt
+    container_name: ${container_name_prefix}nextweb
     restart: unless-stopped
     depends_on:
       - openai
