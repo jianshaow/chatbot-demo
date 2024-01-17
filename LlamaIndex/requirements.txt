@@ -3,4 +3,5 @@ chromadb
 torch
 transformers[sentencepiece]
 accelerate
+bitsandbytes
 llama-index

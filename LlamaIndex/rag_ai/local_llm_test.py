@@ -1,24 +1,38 @@
 import torch
 
-from llama_index.llms import HuggingFaceLLM
+from llama_index.llms import HuggingFaceLLM, ChatMessage
 from llama_index.prompts import PromptTemplate
 
+SYSTEM_PROMPT = """You are an AI assistant that answers questions in a friendly manner, based on the given source documents. Here are some rules you always follow:
+- Generate human readable output, avoid creating output with gibberish text.
+- Generate only the requested output, don't include any other language before or after the requested output.
+- Never say thank you, that you are happy to help, that you are an AI agent, etc. Just answer directly.
+- Generate professional language typically used in business documents in North America.
+- Never generate offensive or foul language.
+"""
+
 query_wrapper_prompt = PromptTemplate(
-    "Below is an instruction that describes a task. "
-    "Write a response that appropriately completes the request.\n\n"
-    "### Instruction:\n{query_str}\n\n### Response:"
+    "[INST]<<SYS>>\n" + SYSTEM_PROMPT + "<</SYS>>\n\n{query_str}[/INST] "
 )
+
 llm = HuggingFaceLLM(
     context_window=2048,
     max_new_tokens=256,
-    generate_kwargs={"temperature": 0.25, "do_sample": False},
+    generate_kwargs={"temperature": 0.0, "do_sample": False},
     query_wrapper_prompt=query_wrapper_prompt,
     tokenizer_name="lmsys/vicuna-7b-v1.5",
     model_name="lmsys/vicuna-7b-v1.5",
     device_map="auto",
-    tokenizer_kwargs={"max_length": 2048},
-    model_kwargs={"torch_dtype": torch.float16},
+    model_kwargs={"torch_dtype": torch.float16, "load_in_8bit": True},
 )
 
 response = llm.complete("hello")
 print(response.text)
+
+messages = [
+    ChatMessage(role="system", content="You are a pirate with a colorful personality"),
+    ChatMessage(role="user", content="What is your name"),
+]
+resp = llm.stream_chat(messages)
+for r in resp:
+    print(r.delta, end="")
