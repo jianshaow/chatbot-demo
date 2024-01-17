@@ -1,4 +1,4 @@
-import chromadb
+import torch, chromadb
 from llama_index import VectorStoreIndex, ServiceContext
 from llama_index.prompts import PromptTemplate
 from llama_index.vector_stores import ChromaVectorStore
@@ -21,10 +21,11 @@ llm = HuggingFaceLLM(
     max_new_tokens=256,
     generate_kwargs={"temperature": 0.25, "do_sample": False},
     query_wrapper_prompt=query_wrapper_prompt,
-    tokenizer_name="llama/Llama-2-7b-chat-hf",
-    model_name="llama/Llama-2-7b-chat-hf",
+    tokenizer_name="lmsys/vicuna-7b-v1.5",
+    model_name="lmsys/vicuna-7b-v1.5",
     device_map="auto",
     tokenizer_kwargs={"max_length": 2048},
+    model_kwargs={"torch_dtype": torch.float16},
 )
 service_context = ServiceContext.from_defaults(embed_model="local", llm=llm)
 index = VectorStoreIndex.from_vector_store(
