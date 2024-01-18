@@ -1,5 +1,4 @@
 import torch
-
 from llama_index.llms import HuggingFaceLLM
 from llama_index.prompts import PromptTemplate
 
