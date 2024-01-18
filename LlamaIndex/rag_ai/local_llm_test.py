@@ -16,23 +16,16 @@ query_wrapper_prompt = PromptTemplate(
 )
 
 llm = HuggingFaceLLM(
-    context_window=2048,
-    max_new_tokens=256,
+    context_window=4096,
+    max_new_tokens=2048,
     generate_kwargs={"temperature": 0.0, "do_sample": False},
     query_wrapper_prompt=query_wrapper_prompt,
     tokenizer_name="lmsys/vicuna-7b-v1.5",
     model_name="lmsys/vicuna-7b-v1.5",
     device_map="auto",
-    model_kwargs={"torch_dtype": torch.float16, "load_in_8bit": True},
+    # is_chat_model=True,
+    model_kwargs={"load_in_4bit": True, "bnb_4bit_compute_dtype": torch.float16},
 )
 
-response = llm.complete("hello")
+response = llm.complete("who are you")
 print(response.text)
-
-messages = [
-    ChatMessage(role="system", content="You are a pirate with a colorful personality"),
-    ChatMessage(role="user", content="What is your name"),
-]
-resp = llm.stream_chat(messages)
-for r in resp:
-    print(r.delta, end="")

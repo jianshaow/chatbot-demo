@@ -31,7 +31,7 @@ llm = HuggingFaceLLM(
     tokenizer_name="lmsys/vicuna-7b-v1.5",
     model_name="lmsys/vicuna-7b-v1.5",
     device_map="auto",
-    model_kwargs={"torch_dtype": torch.float16, "load_in_8bit": True},
+    model_kwargs={"load_in_4bit": True, "bnb_4bit_compute_dtype": torch.float16},
 )
 service_context = ServiceContext.from_defaults(embed_model="local", llm=llm)
 index = VectorStoreIndex.from_vector_store(
