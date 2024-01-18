@@ -14,13 +14,13 @@ pip install -r requirements.txt
 
 ### Build
 ~~~ shell
-export image_ver=0.0.3
+export image_ver=0.0.4
 docker build -t jianshao/fastchat-demo:$image_ver .
 docker push jianshao/fastchat-demo:$image_ver
 ~~~
 ### Test image
 ~~~ shell
-export model_path=lmsys/vicuna-7b-v1.5
+export model_path=TheBloke/vicuna-13B-v1.5-AWQ
 # mount local model path
 docker run --name fastchat-cli -it --rm --gpus all \
            -v $HOME/huggingface/$model_path:/workspace/model \

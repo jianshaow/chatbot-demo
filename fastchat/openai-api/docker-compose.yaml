@@ -20,7 +20,7 @@ services:
       - python
       - -m
       - fastchat.serve.model_worker
-      - --load-8bit
+      # - --load-8bit
       - --host
       - 0.0.0.0
       - --controller-address

@@ -20,7 +20,7 @@ spec:
         effect: NoSchedule
       containers:
       - name: controller
-        image: jianshao/fastchat-demo:0.0.3
+        image: jianshao/fastchat-demo:0.0.4
         ports:
         - containerPort: 21001
         command:
@@ -30,7 +30,7 @@ spec:
         - --host
         - 0.0.0.0
       - name: worker
-        image: jianshao/fastchat-demo:0.0.3
+        image: jianshao/fastchat-demo:0.0.4
         resources:
           limits:
             nvidia.com/gpu: 1
@@ -52,7 +52,7 @@ spec:
         - mountPath: /home/devel/.cache
           name: model-cache-dir
       - name: web
-        image: jianshao/fastchat-demo:0.0.3
+        image: jianshao/fastchat-demo:0.0.4
         ports:
         - containerPort: 7860
         command:

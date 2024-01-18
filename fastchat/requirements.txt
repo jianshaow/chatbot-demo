@@ -1,1 +1,2 @@
 fschat[model_worker,webui]
+autoawq
