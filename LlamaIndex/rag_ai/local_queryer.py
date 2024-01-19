@@ -23,13 +23,15 @@ query_wrapper_prompt = PromptTemplate(
     "[INST]<<SYS>>\n" + SYSTEM_PROMPT + "<</SYS>>\n\n{query_str}[/INST] "
 )
 
+model_name = "lmsys/vicuna-7b-v1.5"
+
 llm = HuggingFaceLLM(
     context_window=4096,
     max_new_tokens=2048,
     generate_kwargs={"temperature": 0.0, "do_sample": False},
     query_wrapper_prompt=query_wrapper_prompt,
-    tokenizer_name="lmsys/vicuna-7b-v1.5",
-    model_name="lmsys/vicuna-7b-v1.5",
+    tokenizer_name=model_name,
+    model_name=model_name,
     device_map="auto",
     model_kwargs={"load_in_4bit": True, "bnb_4bit_compute_dtype": torch.float16},
 )
