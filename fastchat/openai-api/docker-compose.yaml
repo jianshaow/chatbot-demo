@@ -10,9 +10,9 @@ services:
       - fastchat.serve.controller
       - --host
       - 0.0.0.0
-  worker:
+  embedding-worker:
     image: jianshao/fastchat-demo:${image_ver}
-    container_name: ${container_name_prefix}worker
+    container_name: ${container_name_prefix}embedding-worker
     restart: unless-stopped
     depends_on:
       - controller
@@ -20,17 +20,50 @@ services:
       - python
       - -m
       - fastchat.serve.model_worker
-      - --load-8bit
+      # - --load-8bit
       - --host
       - 0.0.0.0
       - --controller-address
       - http://controller:21001
       - --worker-address
-      - http://worker:21002
+      - http://embedding-worker:21002
       - --model-names
-      - gpt-3.5-turbo,text-embedding-ada-002
+      - text-embedding-ada-002
       - --model-path
-      - ${model_path}
+      - ${embedding_model_path}
+    volumes:
+      - ${model_cache_path}:/home/devel/.cache
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities:
+                - gpu
+  gpt-worker:
+    image: jianshao/fastchat-demo:${image_ver}
+    container_name: ${container_name_prefix}gpt-worker
+    restart: unless-stopped
+    depends_on:
+      - controller
+    environment:
+      - https_proxy=192.168.31.2:8123
+    command:
+      - python
+      - -m
+      - fastchat.serve.model_worker
+      # - --load-8bit
+      - --host
+      - 0.0.0.0
+      - --controller-address
+      - http://controller:21001
+      - --worker-address
+      - http://gpt-worker:21002
+      - --model-names
+      - gpt-3.5-turbo
+      - --model-path
+      - ${gpt_model_path}
     volumes:
       - ${model_cache_path}:/home/devel/.cache
     deploy:
