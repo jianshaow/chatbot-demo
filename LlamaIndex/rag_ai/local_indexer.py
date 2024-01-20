@@ -8,6 +8,7 @@ chroma_collection = db.get_or_create_collection("local")
 vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
 storage_context = StorageContext.from_defaults(vector_store=vector_store)
 serviceContext = ServiceContext.from_defaults(embed_model="local", llm=None)
+print("embed_model:", serviceContext.embed_model.model_name)
 if chroma_collection.count() == 0:
     documents = SimpleDirectoryReader("LlamaIndex/data").load_data(show_progress=True)
     index = VectorStoreIndex.from_documents(
