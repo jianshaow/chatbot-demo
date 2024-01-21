@@ -41,9 +41,9 @@ services:
               count: all
               capabilities:
                 - gpu
-  gpt-worker:
+  chat-worker:
     image: jianshao/fastchat-demo:${image_ver}
-    container_name: ${container_name_prefix}gpt-worker
+    container_name: ${container_name_prefix}chat-worker
     restart: unless-stopped
     depends_on:
       - controller
@@ -59,7 +59,7 @@ services:
       - --controller-address
       - http://controller:21001
       - --worker-address
-      - http://gpt-worker:21002
+      - http://chat-worker:21002
       - --model-names
       - gpt-3.5-turbo
       - --model-path
