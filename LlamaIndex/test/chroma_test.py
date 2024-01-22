@@ -7,5 +7,6 @@ for collection in collections:
     count = collection.count()
     print("record count:", count)
     vectors = collection.peek(1)
-    for embedding in vectors["embeddings"]:
-        print("embedding dimension:", len(embedding))
+    for embeddings in vectors["embeddings"]:
+        print("embeddings dimension:", len(embeddings))
+        print(embeddings[:5])
