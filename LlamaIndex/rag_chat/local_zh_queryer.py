@@ -35,7 +35,9 @@ llm = HuggingFaceLLM(
     device_map="auto",
     model_kwargs={"load_in_4bit": True, "bnb_4bit_compute_dtype": torch.float16},
 )
-service_context = ServiceContext.from_defaults(embed_model="local", llm=llm)
+service_context = ServiceContext.from_defaults(
+    embed_model="local:BAAI/bge-large-zh-v1.5", llm=llm
+)
 index = VectorStoreIndex.from_vector_store(
     vector_store, storage_context=storage_context, service_context=service_context
 )
