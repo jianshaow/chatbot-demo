@@ -1,6 +1,6 @@
 from llama_index.llms import OpenAI, ChatMessage
 
-llm = OpenAI(api_base="http://localhost:8000/v1", api_key="EMPTY")
+llm = OpenAI()
 response = llm.complete("hello")
 print(response.text)
 

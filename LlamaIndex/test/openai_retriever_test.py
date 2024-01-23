@@ -1,8 +1,4 @@
-import os
 from llama_index import VectorStoreIndex, SimpleDirectoryReader
-
-os.environ["OPENAI_API_KEY"] = "EMPTY"
-os.environ["OPENAI_API_BASE"] = "http://localhost:8000/v1"
 
 documents = SimpleDirectoryReader("LlamaIndex/data").load_data(show_progress=True)
 index = VectorStoreIndex.from_documents(

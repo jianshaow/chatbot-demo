@@ -1,10 +1,7 @@
-import os, chromadb
+import chromadb
 from llama_index import VectorStoreIndex
 from llama_index.vector_stores import ChromaVectorStore
 from llama_index.storage.storage_context import StorageContext
-
-os.environ["OPENAI_API_KEY"] = "EMPTY"
-os.environ["OPENAI_API_BASE"] = "http://localhost:8000/v1"
 
 db = chromadb.PersistentClient(path="LlamaIndex/chroma_db")
 chroma_collection = db.get_or_create_collection("openai_zh")
