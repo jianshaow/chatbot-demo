@@ -7,13 +7,13 @@ os.environ["OPENAI_API_KEY"] = "EMPTY"
 os.environ["OPENAI_API_BASE"] = "http://localhost:8000/v1"
 
 db = chromadb.PersistentClient(path="LlamaIndex/chroma_db")
-chroma_collection = db.get_or_create_collection("openai")
+chroma_collection = db.get_or_create_collection("openai_zh")
 
 vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
 storage_context = StorageContext.from_defaults(vector_store=vector_store)
 
 if chroma_collection.count() == 0:
-    documents = SimpleDirectoryReader("LlamaIndex/data").load_data(show_progress=True)
+    documents = SimpleDirectoryReader("LlamaIndex/data_zh").load_data(show_progress=True)
     index = VectorStoreIndex.from_documents(
         documents,
         storage_context=storage_context,
@@ -26,6 +26,6 @@ else:
     )
 
 retriever = index.as_retriever()
-nodes = retriever.retrieve("What did the author do growing up?")
+nodes = retriever.retrieve("杨志是个怎样的人?")
 for node in nodes:
     print(node)
