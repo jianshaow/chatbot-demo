@@ -1,9 +1,6 @@
 from llama_index.llms import OpenAI, ChatMessage
 
 llm = OpenAI()
-response = llm.complete("hello")
-print(response.text)
-
 messages = [
     ChatMessage(role="system", content="You are a pirate with a colorful personality"),
     ChatMessage(role="user", content="What is your name"),

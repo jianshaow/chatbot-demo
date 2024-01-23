@@ -1,3 +1,4 @@
+import sys
 from llama_index import ServiceContext, VectorStoreIndex, SimpleDirectoryReader
 
 serviceContext = ServiceContext.from_defaults(embed_model="local", llm=None)
@@ -10,6 +11,7 @@ index = VectorStoreIndex.from_documents(
 )
 
 retriever = index.as_retriever()
-nodes = retriever.retrieve("What did the author do growing up?")
+question = len(sys.argv) == 2 and sys.argv[1] or "What did the author do growing up?"
+nodes = retriever.retrieve(question)
 for node in nodes:
     print(node)
