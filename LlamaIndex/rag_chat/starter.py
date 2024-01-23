@@ -20,8 +20,8 @@ else:
 
 query_engine = index.as_query_engine(streaming=True)
 question = "What did the author do growing up?"
-print("User:", question, sep="\n")
+print("Question:", question, sep="\n")
 response = query_engine.query(question)
-print("AI:")
+print("Answer:")
 response.print_response_stream()
 print("\n")

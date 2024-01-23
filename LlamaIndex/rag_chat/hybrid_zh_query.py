@@ -20,8 +20,8 @@ index = VectorStoreIndex.from_vector_store(
 
 query_engine = index.as_query_engine(streaming=True)
 question = len(sys.argv) == 2 and sys.argv[1] or "杨志是一个怎样的人?"
-print("User:", question, sep="\n")
+print("Question:", question, sep="\n")
 response = query_engine.query(question)
-print("AI:")
+print("Answer:")
 response.print_response_stream()
 print("\n")
