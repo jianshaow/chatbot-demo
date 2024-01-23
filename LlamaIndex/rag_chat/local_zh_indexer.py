@@ -1,4 +1,4 @@
-import chromadb
+import sys, chromadb
 from llama_index import ServiceContext, VectorStoreIndex, SimpleDirectoryReader
 from llama_index.vector_stores import ChromaVectorStore
 from llama_index.storage.storage_context import StorageContext
@@ -29,6 +29,7 @@ else:
     )
 
 retriever = index.as_retriever()
-nodes = retriever.retrieve("杨志是一个怎样的人?")
+question = len(sys.argv) == 2 and sys.argv[1] or "杨志是一个怎样的人?"
+nodes = retriever.retrieve(question)
 for node in nodes:
     print(node)

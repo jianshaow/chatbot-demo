@@ -1,4 +1,4 @@
-import chromadb
+import sys, chromadb
 from llama_index import VectorStoreIndex, ServiceContext
 from llama_index.vector_stores import ChromaVectorStore
 from llama_index.storage.storage_context import StorageContext
@@ -19,7 +19,7 @@ index = VectorStoreIndex.from_vector_store(
 )
 
 query_engine = index.as_query_engine(streaming=True)
-question = "What did the author do growing up?"
+question = len(sys.argv) == 2 and sys.argv[1] or "What did the author do growing up?"
 print("User:", question, sep="\n")
 response = query_engine.query(question)
 print("AI:")

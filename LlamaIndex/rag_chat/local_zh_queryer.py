@@ -1,4 +1,4 @@
-import torch, chromadb
+import sys, torch, chromadb
 from llama_index import VectorStoreIndex, ServiceContext
 from llama_index.prompts import PromptTemplate
 from llama_index.vector_stores import ChromaVectorStore
@@ -41,7 +41,7 @@ index = VectorStoreIndex.from_vector_store(
 )
 
 query_engine = index.as_query_engine(streaming=True)
-question = "What did the author do growing up?"
+question = len(sys.argv) == 2 and sys.argv[1] or "杨志是一个怎样的人?"
 print("User:", question, sep="\n")
 response = query_engine.query(question)
 print("AI:")
