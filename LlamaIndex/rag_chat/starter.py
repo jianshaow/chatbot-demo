@@ -6,9 +6,6 @@ from llama_index import (
     load_index_from_storage,
 )
 
-os.environ["OPENAI_API_KEY"] = "EMPTY"
-os.environ["OPENAI_API_BASE"] = "http://localhost:8000/v1"
-
 PERSIST_DIR = "LlamaIndex/storage"
 if not os.path.exists(PERSIST_DIR):
     documents = SimpleDirectoryReader("LlamaIndex/data").load_data(show_progress=True)
