@@ -32,8 +32,8 @@ class RagChatConfig:
         return self.__embedding_model(model=self.embedding_model_name)
 
     def chat_model(self):
-        if self.__chat_model == type(HuggingFaceLLM):
-            return __hf_chat_model(self.chat_model_name)
+        if self.__chat_model == HuggingFaceLLM:
+            return _hf_chat_model(self.chat_model_name)
         else:
             return self.__chat_model(self.chat_model_name)
 
@@ -57,7 +57,7 @@ query_wrapper_prompt = PromptTemplate(
 )
 
 
-def __hf_chat_model(model_name="meta-llama/Llama-2-7b-chat-hf"):
+def _hf_chat_model(model_name="meta-llama/Llama-2-7b-chat-hf"):
     return HuggingFaceLLM(
         context_window=4096,
         max_new_tokens=2048,
