@@ -1,4 +1,4 @@
-import os.path
+import os.path, sys
 from llama_index import (
     VectorStoreIndex,
     SimpleDirectoryReader,
@@ -16,7 +16,7 @@ else:
     index = load_index_from_storage(storage_context)
 
 query_engine = index.as_query_engine(streaming=True)
-question = "What did the author do growing up?"
+question = len(sys.argv) == 2 and sys.argv[1] or "What did the author do growing up?"
 print("Question:", question, sep="\n")
 response = query_engine.query(question)
 print("Answer:")
