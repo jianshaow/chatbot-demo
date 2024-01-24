@@ -29,7 +29,7 @@ class RagChatConfig:
         self.defalut_question = defalut_question
 
     def embedding_model(self):
-        return self.__embedding_model(model=self.embedding_model_name)
+        return self.__embedding_model(model_name=self.embedding_model_name)
 
     def chat_model(self):
         if self.__chat_model == HuggingFaceLLM:
@@ -108,14 +108,14 @@ def __hf_config(
 
 HYBRID = RagChatConfig(
     HuggingFaceEmbedding,
-    "BAAI/bge-large-en-v1.5",
+    None,
     OpenAI,
     "gpt-3.5-turbo",
 )
 
 HYBRID_ZH = RagChatConfig(
     HuggingFaceEmbedding,
-    "BAAI/bge-large-zh-v1.5",
+    None,
     OpenAI,
     "gpt-3.5-turbo",
     vector_db_collection="local_zh",
