@@ -1,15 +1,27 @@
 {
 	"name": "RAG-LI",
-	"image": "jianshao/llamaindex-demo:0.0.2",
+	"image": "jianshao/llamaindex-demo:0.0.3",
 	"features": {
 		"ghcr.io/devcontainers/features/git:1": {}
 	},
 	"remoteEnv": {
 		"PYTHONPATH": "."
 	},
+	"runArgs": [
+		"--gpus",
+		"all"
+	],
 	"mounts": [
-		{"source": "${localEnv:HOME}/.cache", "target": "/root/.cache", "type": "bind"},
-		{"source": "/tmp/llama_index", "target": "/tmp/llama_index", "type": "bind"}
+		{
+			"source": "${localEnv:HOME}/.cache",
+			"target": "/root/.cache",
+			"type": "bind"
+		},
+		{
+			"source": "/tmp/llama_index",
+			"target": "/tmp/llama_index",
+			"type": "bind"
+		}
 	],
 	"customizations": {
 		"vscode": {
