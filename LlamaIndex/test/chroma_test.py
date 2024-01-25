@@ -2,6 +2,7 @@ import chromadb
 
 db = chromadb.PersistentClient(path="LlamaIndex/chroma_db")
 collections = db.list_collections()
+print("collections size:", len(collections))
 for collection in collections:
     print(collection)
     count = collection.count()
