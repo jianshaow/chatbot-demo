@@ -193,3 +193,8 @@ def get_config(name="openai"):
         return __config_dict[sys.argv[1]]
     else:
         return __config_dict[name]
+
+
+if __name__ == "__main__":
+    for config in __config_dict:
+        print(config)
