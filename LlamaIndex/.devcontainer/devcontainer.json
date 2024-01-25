@@ -8,7 +8,8 @@
 		"PYTHONPATH": "."
 	},
 	"mounts": [
-		{"source": "${localEnv:HOME}/.cache", "target": "/home/devel/.cache", "type": "bind"}
+		{"source": "${localEnv:HOME}/.cache", "target": "/home/devel/.cache", "type": "bind"},
+		{"source": "/tmp/llama_index", "target": "/tmp/llama_index", "type": "bind"}
 	],
 	"customizations": {
 		"vscode": {
