@@ -1,6 +1,6 @@
 {
-	"name": "GPT-LI",
-	"image": "jianshao/llamaindex-demo:0.0.1",
+	"name": "RAG-LI",
+	"image": "jianshao/llamaindex-demo:0.0.2",
 	"features": {
 		"ghcr.io/devcontainers/features/git:1": {}
 	},

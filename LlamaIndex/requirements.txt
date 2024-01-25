@@ -1,7 +1,5 @@
 protobuf
 chromadb
-torch
-transformers[sentencepiece]
-accelerate
+transformers[accelerate,sentencepiece,torch]
 bitsandbytes
 llama-index
