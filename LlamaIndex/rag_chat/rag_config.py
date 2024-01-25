@@ -99,7 +99,7 @@ def __openai_config(
 
 def __hf_config(
     embeddding_model_name=None,
-    chat_model_name="meta-llama/Llama-2-7b-chat-hf",
+    chat_model_name="lmsys/vicuna-7b-v1.5",
     bnb_quantized=True,
     data_path=DATA_PATH,
     vector_db_collection="local",
