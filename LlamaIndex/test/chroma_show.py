@@ -3,6 +3,7 @@ import chromadb
 db = chromadb.PersistentClient(path="LlamaIndex/chroma_db")
 collections = db.list_collections()
 print("collections size:", len(collections))
+print("===================")
 for collection in collections:
     print(collection)
     count = collection.count()
@@ -11,3 +12,4 @@ for collection in collections:
     for embeddings in vectors["embeddings"]:
         print("embeddings dimension:", len(embeddings))
         print(embeddings[:5])
+    print("-------------------")
