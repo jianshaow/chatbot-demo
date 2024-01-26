@@ -7,8 +7,8 @@ else:
     target = sys.argv[2]
     db = chromadb.PersistentClient(path="LlamaIndex/chroma_db")
     source_collection = db.get_collection(source)
-    target_collection = db.get_or_create_collection("test")
-    vectors = source_collection.peek(source.count())
+    target_collection = db.get_or_create_collection(target)
+    vectors = source_collection.peek(source_collection.count())
     target_collection.add(
         ids=vectors["ids"],
         embeddings=vectors["embeddings"],
@@ -18,4 +18,4 @@ else:
         images=vectors["data"],
     )
 
-    print("data migrated:", target.count())
+    print("data migrated:", target_collection.count())
