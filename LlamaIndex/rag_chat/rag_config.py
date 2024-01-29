@@ -1,4 +1,4 @@
-import sys, torch
+import os, sys, torch
 from llama_index.embeddings import BaseEmbedding, HuggingFaceEmbedding, OpenAIEmbedding
 from llama_index.llms import LLM, HuggingFaceLLM, OpenAI
 from llama_index.prompts import PromptTemplate
@@ -16,7 +16,6 @@ class RagChatConfig:
         chat_model_name: str,
         bnb_quantized: bool = True,
         data_path: str = DATA_PATH,
-        vector_db_path: str = "LlamaIndex/chroma_db",
         vector_db_collection: str = "local",
         defalut_question: str = "What did the author do growing up?",
     ):
@@ -26,7 +25,7 @@ class RagChatConfig:
         self.chat_model_name = chat_model_name
         self.bnb_quantized = bnb_quantized
         self.data_path = data_path
-        self.vector_db_path = vector_db_path
+        self.vector_db_path = os.environ.get("CHROMA_DB_DIR", "LlamaIndex/chroma_db")
         self.vector_db_collection = vector_db_collection
         self.defalut_question = defalut_question
 
