@@ -5,7 +5,8 @@
 		"ghcr.io/devcontainers/features/git:1": {}
 	},
 	"remoteEnv": {
-		"PYTHONPATH": "."
+		"PYTHONPATH": ".",
+		"LLAMA_INDEX_CACHE_DIR": "~/.cache/huggingface/hub"
 	},
 	"runArgs": [
 		"--gpus",
