@@ -17,11 +17,6 @@
 			"source": "${localEnv:HOME}/.cache",
 			"target": "/root/.cache",
 			"type": "bind"
-		},
-		{
-			"source": "/tmp/llama_index",
-			"target": "/tmp/llama_index",
-			"type": "bind"
 		}
 	],
 	"customizations": {
