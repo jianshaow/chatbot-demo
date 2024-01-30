@@ -163,6 +163,7 @@ __config_dict = {
     "local": __hf_config(),
     "local_zh": __hf_config(
         data_path=DATA_PATH_ZH,
+        embeddding_model_name="BAAI/bge-small-zh",
         vector_db_collection="local_zh",
         defalut_question="杨志是个怎样的人?",
     ),
