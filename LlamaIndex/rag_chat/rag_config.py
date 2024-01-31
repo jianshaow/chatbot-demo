@@ -4,6 +4,7 @@ from llama_index.llms import LLM, HuggingFaceLLM, OpenAI
 from llama_index.prompts import PromptTemplate
 
 DATA_PATH = "LlamaIndex/data"
+DATA_PATH_EN = "LlamaIndex/data_en"
 DATA_PATH_ZH = "LlamaIndex/data_zh"
 
 
@@ -155,12 +156,22 @@ HYBRID_LARGE_ZH = RagChatConfig(
 
 __config_dict = {
     "openai": __openai_config(),
+    "openai_en": __openai_config(
+        data_path=DATA_PATH_EN,
+        vector_db_collection="openai_en",
+        defalut_question="Why the old man go fishing?",
+    ),
     "openai_zh": __openai_config(
         data_path=DATA_PATH_ZH,
         vector_db_collection="openai_zh",
         defalut_question="杨志是个怎样的人?",
     ),
     "local": __hf_config(),
+    "local_en": __hf_config(
+        data_path=DATA_PATH_EN,
+        vector_db_collection="local_en",
+        defalut_question="Why the old man go fishing?",
+    ),
     "local_zh": __hf_config(
         data_path=DATA_PATH_ZH,
         embeddding_model_name="BAAI/bge-small-zh",
@@ -172,6 +183,13 @@ __config_dict = {
         chat_model_name="TheBloke/vicuna-13B-v1.5-AWQ",
         bnb_quantized=False,
         vector_db_collection="local_large",
+    ),
+    "local_large_en": __hf_config(
+        embeddding_model_name="BAAI/bge-large-en-v1.5",
+        chat_model_name="TheBloke/vicuna-13B-v1.5-AWQ",
+        bnb_quantized=False,
+        vector_db_collection="local_large_en",
+        defalut_question="Why the old man go fishing?",
     ),
     "local_large_zh": __hf_config(
         embeddding_model_name="BAAI/bge-large-zh-v1.5",
