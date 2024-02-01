@@ -7,6 +7,10 @@ DATA_PATH = "LlamaIndex/data"
 DATA_PATH_EN = "LlamaIndex/data_en"
 DATA_PATH_ZH = "LlamaIndex/data_zh"
 
+DEFAULT_QUESTION = "What did the author do growing up?"
+DEFAULT_QUESTION_EN = "Why the old man go fishing?"
+DEFAULT_QUESTION_ZH = "杨志是个怎样的人?"
+
 
 class RagChatConfig:
     def __init__(
@@ -18,7 +22,7 @@ class RagChatConfig:
         bnb_quantized: bool = True,
         data_path: str = DATA_PATH,
         vector_db_collection: str = "local",
-        defalut_question: str = "What did the author do growing up?",
+        defalut_question: str = DEFAULT_QUESTION,
     ):
         self.__embedding_model = embedding_model
         self.embedding_model_name = embedding_model_name
@@ -84,7 +88,7 @@ def __openai_config(
     chat_model_name="gpt-3.5-turbo",
     data_path=DATA_PATH,
     vector_db_collection="openai",
-    defalut_question="What did the author do growing up?",
+    defalut_question=DEFAULT_QUESTION,
 ):
     return RagChatConfig(
         OpenAIEmbedding,
@@ -103,7 +107,7 @@ def __hf_config(
     bnb_quantized=True,
     data_path=DATA_PATH,
     vector_db_collection="local",
-    defalut_question="What did the author do growing up?",
+    defalut_question=DEFAULT_QUESTION,
 ):
     return RagChatConfig(
         HuggingFaceEmbedding,
@@ -131,7 +135,7 @@ HYBRID_ZH = RagChatConfig(
     "gpt-3.5-turbo",
     data_path=DATA_PATH_ZH,
     vector_db_collection="local_zh",
-    defalut_question="杨志是个怎样的人?",
+    defalut_question=DEFAULT_QUESTION_ZH,
 )
 
 HYBRID_LARGE = RagChatConfig(
@@ -151,7 +155,7 @@ HYBRID_LARGE_ZH = RagChatConfig(
     bnb_quantized=False,
     data_path=DATA_PATH_ZH,
     vector_db_collection="local_large_zh",
-    defalut_question="杨志是个怎样的人?",
+    defalut_question=DEFAULT_QUESTION_ZH,
 )
 
 __config_dict = {
@@ -159,24 +163,24 @@ __config_dict = {
     "openai_en": __openai_config(
         data_path=DATA_PATH_EN,
         vector_db_collection="openai_en",
-        defalut_question="Why the old man go fishing?",
+        defalut_question=DEFAULT_QUESTION_EN,
     ),
     "openai_zh": __openai_config(
         data_path=DATA_PATH_ZH,
         vector_db_collection="openai_zh",
-        defalut_question="杨志是个怎样的人?",
+        defalut_question=DEFAULT_QUESTION_ZH,
     ),
     "local": __hf_config(),
     "local_en": __hf_config(
         data_path=DATA_PATH_EN,
         vector_db_collection="local_en",
-        defalut_question="Why the old man go fishing?",
+        defalut_question=DEFAULT_QUESTION_EN,
     ),
     "local_zh": __hf_config(
         data_path=DATA_PATH_ZH,
         embeddding_model_name="BAAI/bge-small-zh",
         vector_db_collection="local_zh",
-        defalut_question="杨志是个怎样的人?",
+        defalut_question=DEFAULT_QUESTION_ZH,
     ),
     "local_large": __hf_config(
         embeddding_model_name="BAAI/bge-large-en-v1.5",
@@ -189,7 +193,7 @@ __config_dict = {
         chat_model_name="TheBloke/vicuna-13B-v1.5-AWQ",
         bnb_quantized=False,
         vector_db_collection="local_large_en",
-        defalut_question="Why the old man go fishing?",
+        defalut_question=DEFAULT_QUESTION_EN,
     ),
     "local_large_zh": __hf_config(
         embeddding_model_name="BAAI/bge-large-zh-v1.5",
@@ -197,7 +201,7 @@ __config_dict = {
         bnb_quantized=False,
         data_path=DATA_PATH_ZH,
         vector_db_collection="local_large_zh",
-        defalut_question="杨志是个怎样的人?",
+        defalut_question=DEFAULT_QUESTION_ZH,
     ),
     "hybrid": HYBRID,
     "hybrid_zh": HYBRID_ZH,
