@@ -1,7 +1,10 @@
 import sys
 from llama_index import ServiceContext, VectorStoreIndex, SimpleDirectoryReader
+from llama_index.embeddings import HuggingFaceEmbedding
 
-serviceContext = ServiceContext.from_defaults(embed_model="local", llm=None)
+serviceContext = ServiceContext.from_defaults(
+    embed_model=HuggingFaceEmbedding(), llm=None
+)
 print("embed_model:", serviceContext.embed_model.model_name)
 documents = SimpleDirectoryReader("LlamaIndex/data").load_data(show_progress=True)
 index = VectorStoreIndex.from_documents(

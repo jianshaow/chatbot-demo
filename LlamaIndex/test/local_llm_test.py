@@ -14,7 +14,7 @@ query_wrapper_prompt = PromptTemplate(
     "[INST]<<SYS>>\n" + SYSTEM_PROMPT + "<</SYS>>\n\n{query_str}[/INST] "
 )
 
-model_name = "meta-llama/Llama-2-7b-chat-hf"
+model_name = "lmsys/vicuna-7b-v1.5"
 
 llm = HuggingFaceLLM(
     context_window=4096,
