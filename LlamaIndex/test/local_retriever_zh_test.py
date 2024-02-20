@@ -1,8 +1,9 @@
 import sys
 from llama_index import ServiceContext, VectorStoreIndex, SimpleDirectoryReader
+from llama_index.embeddings import HuggingFaceEmbedding
 
 serviceContext = ServiceContext.from_defaults(
-    embed_model="local:BAAI/bge-large-zh-v1.5", llm=None
+    embed_model=HuggingFaceEmbedding("BAAI/bge-small-zh-v1.5"), llm=None
 )
 print("embed_model:", serviceContext.embed_model.model_name)
 documents = SimpleDirectoryReader("LlamaIndex/data_zh").load_data(show_progress=True)
