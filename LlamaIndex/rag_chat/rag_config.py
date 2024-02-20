@@ -1,4 +1,5 @@
 import os, sys, torch
+from typing import Type
 from llama_index.embeddings import BaseEmbedding, HuggingFaceEmbedding, OpenAIEmbedding
 from llama_index.llms import LLM, HuggingFaceLLM, OpenAI
 from llama_index.prompts import PromptTemplate
@@ -15,9 +16,9 @@ DEFAULT_QUESTION_ZH = "杨志是个怎样的人?"
 class RagChatConfig:
     def __init__(
         self,
-        embedding_model: type(BaseEmbedding),
+        embedding_model: Type[BaseEmbedding],
         embedding_model_name: str,
-        chat_model: type(LLM),
+        chat_model: Type[LLM],
         chat_model_name: str,
         bnb_quantized: bool = True,
         data_path: str = DATA_PATH,
