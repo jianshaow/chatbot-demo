@@ -38,6 +38,8 @@ spec:
         - fastchat.serve.model_worker
         - --host
         - 0.0.0.0
+        - --model-names
+        - text-embedding-ada-002
         - --model-path
         - $(embedding_model_path)
         - --device
@@ -51,13 +53,17 @@ spec:
         - configMapRef:
             name: openai-env-cm
         ports:
-        - containerPort: 21002
+        - containerPort: 21003
         command:
         - python
         - -m
         - fastchat.serve.model_worker
         - --host
         - 0.0.0.0
+        - --port
+        - 21003
+        - --model-names
+        - gpt-3.5-turbo
         - --model-path
         - $(chat_model_path)
         - --device
