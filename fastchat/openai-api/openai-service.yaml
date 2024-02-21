@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: openai-api
+  labels:
+    app: openai-api
+  namespace: demo
+spec:
+  ports:
+  - name: http-api
+    port: 8000
+  - name: http-web
+    port: 7860
+  selector:
+    app: openai-api

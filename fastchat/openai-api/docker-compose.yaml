@@ -67,7 +67,7 @@ services:
       - --model-names
       - gpt-3.5-turbo
       - --model-path
-      - ${gpt_model_path}
+      - ${chat_model_path}
     volumes:
       - ${model_cache_path}:/home/devel/.cache
     deploy:
