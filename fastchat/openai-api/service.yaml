@@ -10,6 +10,6 @@ spec:
   - name: http-api
     port: 8000
   - name: http-web
-    port: 7860
+    port: 3000
   selector:
     app: openai-api

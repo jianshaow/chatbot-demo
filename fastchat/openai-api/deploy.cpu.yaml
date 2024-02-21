@@ -38,6 +38,8 @@ spec:
         - fastchat.serve.model_worker
         - --host
         - 0.0.0.0
+        - --worker-address
+        - http://localhost:21002
         - --model-names
         - text-embedding-ada-002
         - --model-path
@@ -61,7 +63,9 @@ spec:
         - --host
         - 0.0.0.0
         - --port
-        - 21003
+        - '21003'
+        - --worker-address
+        - http://localhost:21003
         - --model-names
         - gpt-3.5-turbo
         - --model-path
@@ -81,16 +85,13 @@ spec:
         - fastchat.serve.openai_api_server
         - --host
         - 0.0.0.0
-      - name: web
-        image: jianshao/fastchat-demo:0.0.4
+      - name: nextchat
+        image: yidadaa/chatgpt-next-web:v2.10.1
+        env:
+        - name: BASE_URL
+          value: http://localhost:8000
         ports:
-        - containerPort: 7860
-        command:
-        - python
-        - -m
-        - fastchat.serve.gradio_web_server
-        - --model-list-mode
-        - reload
+        - containerPort: 3000
       volumes:
       - name: model-cache-dir
         persistentVolumeClaim:

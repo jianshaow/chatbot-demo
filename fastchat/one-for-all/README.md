@@ -14,6 +14,10 @@ docker-compose up -d
 ~~~
 ## kubernetes environment
 ~~~ shell
+kubectl apply -f env-cm.yaml
+kubectl apply -f service.yaml
+# expose the service
+minikube service -ndemo fastchat-demo
 # for cpu only
 kubectl apply -f deploy.cpu.yaml
 # for gpu

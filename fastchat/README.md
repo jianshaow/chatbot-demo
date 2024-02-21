@@ -53,7 +53,7 @@ minikube start --driver docker --container-runtime docker --gpus all --cpus no-l
 # mount the model path for reuse
 minikube mount --uid=$(id -u) --gid=$(id -g) ~/models:/home/devel/.cache
 # check the model path via ssh
-minikube ssh 'ls -al /home/devel'
+minikube ssh 'ls -al /home/devel/.cache'
 ~~~
 
 ### prepare sources
@@ -61,8 +61,4 @@ minikube ssh 'ls -al /home/devel'
 export MINIKUBE_PROFILE=fastchat
 # prepare storage, env and service
 kubectl apply -f storage.yaml
-kubectl apply -f env-cm.yaml
-kubectl apply -f service.yaml
-# expose the service
-minikube service -ndemo fastchat-demo
 ~~~
