@@ -92,9 +92,9 @@ services:
       - http://controller:21001
     ports:
       - 8000:8000
-  nextweb:
+  nextchat:
     image: yidadaa/chatgpt-next-web:v2.10.1
-    container_name: ${container_name_prefix}nextweb
+    container_name: ${container_name_prefix}nextchat
     restart: unless-stopped
     depends_on:
       - openai
