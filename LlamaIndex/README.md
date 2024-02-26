@@ -21,7 +21,7 @@ export OPENAI_API_BASE=http://localhost:8000/v1
 
 ### Build
 ~~~ shell
-export image_ver=0.0.4
+export image_ver=0.0.5
 docker build -t jianshao/llamaindex-demo:$image_ver .
 docker push jianshao/llamaindex-demo:$image_ver
 ~~~
