@@ -3,7 +3,6 @@ ARG TAG=3.11-slim
 
 FROM ${BASE_IMAGE}:${TAG}
 
-COPY requirements.txt get_model ./
+COPY requirements.txt docker-entrypoint.sh ./
 RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt && \
-    mv get_model ${HOME}/.local/bin/
+    pip install --no-cache-dir -r requirements.txt
