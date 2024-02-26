@@ -1,0 +1,8 @@
+#!/usr/bin/env python
+
+from huggingface_hub import hf_hub_download
+
+local_file_path = hf_hub_download(
+    repo_id="TheBloke/vicuna-13B-v1.5-GGUF", filename="vicuna-13b-v1.5.Q4_K_M.gguf"
+)
+print(local_file_path)
