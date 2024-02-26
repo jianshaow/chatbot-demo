@@ -28,7 +28,7 @@ docker push jianshao/llamaindex-demo:$image_ver
 ### Test
 ~~~ shell
 docker run --name llamaindex-demo -it --rm --gpus all \
-           -v $HOME/.cache:/home/dluser/.cache \
+           -v $HOME/.cache:/home/devel/.cache \
            -v $PWD:/workspaces/LlamaIndex \
            jianshao/llamaindex-demo:$image_ver bash
 ~~~
