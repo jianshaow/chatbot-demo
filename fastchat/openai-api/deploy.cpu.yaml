@@ -1,17 +1,17 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: openai-api
+  name: fc-openai-api
   namespace: demo
 spec:
   selector:
     matchLabels:
-      app: openai-api
+      app: fc-openai-api
   replicas: 1
   template:
     metadata:
       labels:
-        app: openai-api
+        app: fc-openai-api
     spec:
       restartPolicy: Always
       containers:
