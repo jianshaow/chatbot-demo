@@ -19,9 +19,9 @@ python -m llama_cpp.server --host 0.0.0.0 --chat_format chatml
 
 ### Build
 ~~~ shell
-export cpu_image_ver=cpu-0.0.1
-docker build -t jianshao/llama-cpp-demo:$cpu_image_ver .
-docker push jianshao/llama-cpp-demo:$cpu_image_ver
+export image_ver=0.0.1
+docker build -t jianshao/llama-cpp-demo:${image_ver}-cpu .
+docker push jianshao/llama-cpp-demo:${image_ver}-cpu
 ~~~
 ### Test
 ~~~ shell
@@ -29,7 +29,7 @@ docker push jianshao/llama-cpp-demo:$cpu_image_ver
 docker run --name llama-cpp-demo -it --rm --gpus all \
            -p 8000:8000 \
            -v $HOME/.cache:/home/devel/.cache \
-           jianshao/llama-cpp-demo:$cpu_image_ver
+           jianshao/llama-cpp-demo:${image_ver}-cpu
 
 # run a next chat to verify
 docker run --name nextchat -it --rm \

@@ -1,6 +1,6 @@
 {
 	"name": "RAG-LI",
-	"image": "jianshao/llamaindex-demo:0.0.4",
+	"image": "jianshao/llamaindex-demo:0.0.5",
 	"features": {
 		"ghcr.io/devcontainers/features/git:1": {}
 	},
