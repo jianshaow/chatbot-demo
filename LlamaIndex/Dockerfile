@@ -1,7 +1,4 @@
-ARG BASE_IMAGE=jianshao/dl-rt-base
-ARG TAG=3.11-slim
-
-FROM ${BASE_IMAGE}:${TAG}
+FROM jianshao/dl-rt-base:3.11
 
 COPY requirements.txt .
 ARG PIP_INDEX_URL=""
