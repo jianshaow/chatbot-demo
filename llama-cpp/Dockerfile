@@ -1,18 +1,17 @@
-ARG BASE_IMAGE=python
+ARG BASE_IMAGE=jianshao/dl-base
 ARG TAG=3.11-slim
 
 FROM ${BASE_IMAGE}:${TAG}
 
-COPY apt-install.sh packages.txt requirements.txt docker-entrypoint.sh /
-RUN /apt-install.sh /packages.txt && \
-    useradd -ms /bin/bash devel
+COPY apt-install.sh packages.txt requirements.txt docker-entrypoint.sh ./
+USER root
+RUN ./apt-install.sh packages.txt
 USER devel
-ENV HOME=/home/devel
-ENV PATH=$HOME/.local/bin:$PATH
-ENV PIP_INDEX_URL=https://pypi.tuna.tsinghua.edu.cn/simple
 
+ARG PIP_INDEX_URL=""
+ENV PIP_INDEX_URL=${PIP_INDEX_URL}
 RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir -r /requirements.txt
+    pip install --no-cache-dir -r requirements.txt
 
-ENTRYPOINT ["/docker-entrypoint.sh"]
+ENTRYPOINT ["./docker-entrypoint.sh"]
 EXPOSE 8000
