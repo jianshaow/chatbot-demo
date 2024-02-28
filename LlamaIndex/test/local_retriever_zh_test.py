@@ -1,6 +1,6 @@
 import sys
-from llama_index import ServiceContext, VectorStoreIndex, SimpleDirectoryReader
-from llama_index.embeddings import HuggingFaceEmbedding
+from llama_index.core import ServiceContext, VectorStoreIndex, SimpleDirectoryReader
+from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 
 serviceContext = ServiceContext.from_defaults(
     embed_model=HuggingFaceEmbedding("BAAI/bge-small-zh-v1.5"), llm=None

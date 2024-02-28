@@ -1,8 +1,12 @@
 import os, sys, torch
 from typing import Type
-from llama_index.embeddings import BaseEmbedding, HuggingFaceEmbedding, OpenAIEmbedding
-from llama_index.llms import LLM, HuggingFaceLLM, OpenAI
-from llama_index.prompts import PromptTemplate
+from llama_index.core.embeddings import BaseEmbedding
+from llama_index.embeddings.openai import OpenAIEmbedding
+from llama_index.embeddings.huggingface import HuggingFaceEmbedding
+from llama_index.core.llms import LLM
+from llama_index.llms.openai import OpenAI
+from llama_index.llms.huggingface import HuggingFaceLLM
+from llama_index.core import PromptTemplate
 
 DATA_PATH = "LlamaIndex/data"
 DATA_PATH_EN = "LlamaIndex/data_en"

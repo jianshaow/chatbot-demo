@@ -1,5 +1,5 @@
 import sys
-from llama_index.embeddings import HuggingFaceEmbedding
+from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 
 embed_model = HuggingFaceEmbedding("BAAI/bge-small-zh-v1.5")
 question = len(sys.argv) == 2 and sys.argv[1] or "杨志是一个怎样的人?"

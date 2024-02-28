@@ -1,6 +1,6 @@
 import torch
-from llama_index.llms import HuggingFaceLLM
-from llama_index.prompts import PromptTemplate
+from llama_index.llms.huggingface import HuggingFaceLLM
+from llama_index.core import PromptTemplate
 
 SYSTEM_PROMPT = """You are an AI assistant that answers questions in a friendly manner, based on the given source documents. Here are some rules you always follow:
 - Generate human readable output, avoid creating output with gibberish text.

@@ -1,5 +1,5 @@
 import sys
-from llama_index.embeddings import OpenAIEmbedding
+from llama_index.embeddings.openai import OpenAIEmbedding
 
 embed_model = OpenAIEmbedding()
 question = len(sys.argv) == 2 and sys.argv[1] or "What did the author do growing up?"

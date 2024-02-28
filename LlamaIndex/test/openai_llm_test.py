@@ -1,4 +1,5 @@
-from llama_index.llms import OpenAI, ChatMessage
+from llama_index.llms.openai import OpenAI
+from llama_index.core.llms import ChatMessage
 
 llm = OpenAI()
 messages = [

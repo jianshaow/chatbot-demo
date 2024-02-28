@@ -1,5 +1,5 @@
 import os.path, sys
-from llama_index import (
+from llama_index.core import (
     VectorStoreIndex,
     SimpleDirectoryReader,
     StorageContext,

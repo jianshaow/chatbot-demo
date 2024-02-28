@@ -1,7 +1,11 @@
 import chromadb, rag_config
-from llama_index import ServiceContext, VectorStoreIndex, SimpleDirectoryReader
-from llama_index.vector_stores import ChromaVectorStore
-from llama_index.storage.storage_context import StorageContext
+from llama_index.core import (
+    ServiceContext,
+    StorageContext,
+    VectorStoreIndex,
+    SimpleDirectoryReader,
+)
+from llama_index.vector_stores.chroma import ChromaVectorStore
 
 config = rag_config.get_config()
 
