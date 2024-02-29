@@ -17,6 +17,11 @@
 			"source": "${localEnv:HOME}/.cache",
 			"target": "/home/devel/.cache",
 			"type": "bind"
+		},
+		{
+			"source": "${localEnv:HOME}/.ssh",
+			"target": "/home/devel/.ssh",
+			"type": "bind"
 		}
 	],
 	"customizations": {
