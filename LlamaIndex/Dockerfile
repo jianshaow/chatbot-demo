@@ -1,4 +1,4 @@
-FROM jianshao/dl-rt-base:3.11
+FROM jianshao/dl-dev-base:3.11
 
 COPY requirements.txt .
 ARG PIP_INDEX_URL=""
