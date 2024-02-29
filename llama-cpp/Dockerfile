@@ -1,4 +1,4 @@
-FROM jianshao/dl-base:3.11
+FROM jianshao/dl-rt-base:3.11
 
 COPY apt-install.sh packages.txt requirements.txt docker-entrypoint.sh ./
 USER root
