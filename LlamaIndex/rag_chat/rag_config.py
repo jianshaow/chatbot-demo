@@ -57,10 +57,14 @@ class RagChatConfig:
     def __hf_chat_model(self):
         model_kwargs = {}
         if self.bnb_quantized:
+            from transformers import BitsAndBytesConfig
+
             model_kwargs.update(
                 {
-                    "load_in_4bit": True,
-                    "bnb_4bit_compute_dtype": torch.float16,
+                    "quantization_config": BitsAndBytesConfig(
+                        load_in_4bit=True,
+                        bnb_4bit_compute_dtype=torch.float16,
+                    )
                 }
             )
         return HuggingFaceLLM(
