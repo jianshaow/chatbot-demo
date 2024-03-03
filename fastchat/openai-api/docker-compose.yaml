@@ -10,9 +10,9 @@ services:
       - fastchat.serve.controller
       - --host
       - 0.0.0.0
-  embedding-worker:
+  en-embed-worker:
     image: jianshao/fastchat-demo:${image_ver}
-    container_name: ${container_name_prefix}embedding-worker
+    container_name: ${container_name_prefix}en-embed-worker
     restart: unless-stopped
     depends_on:
       - controller
@@ -20,19 +20,46 @@ services:
       - python
       - -m
       - fastchat.serve.model_worker
-      # - --debug
-      # - DEBUG
-      # - --load-8bit
       - --host
       - 0.0.0.0
       - --controller-address
       - http://controller:21001
       - --worker-address
-      - http://embedding-worker:21002
-      - --model-names
-      - text-embedding-ada-002
+      - http://en-embed-worker:21002
       - --model-path
-      - ${embedding_model_path}
+      - ${en_embed_model_path}
+      - --model-names
+      - ${en_embed_model_name}
+    volumes:
+      - ${model_cache_path}:/home/devel/.cache
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities:
+                - gpu
+  zh-embed-worker:
+    image: jianshao/fastchat-demo:${image_ver}
+    container_name: ${container_name_prefix}zh-embed-worker
+    restart: unless-stopped
+    depends_on:
+      - controller
+    command:
+      - python
+      - -m
+      - fastchat.serve.model_worker
+      - --host
+      - 0.0.0.0
+      - --controller-address
+      - http://controller:21001
+      - --worker-address
+      - http://zh-embed-worker:21002
+      - --model-path
+      - ${zh_embed_model_path}
+      - --model-names
+      - ${zh_embed_model_name}
     volumes:
       - ${model_cache_path}:/home/devel/.cache
     deploy:
@@ -49,14 +76,10 @@ services:
     restart: unless-stopped
     depends_on:
       - controller
-    environment:
-      - https_proxy=192.168.31.2:8123
     command:
       - python
       - -m
       - fastchat.serve.model_worker
-      # - --debug
-      # - DEBUG
       # - --load-8bit
       - --host
       - 0.0.0.0
@@ -65,7 +88,7 @@ services:
       - --worker-address
       - http://chat-worker:21002
       - --model-names
-      - gpt-3.5-turbo
+      - gpt-3.5-turbo,vicuna-13B-v1.5
       - --model-path
       - ${chat_model_path}
     volumes:
