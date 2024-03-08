@@ -116,7 +116,7 @@ services:
     ports:
       - 8000:8000
   nextchat:
-    image: yidadaa/chatgpt-next-web:v2.10.1
+    image: yidadaa/chatgpt-next-web:v2.11.2
     container_name: ${container_name_prefix}nextchat
     restart: unless-stopped
     depends_on:
