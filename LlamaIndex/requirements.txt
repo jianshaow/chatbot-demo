@@ -3,6 +3,7 @@ autoawq
 sentencepiece
 bitsandbytes
 llama-index-core
+llama-index-cli
 llama-index-readers-file
 llama-index-vector-stores-chroma
 llama-index-embeddings-openai

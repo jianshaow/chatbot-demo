@@ -1,4 +1,4 @@
-FROM jianshao/dl-dev-base:3.11
+FROM jianshao/dl-torch-dev:2.2.1
 
 COPY requirements.txt .
 ARG PIP_INDEX_URL=""
