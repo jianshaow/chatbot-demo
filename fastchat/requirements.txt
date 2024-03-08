@@ -1,3 +1,2 @@
-torch
 autoawq
 fschat[model_worker,webui]
