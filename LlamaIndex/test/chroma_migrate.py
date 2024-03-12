@@ -1,11 +1,12 @@
-import sys, chromadb
+import os, sys, chromadb
 
 if len(sys.argv) != 3:
     print("input source and target collection name")
 else:
     source = sys.argv[1]
     target = sys.argv[2]
-    db = chromadb.PersistentClient(path="LlamaIndex/chroma_db")
+    path = os.environ.get("CHROMA_DB_DIR", "LlamaIndex/chroma_db")
+    db = chromadb.PersistentClient(path=path)
     source_collection = db.get_collection(source)
     target_collection = db.get_or_create_collection(target)
     vectors = source_collection.peek(source_collection.count())

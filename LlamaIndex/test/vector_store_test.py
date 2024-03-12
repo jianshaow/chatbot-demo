@@ -1,8 +1,9 @@
-import chromadb
+import os, chromadb
 from llama_index.core.vector_stores import VectorStoreQuery
 from llama_index.vector_stores.chroma import ChromaVectorStore
 
-db = chromadb.PersistentClient(path="LlamaIndex/chroma_db")
+path = os.environ.get("CHROMA_DB_DIR", "LlamaIndex/chroma_db")
+db = chromadb.PersistentClient(path=path)
 chroma_collection = db.get_or_create_collection("local")
 vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
 
