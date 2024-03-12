@@ -102,7 +102,7 @@ services:
               capabilities:
                 - gpu
   openai:
-    image: jianshao/fastchat-demo:0.0.4
+    image: jianshao/fastchat-demo:${image_ver}
     container_name: ${container_name_prefix}openai
     restart: unless-stopped
     command:
