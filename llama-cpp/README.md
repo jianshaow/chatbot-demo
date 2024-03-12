@@ -26,7 +26,7 @@ docker push jianshao/llama-cpp-demo:${image_ver}-cpu
 ### Test
 ~~~ shell
 # run a openai api compatible server
-docker run --name llama-cpp-demo -it --rm --gpus all \
+docker run --name llama-cpp-demo -it --rm \
            -p 8000:8000 \
            -v $HOME/.cache:/home/devel/.cache \
            jianshao/llama-cpp-demo:${image_ver}-cpu
