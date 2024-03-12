@@ -14,9 +14,9 @@ pip install -r requirements.txt
 
 ### Build
 ~~~ shell
-export image_ver=0.2.35
-docker build -t jianshao/fastchat-demo:$image_ver .
-docker push jianshao/fastchat-demo:$image_ver
+export fschat_ver=0.2.35
+docker build -t jianshao/fastchat-demo:$fschat_ver .
+docker push jianshao/fastchat-demo:$fschat_ver
 ~~~
 ### Test image
 ~~~ shell
