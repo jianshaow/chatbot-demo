@@ -1,3 +1,2 @@
 autoawq
-pydantic==1.10.14
-fschat[model_worker,webui]
+fschat[model_worker,webui]==0.2.35
