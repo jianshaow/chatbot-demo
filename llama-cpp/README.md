@@ -19,7 +19,7 @@ python -m llama_cpp.server --host 0.0.0.0 --chat_format chatml
 
 ### Build
 ~~~ shell
-export image_ver=0.0.1
+export image_ver=0.0.2
 docker build -t jianshao/llama-cpp-demo:${image_ver}-cpu .
 docker push jianshao/llama-cpp-demo:${image_ver}-cpu
 ~~~
@@ -35,5 +35,5 @@ docker run --name llama-cpp-demo -it --rm --gpus all \
 docker run --name nextchat -it --rm \
            -p 3000:3000 \
            -e BASE_URL=http://<docker-host>:8000 \
-           yidadaa/chatgpt-next-web:v2.10.1
+           yidadaa/chatgpt-next-web:v2.11.2
 ~~~

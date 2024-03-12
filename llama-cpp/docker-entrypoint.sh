@@ -13,6 +13,9 @@ if [ "${HF_MODEL_FILE}" == "" ]; then
   HF_MODEL_FILE="vicuna-13b-v1.5.Q4_K_M.gguf"
 fi
 
-model_path=$(huggingface-cli download $HF_REPO_ID $HF_MODEL_FILE)
+if [ "${HF_MODEL_ALIAS}" == "" ]; then
+  HF_MODEL_ALIAS="vicuna-13B-v1.5"
+fi
 
-python -m llama_cpp.server --host 0.0.0.0 --chat_format chatml --model $model_path
+python -m llama_cpp.server --host 0.0.0.0 --chat_format chatml \
+       --hf_model_repo_id $HF_REPO_ID --model $HF_MODEL_FILE --model_alias $HF_MODEL_ALIAS
