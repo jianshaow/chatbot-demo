@@ -18,7 +18,7 @@ if [ "${HF_MODEL_ALIAS}" == "" ]; then
 fi
 
 if [ "${CUDA_VERSION}" != "" ]; then
-  GPU_ARGS = "--n_gpu_layers -1"
+  GPU_ARGS="--n_gpu_layers -1"
 fi
 
 python3 -m llama_cpp.server --host 0.0.0.0 --chat_format chatml $GPU_ARGS \
