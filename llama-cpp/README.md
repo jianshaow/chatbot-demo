@@ -22,20 +22,24 @@ python -m llama_cpp.server --host 0.0.0.0 --chat_format chatml
 export image_ver=0.0.3
 docker build -t jianshao/llama-cpp-demo:${image_ver}-cpu .
 docker push jianshao/llama-cpp-demo:${image_ver}-cpu
-docker build --build-arg BASE_IMAGE=jianshao/cuda-dev-base --build-arg TAG=12.3 --build-arg CMAKE_ARGS="-DLLAMA_CUBLAS=on" -t jianshao/llama-cpp-demo:${image_ver}-gpu .
+docker build --build-arg BASE_IMAGE=jianshao/cuda-dev-base --build-arg TAG=12.3 \
+             --build-arg CMAKE_ARGS="-DLLAMA_CUBLAS=on" -t jianshao/llama-cpp-demo:${image_ver}-gpu .
 docker push jianshao/llama-cpp-demo:${image_ver}-gpu
 ~~~
 ### Test
 ~~~ shell
 # run a openai api compatible server
-docker run --name llama-cpp-demo -it --rm \
-           -p 8000:8000 \
+docker run -it --rm -p 8000:8000 \
            -v $HOME/.cache:/home/devel/.cache \
            jianshao/llama-cpp-demo:${image_ver}-cpu
 
+# run a openai api compatible server on GPU
+docker run -it --rm --gpus all -p 8000:8000 \
+           -v $HOME/.cache:/home/devel/.cache \
+           jianshao/llama-cpp-demo:${image_ver}-gpu
+
 # run a next chat to verify
-docker run --name nextchat -it --rm \
-           -p 3000:3000 \
+docker run -it --rm -p 3000:3000 \
            -e BASE_URL=http://<docker-host>:8000 \
            yidadaa/chatgpt-next-web:v2.11.2
 ~~~
