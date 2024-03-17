@@ -24,13 +24,13 @@ export model_path=TheBloke/vicuna-13B-v1.5-AWQ
 # mount local model path
 docker run --name fastchat-cli -it --rm --gpus all \
            -v $HOME/huggingface/$model_path:/workspace/model \
-           jianshao/fastchat-demo:$image_ver \
+           jianshao/fastchat-demo:$fschat_ver \
            python -m fastchat.serve.cli --model-path /workspace/model
 
 # mount huggingface cache path
 docker run --name fastchat-cli -it --rm --gpus all \
            -v $HOME/.cache:/home/devel/.cache \
-           jianshao/fastchat-demo:$image_ver \
+           jianshao/fastchat-demo:$fschat_ver \
            python -m fastchat.serve.cli --model-path $model_path
 ~~~
 

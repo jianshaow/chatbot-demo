@@ -23,7 +23,7 @@ spec:
         - mountPath: /home/devel/.cache
           name: model-cache-dir
       - name: nextchat
-        image: yidadaa/chatgpt-next-web:v2.11.2
+        image: yidadaa/chatgpt-next-web:v2.11.3
         env:
         - name: BASE_URL
           value: http://localhost:8000

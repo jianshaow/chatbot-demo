@@ -86,7 +86,7 @@ spec:
         - --host
         - 0.0.0.0
       - name: nextchat
-        image: yidadaa/chatgpt-next-web:v2.11.2
+        image: yidadaa/chatgpt-next-web:v2.11.3
         env:
         - name: BASE_URL
           value: http://localhost:8000

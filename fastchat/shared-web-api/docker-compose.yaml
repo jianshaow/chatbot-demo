@@ -35,7 +35,7 @@ services:
   nextchat:
     networks:
       - fastchat-shared-network
-    image: yidadaa/chatgpt-next-web:v2.11.2
+    image: yidadaa/chatgpt-next-web:v2.11.3
     container_name: ${container_name_prefix}nextchat
     restart: unless-stopped
     depends_on:
