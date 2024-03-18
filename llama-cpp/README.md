@@ -19,12 +19,12 @@ python -m llama_cpp.server --host 0.0.0.0 --chat_format chatml
 
 ### Build
 ~~~ shell
-export image_ver=0.0.3
-docker build -t jianshao/llama-cpp-demo:${image_ver}-cpu .
-docker push jianshao/llama-cpp-demo:${image_ver}-cpu
-docker build --build-arg BASE_IMAGE=jianshao/cuda-dev-base --build-arg TAG=12.3 \
-             --build-arg CMAKE_ARGS="-DLLAMA_CUBLAS=on" -t jianshao/llama-cpp-demo:${image_ver}-gpu .
-docker push jianshao/llama-cpp-demo:${image_ver}-gpu
+docker build -t jianshao/llama-cpp-demo:cpu .
+docker push jianshao/llama-cpp-demo:cpu
+docker build --build-arg BUILD_IMAGE=jianshao/cuda-builder --build-arg BUILD_TAG=12.3 \
+             --build-arg BASE_IMAGE=jianshao/cuda-rt-base --build-arg TAG=12.3 \
+             --build-arg CMAKE_ARGS="-DLLAMA_CUBLAS=on" -t jianshao/llama-cpp-demo:gpu .
+docker push jianshao/llama-cpp-demo:gpu
 ~~~
 ### Test
 ~~~ shell
