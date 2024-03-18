@@ -2,7 +2,7 @@ ARG BUILD_IMAGE=jianshao/dl-builder
 ARG BUILD_TAG=3.11
 
 ARG BASE_IMAGE=jianshao/dl-rt-base
-ARG TAG=12.3
+ARG TAG=3.11
 
 FROM ${BUILD_IMAGE}:${BUILD_TAG} as builder
 
