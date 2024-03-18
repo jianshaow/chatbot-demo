@@ -1,4 +1,4 @@
-FROM jianshao/dl-torch-rt:2.2.1-gpu
+FROM jianshao/torch-rt-base:2.2.1-gpu
 
 COPY requirements.txt .
 ARG PIP_INDEX_URL=""
