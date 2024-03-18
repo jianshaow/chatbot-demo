@@ -31,15 +31,15 @@ docker push jianshao/llama-cpp-demo:gpu
 # run a openai api compatible server
 docker run -it --rm -p 8000:8000 \
            -v $HOME/.cache:/home/devel/.cache \
-           jianshao/llama-cpp-demo:${image_ver}-cpu
+           jianshao/llama-cpp-demo:cpu
 
 # run a openai api compatible server on GPU
 docker run -it --rm --gpus all -p 8000:8000 \
            -v $HOME/.cache:/home/devel/.cache \
-           jianshao/llama-cpp-demo:${image_ver}-gpu
+           jianshao/llama-cpp-demo:gpu
 
 # run a next chat to verify
 docker run -it --rm -p 3000:3000 \
            -e BASE_URL=http://<docker-host>:8000 \
-           yidadaa/chatgpt-next-web:v2.11.2
+           yidadaa/chatgpt-next-web:v2.11.3
 ~~~
