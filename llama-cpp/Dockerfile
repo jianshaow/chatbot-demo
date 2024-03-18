@@ -16,7 +16,7 @@ RUN pip install --no-cache-dir --upgrade pip && \
 FROM ${BASE_IMAGE}:${TAG}
 
 COPY docker-entrypoint.sh ./
-COPY --from=builder ./.local ./.local
+COPY --from=builder $HOME/.local ./.local
 
 ENTRYPOINT ["./docker-entrypoint.sh"]
 EXPOSE 8000
