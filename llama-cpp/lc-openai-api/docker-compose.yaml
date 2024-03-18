@@ -6,6 +6,8 @@ services:
     restart: unless-stopped
     volumes:
       - ${model_cache_path}:/home/devel/.cache
+    ports:
+      - 8000:8000
     deploy:
       resources:
         reservations:
