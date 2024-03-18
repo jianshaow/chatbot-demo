@@ -16,7 +16,7 @@ spec:
       restartPolicy: Always
       containers:
       - name: openai
-        image: jianshao/llama-cpp-demo:0.0.3-cpu
+        image: jianshao/llama-cpp-demo:cpu
         ports:
         - containerPort: 8000
         volumeMounts:
