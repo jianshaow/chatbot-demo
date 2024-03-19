@@ -8,7 +8,7 @@ services:
       - HF_REPO_ID=abetlen/replit-code-v1_5-3b-GGUF
       - HF_MODEL_FILE=replit-code-v1_5-3b.Q4_0.gguf
       - HF_MODEL_ALIAS=replit-code-v1_5-3b
-      - LC_ARGS="--n_ctx 16192"
+      - "LC_ARGS=--n_ctx 16192"
     volumes:
       - ${model_cache_path}:/home/devel/.cache
     deploy:
