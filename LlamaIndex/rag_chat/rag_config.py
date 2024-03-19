@@ -74,7 +74,6 @@ class RagChatConfig:
             query_wrapper_prompt=query_wrapper_prompt,
             tokenizer_name=self.chat_model_name,
             model_name=self.chat_model_name,
-            device_map="auto",
             model_kwargs=model_kwargs,
         )
 

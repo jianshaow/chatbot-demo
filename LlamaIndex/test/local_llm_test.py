@@ -23,7 +23,6 @@ llm = HuggingFaceLLM(
     query_wrapper_prompt=query_wrapper_prompt,
     tokenizer_name=model_name,
     model_name=model_name,
-    device_map="auto",
     # is_chat_model=True,
     model_kwargs={"load_in_4bit": True, "bnb_4bit_compute_dtype": torch.float16},
 )
