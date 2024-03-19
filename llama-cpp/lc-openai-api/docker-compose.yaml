@@ -1,7 +1,7 @@
 version: "3"
 services:
   openai:
-    image: jianshao/llama-cpp-demo:${image_ver}
+    image: jianshao/llama-cpp-server:${image_ver}
     container_name: ${container_name_prefix}openai
     restart: unless-stopped
     volumes:

@@ -38,12 +38,12 @@ docker push jianshao/llama-cpp-server:gpu
 # run a openai api compatible server
 docker run -it --rm -p 8000:8000 \
            -v $HOME/.cache:/home/devel/.cache \
-           jianshao/llama-cpp-demo:cpu
+           jianshao/llama-cpp-server:cpu
 
 # run a openai api compatible server on GPU
 docker run -it --rm --gpus all -p 8000:8000 \
            -v $HOME/.cache:/home/devel/.cache \
-           jianshao/llama-cpp-demo:gpu
+           jianshao/llama-cpp-server:gpu
 
 # run a next chat to verify
 docker run -it --rm -p 3000:3000 \
