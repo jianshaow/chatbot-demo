@@ -1,2 +1,3 @@
 autoawq
+transformers==4.34.1
 fschat[model_worker,webui]==0.2.35
