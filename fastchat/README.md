@@ -14,13 +14,13 @@ pip install -r requirements.txt
 
 ### Build
 ~~~ shell
-export fschat_ver=0.2.35
+export fschat_ver=0.2.35 transformers_ver=4.33.3
 docker build -t jianshao/fastchat-demo:$fschat_ver .
 docker push jianshao/fastchat-demo:$fschat_ver
 
-docker build -t jianshao/fastchat-demo:$fschat_ver-4.33.2 . \
-             --build-arg REQUIREMENTS=requirements.4.33.3.txt
-docker push jianshao/fastchat-demo:$fschat_ver-4.33.2
+docker build -t jianshao/fastchat-demo:$fschat_ver-$transformers_ver . \
+             --build-arg REQUIREMENTS=requirements.$transformers_ver.txt
+docker push jianshao/fastchat-demo:$fschat_ver-$transformers_ver
 ~~~
 ### Test image
 ~~~ shell
