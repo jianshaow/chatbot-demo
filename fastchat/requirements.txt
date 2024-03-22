@@ -1,2 +1,2 @@
 autoawq
-fschat[model_worker,webui]==0.2.35
+fschat[model_worker,webui]==0.2.36
