@@ -1,5 +1,5 @@
 ARG BASE_IMAGE=jianshao/torch-rt-base
-ARG TAG=2.1.2
+ARG TAG=2.1.2-gpu
 
 FROM ${BASE_IMAGE}:${TAG}
 
