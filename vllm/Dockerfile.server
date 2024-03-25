@@ -1,5 +1,5 @@
-ARG BASE_IMAGE=jianshao/llama-cpp-base
-ARG TAG=cpu
+ARG BASE_IMAGE=jianshao/vllm-base
+ARG TAG=0.3.3
 
 FROM ${BASE_IMAGE}:${TAG}
 

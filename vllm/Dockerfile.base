@@ -1,18 +1,9 @@
-ARG BUILD_IMAGE=jianshao/dl-builder
-ARG BUILD_TAG=3.11
-
-ARG BASE_IMAGE=jianshao/dl-rt-base
-ARG TAG=3.11
-
-FROM ${BUILD_IMAGE}:${BUILD_TAG} as builder
-
-COPY requirements.txt ./
-
-ARG CMAKE_ARGS=""
-ENV CMAKE_ARGS=${CMAKE_ARGS}
-RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt
+ARG BASE_IMAGE=jianshao/torch-rt-base
+ARG TAG=2.1.2
 
 FROM ${BASE_IMAGE}:${TAG}
 
-COPY --from=builder $HOME/.local ./.local
+COPY requirements.txt ./
+
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
