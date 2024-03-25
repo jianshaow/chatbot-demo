@@ -16,7 +16,7 @@ spec:
       restartPolicy: Always
       containers:
       - name: openai
-        image: jianshao/vllm-server:cpu
+        image: jianshao/vllm-server:0.3.3
         ports:
         - containerPort: 8000
         volumeMounts:
