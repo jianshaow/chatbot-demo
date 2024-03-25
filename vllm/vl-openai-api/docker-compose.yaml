@@ -1,0 +1,28 @@
+version: "3"
+services:
+  openai:
+    image: jianshao/vllm-server:${image_ver}
+    container_name: ${container_name_prefix}openai
+    restart: unless-stopped
+    volumes:
+      - ${model_cache_path}:/home/devel/.cache
+    ports:
+      - 8000:8000
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities:
+                - gpu
+  nextchat:
+    image: yidadaa/chatgpt-next-web:v2.11.3
+    container_name: ${container_name_prefix}nextchat
+    restart: unless-stopped
+    depends_on:
+      - openai
+    environment:
+      - BASE_URL=http://openai:8000
+    ports:
+      - 3000:3000

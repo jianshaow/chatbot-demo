@@ -1,0 +1,2 @@
+autoawq
+vllm==0.33
