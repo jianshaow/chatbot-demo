@@ -1,0 +1,31 @@
+{
+	"name": "LI-CPU",
+	"image": "jianshao/llamaindex-demo:0.0.7",
+	"remoteEnv": {
+		"PYTHONPATH": ".",
+		"LLAMA_INDEX_CACHE_DIR": "/home/devel/.cache/huggingface/hub"
+	},
+	"mounts": [
+		{
+			"source": "${localEnv:HOME}/.cache",
+			"target": "/home/devel/.cache",
+			"type": "bind"
+		},
+		{
+			"source": "${localEnv:HOME}/.ssh",
+			"target": "/home/devel/.ssh",
+			"type": "bind"
+		}
+	],
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"ms-python.python",
+				"ms-python.vscode-pylance",
+				"ms-python.black-formatter",
+				"ms-python.isort",
+				"alphabotsec.vscode-eclipse-keybindings"
+			]
+		}
+	}
+}

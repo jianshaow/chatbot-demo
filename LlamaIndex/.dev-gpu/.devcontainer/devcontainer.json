@@ -1,9 +1,6 @@
 {
-	"name": "RAG-LI",
-	"image": "jianshao/llamaindex-demo:0.0.6",
-	"features": {
-		"ghcr.io/devcontainers/features/git:1": {}
-	},
+	"name": "LI-GPU",
+	"image": "jianshao/llamaindex-demo:0.0.7",
 	"remoteEnv": {
 		"PYTHONPATH": ".",
 		"LLAMA_INDEX_CACHE_DIR": "/home/devel/.cache/huggingface/hub"
