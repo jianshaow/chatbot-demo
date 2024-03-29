@@ -15,8 +15,11 @@ pip install -r requirements.txt
 ### Build
 ~~~ shell
 export fschat_ver=0.2.36
-docker build -t jianshao/fastchat-demo:$fschat_ver .
-docker push jianshao/fastchat-demo:$fschat_ver
+docker build -t jianshao/fastchat-demo:$fschat_ver-cpu .
+docker build -t jianshao/fastchat-demo:$fschat_ver-gpu . \
+       --build-arg TAG=2.2.1-gpu --build-arg REQUIREMENTS=requirements-gpu.txt
+docker push jianshao/fastchat-demo:$fschat_ver-cpu
+docker push jianshao/fastchat-demo:$fschat_ver-gpu
 ~~~
 ### Test image
 ~~~ shell
