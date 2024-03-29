@@ -1,6 +1,6 @@
 import os, sys, chromadb
 
-path = os.environ.get("CHROMA_DB_DIR", "LlamaIndex/chroma_db")
+path = os.environ.get("CHROMA_DB_DIR", "chroma_db")
 db = chromadb.PersistentClient(path=path)
 collection = len(sys.argv) == 2 and sys.argv[1] or None
 if collection is None:

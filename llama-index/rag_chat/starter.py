@@ -6,13 +6,14 @@ from llama_index.core import (
     load_index_from_storage,
 )
 
-PERSIST_DIR = "LlamaIndex/storage"
-if not os.path.exists(PERSIST_DIR):
-    documents = SimpleDirectoryReader("LlamaIndex/data").load_data(show_progress=True)
+DATA_PATH = "data"
+PERSIST_PATH = "storage"
+if not os.path.exists(PERSIST_PATH):
+    documents = SimpleDirectoryReader(DATA_PATH).load_data(show_progress=True)
     index = VectorStoreIndex.from_documents(documents, show_progress=True)
-    index.storage_context.persist(persist_dir=PERSIST_DIR)
+    index.storage_context.persist(persist_dir=PERSIST_PATH)
 else:
-    storage_context = StorageContext.from_defaults(persist_dir=PERSIST_DIR)
+    storage_context = StorageContext.from_defaults(persist_dir=PERSIST_PATH)
     index = load_index_from_storage(storage_context)
 
 query_engine = index.as_query_engine(streaming=True)

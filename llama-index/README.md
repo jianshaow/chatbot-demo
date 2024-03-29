@@ -1,4 +1,4 @@
-# LlamaIndex
+# llama-index
 
 ## Local Environment
 
@@ -13,7 +13,7 @@ pip install -r requirements.txt
 ### Run
 ~~~ shell
 # run with fastchat's OpenAI-Compatible API
-export CHROMA_DB_DIR=LlamaIndex/local.chroma_db
+export CHROMA_DB_DIR=local.chroma_db
 export OPENAI_API_KEY=EMPTY
 export OPENAI_API_BASE=http://localhost:8000/v1
 ~~~
@@ -30,6 +30,6 @@ docker push jianshao/llamaindex-demo:$image_ver
 ~~~ shell
 docker run --name llamaindex-demo -it --rm --gpus all \
            -v $HOME/.cache:/home/devel/.cache \
-           -v $PWD:/workspaces/LlamaIndex \
+           -v $PWD:/workspaces/llama-index \
            jianshao/llamaindex-demo:$image_ver bash
 ~~~

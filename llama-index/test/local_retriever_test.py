@@ -9,7 +9,7 @@ from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 Settings.embed_model = HuggingFaceEmbedding()
 print("embed_model:", Settings.embed_model.model_name)
 
-documents = SimpleDirectoryReader("LlamaIndex/data").load_data(show_progress=True)
+documents = SimpleDirectoryReader("data").load_data(show_progress=True)
 index = VectorStoreIndex.from_documents(
     documents,
     show_progress=True,

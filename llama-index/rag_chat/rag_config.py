@@ -8,9 +8,9 @@ from llama_index.llms.openai import OpenAI
 from llama_index.llms.huggingface import HuggingFaceLLM
 from llama_index.core import PromptTemplate
 
-DATA_PATH = "LlamaIndex/data"
-DATA_PATH_EN = "LlamaIndex/data_en"
-DATA_PATH_ZH = "LlamaIndex/data_zh"
+DATA_PATH = "data"
+DATA_PATH_EN = "data_en"
+DATA_PATH_ZH = "data_zh"
 
 DEFAULT_QUESTION = "What did the author do growing up?"
 DEFAULT_QUESTION_EN = "Why the old man go fishing?"
@@ -35,7 +35,7 @@ class RagChatConfig:
         self.chat_model_name = chat_model_name
         self.bnb_quantized = bnb_quantized
         self.data_path = data_path
-        self.vector_db_path = os.environ.get("CHROMA_DB_DIR", "LlamaIndex/chroma_db")
+        self.vector_db_path = os.environ.get("CHROMA_DB_DIR", "chroma_db")
         self.vector_db_collection = vector_db_collection
         self.defalut_question = defalut_question
 

@@ -1,7 +1,7 @@
 import sys
 from llama_index.core import Settings, VectorStoreIndex, SimpleDirectoryReader
 
-documents = SimpleDirectoryReader("LlamaIndex/data").load_data(show_progress=True)
+documents = SimpleDirectoryReader("data").load_data(show_progress=True)
 index = VectorStoreIndex.from_documents(
     documents,
     show_progress=True,
