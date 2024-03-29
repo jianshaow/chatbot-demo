@@ -1,4 +1,5 @@
 import torch
+from transformers import BitsAndBytesConfig
 from llama_index.llms.huggingface import HuggingFaceLLM
 from llama_index.core import PromptTemplate
 
@@ -16,15 +17,22 @@ query_wrapper_prompt = PromptTemplate(
 
 model_name = "lmsys/vicuna-7b-v1.5"
 
+model_kwargs = {
+    "quantization_config": BitsAndBytesConfig(
+        load_in_4bit=True,
+        bnb_4bit_compute_dtype=torch.float16,
+    )
+}
+
 llm = HuggingFaceLLM(
     context_window=4096,
     max_new_tokens=2048,
-    generate_kwargs={"temperature": 0.0, "do_sample": False},
+    # generate_kwargs={"temperature": 0.0, "do_sample": False},
     query_wrapper_prompt=query_wrapper_prompt,
     tokenizer_name=model_name,
     model_name=model_name,
     # is_chat_model=True,
-    model_kwargs={"load_in_4bit": True, "bnb_4bit_compute_dtype": torch.float16},
+    model_kwargs=model_kwargs,
 )
 
 response = llm.complete("who are you")
