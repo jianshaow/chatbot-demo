@@ -24,12 +24,6 @@ docker push jianshao/fastchat-demo:$fschat_ver-gpu
 ### Test image
 ~~~ shell
 export model_path=TheBloke/vicuna-13B-v1.5-AWQ
-# mount local model path
-docker run -it --rm --gpus all \
-           -v $HOME/huggingface/$model_path:/workspace/model \
-           jianshao/fastchat-demo:$fschat_ver \
-           python -m fastchat.serve.cli --model-path /workspace/model
-
 # mount huggingface cache path
 docker run -it --rm --gpus all \
            -v $HOME/.cache:/home/devel/.cache \
