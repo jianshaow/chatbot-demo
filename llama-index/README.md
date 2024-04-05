@@ -34,5 +34,5 @@ docker push jianshao/llamaindex-demo:$image_ver-gpu
 docker run --name llamaindex-demo -it --rm --gpus all \
            -v $HOME/.cache:/home/devel/.cache \
            -v $PWD:/workspaces/llama-index \
-           jianshao/llamaindex-demo:$image_ver bash
+           jianshao/llamaindex-demo:$image_ver-gpu bash
 ~~~
