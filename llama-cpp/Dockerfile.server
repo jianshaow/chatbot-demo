@@ -1,9 +1,0 @@
-ARG BASE_IMAGE=jianshao/llama-cpp-base
-ARG TAG=cpu
-
-FROM ${BASE_IMAGE}:${TAG}
-
-COPY docker-entrypoint.sh ./
-ENTRYPOINT ["./docker-entrypoint.sh"]
-
-EXPOSE 8000
