@@ -23,7 +23,7 @@ docker build -t jianshao/llama-cpp-server:cpu .
 docker push jianshao/llama-cpp-server:cpu
 docker build --build-arg BASE_IMAGE=jianshao/cuda-rt-base --build-arg TAG=12.3 \
              --build-arg LC_INDEX_ARG=https://abetlen.github.io/llama-cpp-python/whl/cu122 \
-             -t jianshaollama-cpp-server:gpu .
+             -t jianshao/llama-cpp-server:gpu .
 docker push jianshao/llama-cpp-server:gpu
 ~~~
 ### Test
