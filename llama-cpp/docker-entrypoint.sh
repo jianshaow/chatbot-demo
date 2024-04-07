@@ -21,7 +21,5 @@ if [ "${CUDA_VERSION}" != "" ]; then
   GPU_ARGS="--n_gpu_layers -1"
 fi
 
-model_path=$(huggingface-cli download $HF_REPO_ID $HF_MODEL_FILE)
-
 python3 -m llama_cpp.server --host 0.0.0.0 --chat_format chatml $GPU_ARGS $LC_ARGS \
-        --model $model_path --model_alias $HF_MODEL_ALIAS
+        --hf_model_repo_id $HF_REPO_ID --model $HF_MODEL_FILE --model_alias $HF_MODEL_ALIAS
