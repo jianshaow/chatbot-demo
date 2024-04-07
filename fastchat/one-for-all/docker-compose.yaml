@@ -16,6 +16,8 @@ services:
     restart: unless-stopped
     depends_on:
       - controller
+    environment:
+      - https_proxy=${https_proxy}
     command:
       - python
       - -m
@@ -31,14 +33,6 @@ services:
       - ${model_path}
     volumes:
       - ${model_cache_path}:/home/devel/.cache
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: all
-              capabilities:
-                - gpu
   web:
     image: jianshao/fastchat-demo:${image_ver}
     container_name: ${container_name_prefix}web

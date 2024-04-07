@@ -13,7 +13,5 @@ if [ "$MODEL_NAME" == "" ]; then
   MODEL_NAME="gpt-3.5-turbo"
 fi
 
-
-
 python3 -m vllm.entrypoints.openai.api_server \
         --model $MODEL_PATH --served-model-name $MODEL_NAME

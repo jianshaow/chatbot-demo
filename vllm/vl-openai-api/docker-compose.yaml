@@ -4,18 +4,14 @@ services:
     image: jianshao/vllm-server:${image_ver}
     container_name: ${container_name_prefix}openai
     restart: unless-stopped
+    environment:
+      - https_proxy=${https_proxy}
+      - MODEL_PATH=${MODEL_PATH}
+      - MODEL_NAME=${MODEL_NAME}
     volumes:
       - ${model_cache_path}:/home/devel/.cache
     ports:
       - 8000:8000
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: all
-              capabilities:
-                - gpu
   nextchat:
     image: yidadaa/chatgpt-next-web:v2.11.3
     container_name: ${container_name_prefix}nextchat
