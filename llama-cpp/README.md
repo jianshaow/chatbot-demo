@@ -22,7 +22,7 @@ python -m llama_cpp.server --host 0.0.0.0 --chat_format chatml
 docker build -t jianshao/llama-cpp-server:cpu .
 docker push jianshao/llama-cpp-server:cpu
 docker build --build-arg BASE_IMAGE=jianshao/cuda-rt-base --build-arg TAG=12.3 \
-             --build-arg LC_INDEX_ARG=https://abetlen.github.io/llama-cpp-python/whl/cu123 \
+             --build-arg LC_INDEX_ARG=https://abetlen.github.io/llama-cpp-python/whl/cu122 \
              -t jianshaollama-cpp-server:gpu .
 docker push jianshao/llama-cpp-server:gpu
 ~~~
