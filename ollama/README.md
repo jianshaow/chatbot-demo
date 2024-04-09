@@ -18,7 +18,8 @@ docker run --name ollama-server -it --rm -p 11434:11434 \
 # run a codellama with cli
 docker exec -it ollama-server ollama run codellama
 
-# run open-webui to verify
-docker run -it --rm -p 3000:8080 --add-host=host.docker.internal:host-gateway \
-           -v open-webui:/app/backend/data ghcr.io/open-webui/open-webui:main
+# run a next chat to verify
+docker run -it --rm -p 3000:3000 --add-host=doccker-host:host-gateway\
+           -e BASE_URL=http://doccker-host:11434 \
+           yidadaa/chatgpt-next-web:v2.11.3
 ~~~
