@@ -9,14 +9,14 @@ services:
     volumes:
       - ${model_cache_path}:/home/devel/.ollama
     ports:
-      - 11434:11434
-  nextchat:
-    image: yidadaa/chatgpt-next-web:v2.11.3
-    container_name: ${container_name_prefix}nextchat
+      - 8000:11434
+  webui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: ${container_name_prefix}webui
     restart: unless-stopped
     depends_on:
       - openai
     environment:
-      - BASE_URL=http://openai:11434
+      - OLLAMA_BASE_URL=http://openai:11434
     ports:
-      - 3000:3000
+      - 3000:8080
