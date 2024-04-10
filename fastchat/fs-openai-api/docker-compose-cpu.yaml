@@ -34,14 +34,6 @@ services:
       - ${en_embed_model_name}
     volumes:
       - ${model_cache_path}:/home/devel/.cache
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: all
-              capabilities:
-                - gpu
   zh-embed-worker:
     image: jianshao/fastchat-demo:${image_ver}
     container_name: ${container_name_prefix}zh-embed-worker
@@ -66,14 +58,6 @@ services:
       - ${zh_embed_model_name}
     volumes:
       - ${model_cache_path}:/home/devel/.cache
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: all
-              capabilities:
-                - gpu
   chat-worker:
     image: jianshao/fastchat-demo:${image_ver}
     container_name: ${container_name_prefix}chat-worker
@@ -99,14 +83,6 @@ services:
       - ${chat_model_path}
     volumes:
       - ${model_cache_path}:/home/devel/.cache
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: all
-              capabilities:
-                - gpu
   openai:
     image: jianshao/fastchat-demo:${image_ver}
     container_name: ${container_name_prefix}openai
