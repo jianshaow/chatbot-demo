@@ -6,8 +6,7 @@
 		"LLAMA_INDEX_CACHE_DIR": "/home/devel/.cache/huggingface/hub"
 	},
 	"runArgs": [
-		"--gpus",
-		"all"
+		"--add-host=host.docker.internal:host-gateway"
 	],
 	"mounts": [
 		{

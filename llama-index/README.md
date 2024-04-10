@@ -15,7 +15,7 @@ pip install -r requirements.txt
 # run with fastchat's OpenAI-Compatible API
 export CHROMA_DB_DIR=local.chroma_db
 export OPENAI_API_KEY=EMPTY
-export OPENAI_API_BASE=http://localhost:8000/v1
+export OPENAI_API_BASE=http://host.docker.internal:8000/v1
 ~~~
 
 ## Docker Environment
