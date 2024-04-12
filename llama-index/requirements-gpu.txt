@@ -1,12 +1,3 @@
-chromadb
+-r requirements.txt
 autoawq
-sentencepiece
 bitsandbytes
-llama-index-core
-llama-index-cli
-llama-index-readers-file
-llama-index-vector-stores-chroma
-llama-index-embeddings-openai
-llama-index-embeddings-huggingface
-llama-index-llms-openai
-llama-index-llms-huggingface
