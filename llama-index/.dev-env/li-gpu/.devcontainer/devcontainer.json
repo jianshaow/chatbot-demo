@@ -1,6 +1,6 @@
 {
 	"name": "LI-GPU",
-	"image": "jianshao/llamaindex-demo:0.0.7-gpu",
+	"image": "jianshao/llamaindex-demo:0.0.8-gpu",
 	"remoteEnv": {
 		"PYTHONPATH": ".",
 		"LLAMA_INDEX_CACHE_DIR": "/home/devel/.cache/huggingface/hub"
