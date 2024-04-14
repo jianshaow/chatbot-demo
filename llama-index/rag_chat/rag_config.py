@@ -44,13 +44,24 @@ class RagChatConfig:
         self.defalut_question = defalut_question
 
     def embedding_model(self):
+        if self.__embedding_model == OllamaEmbedding:
+            base_url = os.environ.get(
+                "OL_BASE_URL", "http://host.docker.internal:11434"
+            )
+            return self.__embedding_model(
+                base_url=base_url, model_name=self.embedding_model_name
+            )
         return self.__embedding_model(model_name=self.embedding_model_name)
 
     def chat_model(self):
-        if self.__chat_model == HuggingFaceLLM:
+        if self.__chat_model == Ollama:
             return self.__hf_chat_model()
-        else:
-            return self.__chat_model(self.chat_model_name)
+        elif self.__chat_model == self.__chat_model:
+            base_url = os.environ.get(
+                "OL_BASE_URL", "http://host.docker.internal:11434"
+            )
+            return self.__chat_model(base_url=base_url, model=self.chat_model_name)
+        return self.__chat_model(self.chat_model_name)
 
     def get_question(self):
         if len(sys.argv) >= 3:
