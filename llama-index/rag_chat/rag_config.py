@@ -2,9 +2,13 @@ import os, sys, torch
 from typing import Type
 from llama_index.core.embeddings import BaseEmbedding
 from llama_index.embeddings.openai import OpenAIEmbedding
+from llama_index.embeddings.gemini import GeminiEmbedding
+from llama_index.embeddings.ollama import OllamaEmbedding
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 from llama_index.core.llms import LLM
 from llama_index.llms.openai import OpenAI
+from llama_index.llms.gemini import Gemini
+from llama_index.llms.ollama import Ollama
 from llama_index.llms.huggingface import HuggingFaceLLM
 from llama_index.core import PromptTemplate
 
@@ -26,7 +30,7 @@ class RagChatConfig:
         chat_model_name: str,
         bnb_quantized: bool = True,
         data_path: str = DATA_PATH,
-        vector_db_collection: str = "local",
+        vector_db_collection: str = "hf",
         defalut_question: str = DEFAULT_QUESTION,
     ):
         self.__embedding_model = embedding_model
@@ -109,12 +113,30 @@ def __openai_config(
     )
 
 
+def __gemini_config(
+    embeddding_model_name="models/embedding-001",
+    chat_model_name="models/gemini-pro",
+    data_path=DATA_PATH,
+    vector_db_collection="gemini",
+    defalut_question=DEFAULT_QUESTION,
+):
+    return RagChatConfig(
+        GeminiEmbedding,
+        embeddding_model_name,
+        Gemini,
+        chat_model_name,
+        data_path=data_path,
+        vector_db_collection=vector_db_collection,
+        defalut_question=defalut_question,
+    )
+
+
 def __hf_config(
     embeddding_model_name=None,
     chat_model_name="lmsys/vicuna-7b-v1.5",
     bnb_quantized=True,
     data_path=DATA_PATH,
-    vector_db_collection="local",
+    vector_db_collection="hf",
     defalut_question=DEFAULT_QUESTION,
 ):
     return RagChatConfig(
@@ -142,7 +164,7 @@ HYBRID_ZH = RagChatConfig(
     OpenAI,
     "gpt-3.5-turbo",
     data_path=DATA_PATH_ZH,
-    vector_db_collection="local_zh",
+    vector_db_collection="hf_zh",
     defalut_question=DEFAULT_QUESTION_ZH,
 )
 
@@ -152,7 +174,7 @@ HYBRID_LARGE = RagChatConfig(
     OpenAI,
     "gpt-3.5-turbo",
     bnb_quantized=False,
-    vector_db_collection="local_large",
+    vector_db_collection="hf_large",
 )
 
 HYBRID_LARGE_ZH = RagChatConfig(
@@ -162,7 +184,7 @@ HYBRID_LARGE_ZH = RagChatConfig(
     "gpt-3.5-turbo",
     bnb_quantized=False,
     data_path=DATA_PATH_ZH,
-    vector_db_collection="local_large_zh",
+    vector_db_collection="hf_large_zh",
     defalut_question=DEFAULT_QUESTION_ZH,
 )
 
@@ -178,37 +200,48 @@ __config_dict = {
         vector_db_collection="openai_zh",
         defalut_question=DEFAULT_QUESTION_ZH,
     ),
-    "local": __hf_config(),
-    "local_en": __hf_config(
+    "gemini": __gemini_config(),
+    "gemini_en": __gemini_config(
         data_path=DATA_PATH_EN,
-        vector_db_collection="local_en",
+        vector_db_collection="gemini_en",
         defalut_question=DEFAULT_QUESTION_EN,
     ),
-    "local_zh": __hf_config(
+    "gemini_zh": __gemini_config(
         data_path=DATA_PATH_ZH,
-        embeddding_model_name="BAAI/bge-small-zh",
-        vector_db_collection="local_zh",
+        vector_db_collection="gemini_zh",
         defalut_question=DEFAULT_QUESTION_ZH,
     ),
-    "local_large": __hf_config(
-        embeddding_model_name="BAAI/bge-large-en-v1.5",
-        chat_model_name="TheBloke/vicuna-13B-v1.5-AWQ",
-        bnb_quantized=False,
-        vector_db_collection="local_large",
-    ),
-    "local_large_en": __hf_config(
-        embeddding_model_name="BAAI/bge-large-en-v1.5",
-        chat_model_name="TheBloke/vicuna-13B-v1.5-AWQ",
-        bnb_quantized=False,
-        vector_db_collection="local_large_en",
+    "hf": __hf_config(),
+    "hf_en": __hf_config(
+        data_path=DATA_PATH_EN,
+        vector_db_collection="hf_en",
         defalut_question=DEFAULT_QUESTION_EN,
     ),
-    "local_large_zh": __hf_config(
+    "hf_zh": __hf_config(
+        data_path=DATA_PATH_ZH,
+        embeddding_model_name="BAAI/bge-small-zh",
+        vector_db_collection="hf_zh",
+        defalut_question=DEFAULT_QUESTION_ZH,
+    ),
+    "hf_large": __hf_config(
+        embeddding_model_name="BAAI/bge-large-en-v1.5",
+        chat_model_name="TheBloke/vicuna-13B-v1.5-AWQ",
+        bnb_quantized=False,
+        vector_db_collection="hf_large",
+    ),
+    "hf_large_en": __hf_config(
+        embeddding_model_name="BAAI/bge-large-en-v1.5",
+        chat_model_name="TheBloke/vicuna-13B-v1.5-AWQ",
+        bnb_quantized=False,
+        vector_db_collection="hf_large_en",
+        defalut_question=DEFAULT_QUESTION_EN,
+    ),
+    "hf_large_zh": __hf_config(
         embeddding_model_name="BAAI/bge-large-zh-v1.5",
         chat_model_name="TheBloke/vicuna-13B-v1.5-AWQ",
         bnb_quantized=False,
         data_path=DATA_PATH_ZH,
-        vector_db_collection="local_large_zh",
+        vector_db_collection="hf_large_zh",
         defalut_question=DEFAULT_QUESTION_ZH,
     ),
     "hybrid": HYBRID,
