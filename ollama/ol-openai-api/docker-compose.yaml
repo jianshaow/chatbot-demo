@@ -9,7 +9,7 @@ services:
     volumes:
       - ${model_cache_path}:/home/devel/.ollama
     ports:
-      - 8000:11434
+      - 11434:11434
   nextchat:
     image: yidadaa/chatgpt-next-web:v2.11.3
     container_name: ${container_name_prefix}nextchat
