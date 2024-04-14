@@ -1,4 +1,4 @@
-import requests
+import requests, os
 import matplotlib.pyplot as plt
 from PIL import Image
 from io import BytesIO
@@ -18,7 +18,9 @@ plt.imshow(img)
 plt.show()
 
 image_documents = load_image_urls(image_urls)
-llava = OllamaMultiModal(base_url="http://host.docker.internal:11434", model="llava")
+base_url = os.environ.get("OL_BASE_URL", "http://host.docker.internal:11434")
+model = os.environ.get("OL_MODEL", "llava")
+llava = OllamaMultiModal(base_url=base_url, model=model)
 
 print("-------------------------------------------")
 # prompt = "Identify the city where this photo was taken."

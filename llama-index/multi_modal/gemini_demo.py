@@ -1,4 +1,4 @@
-import requests
+import requests, os
 import matplotlib.pyplot as plt
 from PIL import Image
 from io import BytesIO
@@ -18,7 +18,8 @@ plt.imshow(img)
 plt.show()
 
 image_documents = load_image_urls(image_urls)
-gemini_pro = GeminiMultiModal(model_name="models/gemini-pro-vision")
+model_name = os.environ.get("GEMINI_MODEL", "models/gemini-pro-vision")
+gemini_pro = GeminiMultiModal(model_name=model_name)
 
 print("-----------------------------------")
 # prompt = "Identify the city where this photo was taken."
