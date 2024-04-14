@@ -131,6 +131,24 @@ def __gemini_config(
     )
 
 
+def __ollama_config(
+    embeddding_model_name="znbang/bge:large-en-v1.5-f16",
+    chat_model_name="vicuna:13b-v1.5-q4_0",
+    data_path=DATA_PATH,
+    vector_db_collection="ollama",
+    defalut_question=DEFAULT_QUESTION,
+):
+    return RagChatConfig(
+        OllamaEmbedding,
+        embeddding_model_name,
+        Ollama,
+        chat_model_name,
+        data_path=data_path,
+        vector_db_collection=vector_db_collection,
+        defalut_question=defalut_question,
+    )
+
+
 def __hf_config(
     embeddding_model_name=None,
     chat_model_name="lmsys/vicuna-7b-v1.5",
@@ -209,6 +227,17 @@ __config_dict = {
     "gemini_zh": __gemini_config(
         data_path=DATA_PATH_ZH,
         vector_db_collection="gemini_zh",
+        defalut_question=DEFAULT_QUESTION_ZH,
+    ),
+    "ollama": __ollama_config(),
+    "ollama_en": __ollama_config(
+        data_path=DATA_PATH_EN,
+        vector_db_collection="ollama_en",
+        defalut_question=DEFAULT_QUESTION_EN,
+    ),
+    "ollama_zh": __ollama_config(
+        data_path=DATA_PATH_ZH,
+        vector_db_collection="ollama_zh",
         defalut_question=DEFAULT_QUESTION_ZH,
     ),
     "hf": __hf_config(),
