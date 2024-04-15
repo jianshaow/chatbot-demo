@@ -30,7 +30,7 @@ class RagChatConfig:
         chat_model_name: str,
         bnb_quantized: bool = True,
         data_path: str = DATA_PATH,
-        vector_db_collection: str = "hf",
+        vector_db_collection: str = "hface",
         defalut_question: str = DEFAULT_QUESTION,
     ):
         self.__embedding_model = embedding_model
@@ -54,9 +54,9 @@ class RagChatConfig:
         return self.__embedding_model(model_name=self.embedding_model_name)
 
     def chat_model(self):
-        if self.__chat_model == Ollama:
+        if self.__chat_model == HuggingFaceLLM:
             return self.__hf_chat_model()
-        elif self.__chat_model == self.__chat_model:
+        elif self.__chat_model == Ollama:
             base_url = os.environ.get(
                 "OL_BASE_URL", "http://host.docker.internal:11434"
             )
@@ -161,11 +161,11 @@ def __ollama_config(
 
 
 def __hf_config(
-    embeddding_model_name=None,
+    embeddding_model_name="BAAI/bge-small-en",
     chat_model_name="lmsys/vicuna-7b-v1.5",
     bnb_quantized=True,
     data_path=DATA_PATH,
-    vector_db_collection="hf",
+    vector_db_collection="hface",
     defalut_question=DEFAULT_QUESTION,
 ):
     return RagChatConfig(
@@ -182,18 +182,18 @@ def __hf_config(
 
 HYBRID = RagChatConfig(
     HuggingFaceEmbedding,
-    None,
+    "BAAI/bge-small-en",
     OpenAI,
     "gpt-3.5-turbo",
 )
 
 HYBRID_ZH = RagChatConfig(
     HuggingFaceEmbedding,
-    None,
+    "BAAI/bge-small-en",
     OpenAI,
     "gpt-3.5-turbo",
     data_path=DATA_PATH_ZH,
-    vector_db_collection="hf_zh",
+    vector_db_collection="hface_zh",
     defalut_question=DEFAULT_QUESTION_ZH,
 )
 
@@ -203,7 +203,7 @@ HYBRID_LARGE = RagChatConfig(
     OpenAI,
     "gpt-3.5-turbo",
     bnb_quantized=False,
-    vector_db_collection="hf_large",
+    vector_db_collection="hface_large",
 )
 
 HYBRID_LARGE_ZH = RagChatConfig(
@@ -213,7 +213,7 @@ HYBRID_LARGE_ZH = RagChatConfig(
     "gpt-3.5-turbo",
     bnb_quantized=False,
     data_path=DATA_PATH_ZH,
-    vector_db_collection="hf_large_zh",
+    vector_db_collection="hface_large_zh",
     defalut_question=DEFAULT_QUESTION_ZH,
 )
 
@@ -255,26 +255,26 @@ __config_dict = {
     "hf": __hf_config(),
     "hf_en": __hf_config(
         data_path=DATA_PATH_EN,
-        vector_db_collection="hf_en",
+        vector_db_collection="hface_en",
         defalut_question=DEFAULT_QUESTION_EN,
     ),
     "hf_zh": __hf_config(
         data_path=DATA_PATH_ZH,
         embeddding_model_name="BAAI/bge-small-zh",
-        vector_db_collection="hf_zh",
+        vector_db_collection="hface_zh",
         defalut_question=DEFAULT_QUESTION_ZH,
     ),
     "hf_large": __hf_config(
         embeddding_model_name="BAAI/bge-large-en-v1.5",
         chat_model_name="TheBloke/vicuna-13B-v1.5-AWQ",
         bnb_quantized=False,
-        vector_db_collection="hf_large",
+        vector_db_collection="hface_large",
     ),
     "hf_large_en": __hf_config(
         embeddding_model_name="BAAI/bge-large-en-v1.5",
         chat_model_name="TheBloke/vicuna-13B-v1.5-AWQ",
         bnb_quantized=False,
-        vector_db_collection="hf_large_en",
+        vector_db_collection="hface_large_en",
         defalut_question=DEFAULT_QUESTION_EN,
     ),
     "hf_large_zh": __hf_config(
@@ -282,7 +282,7 @@ __config_dict = {
         chat_model_name="TheBloke/vicuna-13B-v1.5-AWQ",
         bnb_quantized=False,
         data_path=DATA_PATH_ZH,
-        vector_db_collection="hf_large_zh",
+        vector_db_collection="hface_large_zh",
         defalut_question=DEFAULT_QUESTION_ZH,
     ),
     "hybrid": HYBRID,
@@ -292,7 +292,7 @@ __config_dict = {
 }
 
 
-def get_config(name="openai"):
+def get_config(name="gemini"):
     if len(sys.argv) >= 2:
         return __config_dict[sys.argv[1]]
     else:
@@ -300,5 +300,8 @@ def get_config(name="openai"):
 
 
 if __name__ == "__main__":
-    for config in __config_dict:
-        print(config)
+    if len(sys.argv) >= 2:
+        print(vars(__config_dict[sys.argv[1]]))
+    else:
+        for config in __config_dict:
+            print(config)
