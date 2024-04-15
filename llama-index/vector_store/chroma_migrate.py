@@ -5,7 +5,7 @@ if len(sys.argv) != 3:
 else:
     source = sys.argv[1]
     target = sys.argv[2]
-    path = os.environ.get("CHROMA_DB_DIR", "chroma_db")
+    path = os.environ.get("CHROMA_DB_DIR", "chroma")
     db = chromadb.PersistentClient(path=path)
     source_collection = db.get_collection(source)
     target_collection = db.get_or_create_collection(target)

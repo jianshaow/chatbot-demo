@@ -2,7 +2,7 @@ import os, chromadb
 from llama_index.core.vector_stores import VectorStoreQuery
 from llama_index.vector_stores.chroma import ChromaVectorStore
 
-path = os.environ.get("CHROMA_DB_DIR", "chroma_db")
+path = os.environ.get("CHROMA_DB_DIR", "chroma")
 db = chromadb.PersistentClient(path=path)
 chroma_collection = db.get_or_create_collection("hface")
 vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
