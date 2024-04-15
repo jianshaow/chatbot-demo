@@ -18,7 +18,7 @@ DATA_PATH_ZH = "data_zh"
 
 DEFAULT_QUESTION = "What did the author do growing up?"
 DEFAULT_QUESTION_EN = "Why the old man go fishing?"
-DEFAULT_QUESTION_ZH = "杨志是个怎样的人?"
+DEFAULT_QUESTION_ZH = "地球发动机都安装在哪里？"
 
 
 class RagChatConfig:
@@ -39,7 +39,7 @@ class RagChatConfig:
         self.chat_model_name = chat_model_name
         self.bnb_quantized = bnb_quantized
         self.data_path = data_path
-        self.vector_db_path = os.environ.get("CHROMA_DB_DIR", "chroma_db")
+        self.vector_db_path = os.environ.get("CHROMA_DB_DIR", "chroma")
         self.vector_db_collection = vector_db_collection
         self.defalut_question = defalut_question
 
