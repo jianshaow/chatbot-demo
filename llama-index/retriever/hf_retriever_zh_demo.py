@@ -16,7 +16,7 @@ index = VectorStoreIndex.from_documents(
 )
 
 retriever = index.as_retriever()
-question = len(sys.argv) == 2 and sys.argv[1] or "杨志是一个怎样的人?"
+question = len(sys.argv) == 2 and sys.argv[1] or "地球发动机都安装在哪里？"
 nodes = retriever.retrieve(question)
 for node in nodes:
     print("---------------------------------------------")
