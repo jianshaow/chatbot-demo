@@ -6,16 +6,25 @@ path = os.environ.get("CHROMA_DB_DIR", "chroma")
 db = chromadb.PersistentClient(path=path)
 collection = len(sys.argv) == 2 and sys.argv[1] or "hface"
 chroma_collection = db.get_or_create_collection(collection)
-vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
 
 vectors = chroma_collection.peek(1)
+
+result = chroma_collection.query(vectors["embeddings"][0], n_results=2)
+print("-------------------------- chroma query --------------------------")
+for i in range(len(result["ids"][0])):
+    print("Text:", result["documents"][0][i][:60])
+    print("distance:", result["distances"][0][i])
+    print("------------------------------------------------------------------")
+
+vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
 query = VectorStoreQuery(
     query_embedding=vectors["embeddings"][0],
     similarity_top_k=2,
     mode="default",
 )
-
+print("----------------------- vector store query -----------------------")
 result = vector_store.query(query)
 for i in range(len(result.ids)):
     print(result.nodes[i])
     print("similarity:", result.similarities[i])
+    print("------------------------------------------------------------------")
