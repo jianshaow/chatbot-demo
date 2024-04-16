@@ -6,7 +6,10 @@ from llama_index.core import (
 )
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 
-Settings.embed_model = HuggingFaceEmbedding("BAAI/bge-small-zh-v1.5")
+Settings.embed_model = HuggingFaceEmbedding(
+    "BAAI/bge-small-zh"
+    # "BAAI/bge-large-zh-v1.5"
+)
 print("embed_model:", Settings.embed_model.model_name)
 
 documents = SimpleDirectoryReader("data_zh").load_data(show_progress=True)
