@@ -13,7 +13,6 @@ vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
 index = VectorStoreIndex.from_vector_store(vector_store)
 
 query_engine = index.as_query_engine(streaming=True)
-# print("prompts:", query_engine.get_prompts()["response_synthesizer:text_qa_template"])
 question = config.get_question()
 print("Question:", question, sep="\n")
 response = query_engine.query(question)
