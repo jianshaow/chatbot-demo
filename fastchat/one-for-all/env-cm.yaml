@@ -1,7 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: fastchat-env-cm
-  namespace: demo
-data:
-  model_path: "lmsys/vicuna-7b-v1.5"

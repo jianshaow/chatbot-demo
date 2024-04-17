@@ -1,8 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: openai-env-cm
-  namespace: demo
-data:
-  embedding_model_path: "BAAI/bge-large-en-v1.5"
-  chat_model_path: "lmsys/vicuna-7b-v1.5"

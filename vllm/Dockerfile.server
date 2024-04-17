@@ -1,9 +1,0 @@
-ARG BASE_IMAGE=jianshao/vllm-base
-ARG TAG=0.3.3
-
-FROM ${BASE_IMAGE}:${TAG}
-
-COPY docker-entrypoint.sh ./
-ENTRYPOINT ["./docker-entrypoint.sh"]
-
-EXPOSE 8000
