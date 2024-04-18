@@ -1,5 +1,7 @@
 # llama-index
 
+Demo how to use LlamaIndex.
+
 ## Local Environment
 
 ### Prepare
