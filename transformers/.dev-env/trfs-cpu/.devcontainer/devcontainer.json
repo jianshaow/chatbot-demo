@@ -1,0 +1,39 @@
+{
+	"name": "TRFS-CPU",
+	"image": "jianshao/transformers-demo:4.39.3-cpu",
+	"remoteEnv": {
+		"PYTHONPATH": ".",
+		"LLAMA_INDEX_CACHE_DIR": "/home/devel/.cache/huggingface/hub"
+	},
+	"runArgs": [
+		"--add-host=host.docker.internal:host-gateway"
+	],
+	"mounts": [
+		{
+			"source": "${localEnv:HOME}/.config",
+			"target": "/home/devel/.config",
+			"type": "bind"
+		},
+		{
+			"source": "${localEnv:HOME}/.cache",
+			"target": "/home/devel/.cache",
+			"type": "bind"
+		},
+		{
+			"source": "${localEnv:HOME}/.ssh",
+			"target": "/home/devel/.ssh",
+			"type": "bind"
+		}
+	],
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"ms-python.python",
+				"ms-python.vscode-pylance",
+				"ms-python.black-formatter",
+				"ms-python.isort",
+				"alphabotsec.vscode-eclipse-keybindings"
+			]
+		}
+	}
+}
