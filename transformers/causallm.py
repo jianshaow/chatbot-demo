@@ -1,16 +1,18 @@
-import torch
+import os, torch
 from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
 
 model_name = "lmsys/vicuna-7b-v1.5"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 
-quantization_config = BitsAndBytesConfig(
-    load_in_4bit=True, bnb_4bit_compute_dtype=torch.float16
-)
+quantization_config = None
+if os.environ.get("BNB_ENABLED", "false") == "true":
+    quantization_config = BitsAndBytesConfig(
+        load_in_4bit=True, bnb_4bit_compute_dtype=torch.float16
+    )
 
 model = AutoModelForCausalLM.from_pretrained(
     model_name,
-    quantization_config=quantization_config,
+    # quantization_config=quantization_config,
     device_map="auto",
 )
 

@@ -3,7 +3,7 @@
 	"image": "jianshao/transformers-demo:4.39.3-gpu",
 	"remoteEnv": {
 		"PYTHONPATH": ".",
-		"LLAMA_INDEX_CACHE_DIR": "/home/devel/.cache/huggingface/hub"
+		"BNB_ENABLED": "true"
 	},
 	"runArgs": [
 		"--gpus=all",

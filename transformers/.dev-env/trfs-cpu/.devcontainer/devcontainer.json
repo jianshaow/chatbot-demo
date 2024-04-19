@@ -2,8 +2,7 @@
 	"name": "TRFS-CPU",
 	"image": "jianshao/transformers-demo:4.39.3-cpu",
 	"remoteEnv": {
-		"PYTHONPATH": ".",
-		"LLAMA_INDEX_CACHE_DIR": "/home/devel/.cache/huggingface/hub"
+		"PYTHONPATH": "."
 	},
 	"runArgs": [
 		"--add-host=host.docker.internal:host-gateway"
