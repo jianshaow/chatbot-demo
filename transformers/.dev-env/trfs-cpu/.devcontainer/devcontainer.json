@@ -2,7 +2,8 @@
 	"name": "TRFS-CPU",
 	"image": "jianshao/transformers-demo:4.39.3-cpu",
 	"remoteEnv": {
-		"PYTHONPATH": "."
+		"PYTHONPATH": ".",
+		"HF_MODEL_NAME": "microsoft/phi-2"
 	},
 	"runArgs": [
 		"--add-host=host.docker.internal:host-gateway"
