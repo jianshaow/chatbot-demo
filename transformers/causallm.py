@@ -36,14 +36,14 @@ You are an AI assistant that answers questions in a friendly manner, based on th
 {query_str}[/INST]
 """
 
-inputs = tokenizer(prompt, return_tensors="pt", return_attention_mask=False).to(
-    model.device
-)
+input_ids = tokenizer(
+    prompt, return_tensors="pt", return_attention_mask=False
+).input_ids.to(model.device)
 
 generation_config = GenerationConfig.from_pretrained(model_name, max_length=1024)
-tokens = model.generate(**inputs, generation_config=generation_config)
+tokens = model.generate(input_ids, generation_config=generation_config)
 
-token_ids = tokens[0][inputs["input_ids"].size(1) :]
+token_ids = tokens[0][input_ids.size(1) :]
 response = tokenizer.decode(token_ids, skip_special_tokens=True)
 
 print(response)
