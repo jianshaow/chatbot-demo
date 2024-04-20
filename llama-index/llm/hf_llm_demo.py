@@ -1,4 +1,4 @@
-import torch
+import os, torch
 from transformers import BitsAndBytesConfig
 from llama_index.llms.huggingface import HuggingFaceLLM
 from llama_index.core import PromptTemplate
@@ -15,14 +15,15 @@ query_wrapper_prompt = PromptTemplate(
     "[INST]<<SYS>>\n" + SYSTEM_PROMPT + "<</SYS>>\n\n{query_str}[/INST] "
 )
 
-model_name = "lmsys/vicuna-7b-v1.5"
+model_name = os.environ.get("HF_MODEL_NAME", "lmsys/vicuna-7b-v1.5")
 
-model_kwargs = {
-    "quantization_config": BitsAndBytesConfig(
-        load_in_4bit=True,
-        bnb_4bit_compute_dtype=torch.float16,
+quantization_config = None
+if os.environ.get("BNB_ENABLED", "false") == "true":
+    quantization_config = BitsAndBytesConfig(
+        load_in_4bit=True, bnb_4bit_compute_dtype=torch.float16
     )
-}
+
+model_kwargs = {"quantization_config": quantization_config}
 
 llm = HuggingFaceLLM(
     context_window=4096,

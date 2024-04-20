@@ -3,6 +3,7 @@
 	"image": "jianshao/llamaindex-demo:0.0.8-gpu",
 	"remoteEnv": {
 		"PYTHONPATH": ".",
+		"BNB_ENABLED": "true",
 		"LLAMA_INDEX_CACHE_DIR": "/home/devel/.cache/huggingface/hub"
 	},
 	"runArgs": [
