@@ -1,8 +1,14 @@
 import os, sys, torch
-from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
+from transformers import (
+    AutoModelForCausalLM,
+    AutoTokenizer,
+    GenerationConfig,
+    BitsAndBytesConfig,
+)
 
 model_name = os.environ.get("HF_MODEL_NAME", "lmsys/vicuna-7b-v1.5")
 tokenizer = AutoTokenizer.from_pretrained(model_name)
+
 
 quantization_config = None
 if os.environ.get("BNB_ENABLED", "false") == "true":
@@ -29,9 +35,15 @@ You are an AI assistant that answers questions in a friendly manner, based on th
 
 {query_str}[/INST]
 """
-inputs = tokenizer(prompt, return_tensors="pt").to(model.device)
-tokens = model.generate(**inputs)
-completion_tokens = tokens[0][inputs["input_ids"].size(1) :]
-response = tokenizer.decode(completion_tokens, skip_special_tokens=True)
+
+inputs = tokenizer(prompt, return_tensors="pt", return_attention_mask=False).to(
+    model.device
+)
+
+generation_config = GenerationConfig.from_pretrained(model_name, max_length=1024)
+tokens = model.generate(**inputs, generation_config=generation_config)
+
+token_ids = tokens[0][inputs["input_ids"].size(1) :]
+response = tokenizer.decode(token_ids, skip_special_tokens=True)
 
 print(response)
