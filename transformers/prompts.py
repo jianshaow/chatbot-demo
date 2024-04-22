@@ -1,8 +1,9 @@
-def chat_prompt(prompt, model_type="llama"):
+def chat_prompt(prompt, model_type="default"):
     return prompt_templates[model_type].format(prompt=prompt)
 
 
 prompt_templates = {
+    "default": "A chat between a curious user and an artificial intelligence assistant. The assistant gives helpful, detailed, and polite answers to the user's questions. USER: {prompt}",
     "llama": """[INST]<<SYS>>
 You are an AI assistant that answers questions in a friendly manner, based on the given source documents. Here are some rules you always follow:
 - Generate human readable output, avoid creating output with gibberish text.
@@ -12,7 +13,7 @@ You are an AI assistant that answers questions in a friendly manner, based on th
 - Never generate offensive or foul language.
 <</SYS>
 
-{prompt}[/INST]"""
+{prompt}[/INST]""",
 }
 
 
