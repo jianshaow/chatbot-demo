@@ -9,7 +9,7 @@ model = AutoModelForCausalLM.from_pretrained(model_name, device_map="auto")
 query_str = len(sys.argv) == 2 and sys.argv[1] or "Who are you?"
 prompt = prompts.chat_prompt(query_str)
 
-input_ids = tokenizer(prompt, return_tensors="pt").input_ids.cuda()
+input_ids = tokenizer(prompt, return_tensors="pt").input_ids.to(model.device)
 
 tokens = model.generate(input_ids)
 token_ids = tokens[0][input_ids.size(1) :]
