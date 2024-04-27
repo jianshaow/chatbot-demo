@@ -28,4 +28,4 @@ if __name__ == "__main__":
     import sys
 
     model_type = len(sys.argv) == 2 and sys.argv[1] or "vicuna"
-    print(rag_template("who are you?", model_type=model_type))
+    print(rag_template(model_type=model_type).format(query_str="who are you?"))
