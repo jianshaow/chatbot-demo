@@ -19,7 +19,7 @@ plt.show()
 
 image_documents = load_image_urls(image_urls)
 base_url = os.environ.get("OL_BASE_URL", "http://host.docker.internal:11434")
-model = os.environ.get("OL_MODEL", "llava")
+model = os.environ.get("OL_MODEL", "llava:13b-v1.6")
 llava = OllamaMultiModal(base_url=base_url, model=model)
 
 print("-------------------------------------------")
