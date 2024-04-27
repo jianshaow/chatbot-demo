@@ -1,4 +1,4 @@
-import os, sys, torch
+import os, sys, torch, prompts
 from typing import Type
 from llama_index.core.embeddings import BaseEmbedding
 from llama_index.embeddings.openai import OpenAIEmbedding
@@ -46,22 +46,28 @@ class RagChatConfig:
     def embedding_model(self):
         if self.__embedding_model == OllamaEmbedding:
             base_url = os.environ.get(
-                "OL_BASE_URL", "http://host.docker.internal:11434"
+                "OLLAMA_BASE_URL", "http://host.docker.internal:11434"
             )
             return self.__embedding_model(
                 base_url=base_url, model_name=self.embedding_model_name
             )
+        if self.__embedding_model == OpenAIEmbedding:
+            return self.__embedding_model(model=self.embedding_model_name)
+
         return self.__embedding_model(model_name=self.embedding_model_name)
 
     def chat_model(self):
         if self.__chat_model == HuggingFaceLLM:
             return self.__hf_chat_model()
-        elif self.__chat_model == Ollama:
+        if self.__chat_model == Ollama:
             base_url = os.environ.get(
-                "OL_BASE_URL", "http://host.docker.internal:11434"
+                "OLLAMA_BASE_URL", "http://host.docker.internal:11434"
             )
             return self.__chat_model(base_url=base_url, model=self.chat_model_name)
-        return self.__chat_model(self.chat_model_name)
+        if self.__chat_model == OpenAI:
+            return self.__chat_model(model=self.chat_model_name)
+
+        return self.__chat_model(model_name=self.chat_model_name)
 
     def get_question(self):
         if len(sys.argv) >= 3:
@@ -86,24 +92,11 @@ class RagChatConfig:
             context_window=4096,
             max_new_tokens=2048,
             generate_kwargs={"temperature": 0.0, "do_sample": False},
-            query_wrapper_prompt=query_wrapper_prompt,
+            query_wrapper_prompt=PromptTemplate(prompts.rag_template()),
             tokenizer_name=self.chat_model_name,
             model_name=self.chat_model_name,
             model_kwargs=model_kwargs,
         )
-
-
-SYSTEM_PROMPT = """You are an AI assistant that answers questions in a friendly manner, based on the given source documents. Here are some rules you always follow:
-- Generate human readable output, avoid creating output with gibberish text.
-- Generate only the requested output, don't include any other language before or after the requested output.
-- Never say thank you, that you are happy to help, that you are an AI agent, etc. Just answer directly.
-- Generate professional language typically used in business documents in North America.
-- Never generate offensive or foul language.
-"""
-
-query_wrapper_prompt = PromptTemplate(
-    "[INST]<<SYS>>\n" + SYSTEM_PROMPT + "<</SYS>>\n\n{query_str}[/INST] "
-)
 
 
 def __openai_config(
