@@ -1,16 +1,23 @@
+SYSTEM_PROMPT = "A chat between a curious user and an artificial intelligence assistant. The assistant gives helpful, detailed, and polite answers to the user's questions."
+
 prompt_templates = {
-    "default": "A chat between a curious user and an artificial intelligence assistant. The assistant gives helpful, detailed, and polite answers to the user's questions. USER: {prompt}",
+    "vicuna": "{system_prompt} USER: {{prompt}}".format(system_prompt=SYSTEM_PROMPT),
     "llama": """[INST]<<SYS>>
-A chat between a curious user and an artificial intelligence assistant. The assistant gives helpful, detailed, and polite answers to the user's questions.
+{system_prompt}
 <</SYS>
 
-{prompt} [/INST]""",
+{{prompt}} [/INST]""".format(
+        system_prompt=SYSTEM_PROMPT
+    ),
 }
 
 
-def chat_prompt(prompt, model_type="default"):
+def chat_prompt(prompt, model_type="vicuna"):
     return prompt_templates[model_type].format(prompt=prompt)
 
 
 if __name__ == "__main__":
-    print(chat_prompt("who are you?"))
+    import sys
+
+    model_type = len(sys.argv) == 2 and sys.argv[1] or "vicuna"
+    print(chat_prompt("who are you?", model_type=model_type))

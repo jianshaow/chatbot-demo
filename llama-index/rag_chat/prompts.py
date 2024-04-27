@@ -7,7 +7,9 @@ SYSTEM_PROMPT = """You are an AI assistant that answers questions in a friendly 
 """
 
 prompt_templates = {
-    "default": "{system_prompt}\nUSER: {{query_str}}".format(system_prompt=SYSTEM_PROMPT),
+    "vicuna": "{system_prompt}\nUSER: {{query_str}}".format(
+        system_prompt=SYSTEM_PROMPT
+    ),
     "llama": """[INST]<<SYS>>
 {system_prompt}
 <</SYS>
@@ -18,12 +20,12 @@ prompt_templates = {
 }
 
 
-def rag_template(model_type="default"):
+def rag_template(model_type="vicuna"):
     return prompt_templates[model_type]
 
 
 if __name__ == "__main__":
     import sys
 
-    model_type = len(sys.argv) == 2 and sys.argv[1] or "default"
+    model_type = len(sys.argv) == 2 and sys.argv[1] or "vicuna"
     print(rag_template("who are you?", model_type=model_type))
