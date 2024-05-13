@@ -16,16 +16,13 @@ pip install -r requirements.txt
 
 ### Build
 ~~~ shell
-export image_ver=0.0.1
-docker build -t jianshao/langchain-demo:$image_ver-cpu .
-# docker build -t jianshao/langchain-demo:$image_ver-gpu . \
-#        --build-arg TAG=2.2.1-gpu --build-arg REQUIREMENTS=requirements-gpu.txt
-docker push jianshao/langchain-demo:$image_ver-cpu
-# docker push jianshao/langchain-demo:$image_ver-gpu
+export image_ver=0.0.2
+docker build -t jianshao/langchain-demo:$image_ver .
+docker push jianshao/langchain-demo:$image_ver
 ~~~
 ### Test
 ~~~ shell
 docker run --name langchain-demo -it --rm --gpus all \
            -v $HOME/.cache:/home/devel/.cache -v $PWD:/workspaces/langchain \
-           jianshao/langchain-demo:$transformers_ver-gpu bash
+           jianshao/langchain-demo:$image_ver bash
 ~~~
