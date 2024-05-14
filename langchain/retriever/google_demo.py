@@ -15,7 +15,8 @@ vectorstore = Chroma.from_documents(
     embedding=GoogleGenerativeAIEmbeddings(model="models/embedding-001"),
 )
 question = len(sys.argv) == 2 and sys.argv[1] or "What did the author do growing up?"
-docs = vectorstore.similarity_search(question)
+retriever = vectorstore.as_retriever()
+docs = retriever.invoke(question)
 for doc in docs:
     print("-" * 80)
     print(doc.page_content[:80])
