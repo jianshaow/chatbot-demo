@@ -21,7 +21,7 @@ image_documents = load_image_urls(image_urls)
 model_name = os.environ.get("GEMINI_MODEL", "models/gemini-pro-vision")
 gemini_pro = GeminiMultiModal(model_name=model_name)
 
-print("-----------------------------------")
+print("-" * 80)
 # prompt = "Identify the city where this photo was taken."
 prompt = "这张照片是在哪个城市拍摄的."
 print("Question:", prompt)
@@ -41,4 +41,4 @@ stream_complete_response = gemini_pro.stream_complete(
 )
 for r in stream_complete_response:
     print(r.text, end="")
-print("\n-----------------------------------")
+print("\n", "-" * 80, sep="")

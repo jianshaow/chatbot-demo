@@ -22,7 +22,7 @@ base_url = os.environ.get("OL_BASE_URL", "http://host.docker.internal:11434")
 model = os.environ.get("OL_MODEL", "llava:13b-v1.6")
 llava = OllamaMultiModal(base_url=base_url, model=model)
 
-print("-------------------------------------------")
+print("-" * 80)
 # prompt = "Identify the city where this photo was taken."
 prompt = "这张照片是在哪个城市拍摄的."
 print("Question:", prompt)
@@ -42,4 +42,4 @@ stream_complete_response = llava.stream_complete(
 )
 for r in stream_complete_response:
     print(r.text, end="")
-print("\n-------------------------------------------")
+print("\n", "-" * 80, sep="")
