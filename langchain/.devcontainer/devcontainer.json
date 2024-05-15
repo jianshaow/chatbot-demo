@@ -1,9 +1,8 @@
 {
-	"name": "LC-CPU",
-	"image": "jianshao/langchain-demo:0.0.1-cpu",
+	"name": "LC-DEV",
+	"image": "jianshao/langchain-demo:0.0.2",
 	"remoteEnv": {
 		"PYTHONPATH": "."
-		// "HF_MODEL_NAME": "microsoft/phi-2"
 	},
 	"runArgs": [
 		"--add-host=host.docker.internal:host-gateway"
