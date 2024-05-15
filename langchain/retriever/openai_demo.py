@@ -8,9 +8,9 @@ loader = DirectoryLoader("data")
 data = loader.load()
 
 text_splitter = CharacterTextSplitter()
-all_splits = text_splitter.split_documents(data)
+documents = text_splitter.split_documents(data)
 
-vectorstore = Chroma.from_documents(documents=all_splits, embedding=OpenAIEmbeddings())
+vectorstore = Chroma.from_documents(documents=documents, embedding=OpenAIEmbeddings())
 question = len(sys.argv) == 2 and sys.argv[1] or "What did the author do growing up?"
 retriever = vectorstore.as_retriever()
 docs = retriever.invoke(question)
