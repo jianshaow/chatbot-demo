@@ -11,4 +11,4 @@ print("-" * 80)
 resp = llm.stream_chat(messages)
 for r in resp:
     print(r.delta, end="")
-print("\n" + "-" * 80)
+print("\n", "-" * 80, sep="")

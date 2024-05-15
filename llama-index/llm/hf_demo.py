@@ -23,6 +23,7 @@ llm = HuggingFaceLLM(
 )
 
 print("-" * 80)
-response = llm.complete("who are you?")
-print(response.text)
+resp = llm.stream_complete("What is your name?")
+for r in resp:
+    print(r.delta, end="")
 print("\n" + "-" * 80)
