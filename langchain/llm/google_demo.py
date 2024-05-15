@@ -12,5 +12,6 @@ chain = prompt | llm | output_parser
 
 print("-" * 80)
 response = chain.invoke({"input": "What is your name?"})
-print(response)
-print("-" * 80)
+for chunk in response:
+    print(chunk, end="", flush=True)
+print("\n", "-" * 80, sep="")

@@ -2,7 +2,7 @@ import chromadb, rag_config
 from langchain import hub
 from langchain_chroma import Chroma
 from langchain_core.documents import Document
-from langchain_core.runnables import RunnablePassthrough
+from langchain_core.runnables import RunnablePassthrough, RunnableSerializable
 from langchain_core.output_parsers import StrOutputParser
 
 
@@ -25,17 +25,20 @@ def format_docs(docs: list[Document]):
 
 
 retriever = vectorstore.as_retriever()
-
 prompt = hub.pull("rlm/rag-prompt")
+passthrough = RunnablePassthrough()
+output_parser = StrOutputParser()
 
-rag_chain = (
-    {"context": retriever | format_docs, "question": RunnablePassthrough()}
+rag_chain: RunnableSerializable = (
+    {"context": retriever | format_docs, "question": passthrough}
     | prompt
     | llm
-    | StrOutputParser()
+    | output_parser
 )
 question = config.get_question()
+print("-" * 80)
 print("Question:", question, sep="\n")
 print("Answer:")
 for chunk in rag_chain.stream(question):
     print(chunk, end="", flush=True)
+print("\n", "-" * 80, sep="")
