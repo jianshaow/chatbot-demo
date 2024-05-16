@@ -28,16 +28,14 @@ print("-" * 80)
 
 input = "Identify the city where this photo was taken."
 print("Question:", input)
-print("Answer:", end="")
 response = chain.invoke({"input": input, "image_url": image_url})
 print("Answer:", response)
-
 print("-" * 80)
 
 input = "Give me more context for this image."
 print("Question:", input)
 print("Answer:", end="")
-response = chain.invoke({"input": input, "image_url": image_url})
-print("Answer:", response)
-
-print("-" * 80)
+response = chain.stream({"input": input, "image_url": image_url})
+for chunk in response:
+    print(chunk, end="", flush=True)
+print("\n", "-" * 80, sep="")
