@@ -32,6 +32,8 @@ complete_response = llava.complete(
 )
 print("Answer:", complete_response)
 
+print("-" * 80)
+
 # prompt = "Give me more context for this image"
 prompt = "给我更多这张照片的上下文"
 print("Question:", prompt)
