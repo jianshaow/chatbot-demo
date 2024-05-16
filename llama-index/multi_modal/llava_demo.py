@@ -23,8 +23,8 @@ model = os.environ.get("OLLAMA_MODEL", "llava:13b-v1.6")
 llava = OllamaMultiModal(base_url=base_url, model=model)
 
 print("-" * 80)
-# prompt = "Identify the city where this photo was taken."
-prompt = "这张照片是在哪个城市拍摄的."
+prompt = "Identify the city where this photo was taken."
+# prompt = "这张照片是在哪个城市拍摄的."
 print("Question:", prompt)
 complete_response = llava.complete(
     prompt=prompt,
@@ -34,8 +34,8 @@ print("Answer:", complete_response)
 
 print("-" * 80)
 
-# prompt = "Give me more context for this image"
-prompt = "给我更多这张照片的上下文"
+prompt = "Give me more context for this image"
+# prompt = "给我更多这张照片的上下文"
 print("Question:", prompt)
 print("Answer:", end="")
 stream_complete_response = llava.stream_complete(
