@@ -24,7 +24,7 @@ def format_docs(docs: list[Document]):
     return "\n\n".join(doc.page_content for doc in docs)
 
 
-retriever = vectorstore.as_retriever()
+retriever = vectorstore.as_retriever(search_kwargs={"k": 2})
 prompt = hub.pull("rlm/rag-prompt")
 passthrough = RunnablePassthrough()
 output_parser = StrOutputParser()

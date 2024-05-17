@@ -10,7 +10,7 @@ chroma_collection = db.get_or_create_collection(config.vector_db_collection)
 embedding = config.embedding_model()
 
 if chroma_collection.count() == 0:
-    data = DirectoryLoader("data").load()
+    data = DirectoryLoader(config.data_path).load()
     documents = CharacterTextSplitter().split_documents(data)
     vectorstore = Chroma.from_documents(
         client=db,
@@ -25,7 +25,7 @@ else:
         embedding_function=embedding,
     )
 
-retriever = vectorstore.as_retriever()
+retriever = vectorstore.as_retriever(search_kwargs={"k": 2})
 question = config.get_question()
 docs = retriever.invoke(question)
 for doc in docs:
