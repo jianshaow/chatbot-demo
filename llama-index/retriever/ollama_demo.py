@@ -8,7 +8,7 @@ from llama_index.embeddings.ollama import OllamaEmbedding
 
 Settings.embed_model = OllamaEmbedding(
     base_url="http://host.docker.internal:11434",
-    model_name="znbang/bge:large-en-v1.5-f16",
+    model_name="nomic-embed-text:v1.5",
 )
 print("embed_model:", Settings.embed_model.model_name)
 

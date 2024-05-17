@@ -1,7 +1,9 @@
+import os
 from llama_index.llms.gemini import Gemini
 from llama_index.core.llms import ChatMessage
 
-llm = Gemini()
+model = os.environ.get("GEMINI_MODEL", "models/gemini-pro")
+llm = Gemini(model_name=model)
 
 messages = [
     ChatMessage(role="system", content="You are a pirate with a colorful personality"),

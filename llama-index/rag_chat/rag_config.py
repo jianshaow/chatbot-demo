@@ -136,8 +136,8 @@ def __gemini_config(
 
 
 def __ollama_config(
-    embeddding_model_name="znbang/bge:large-en-v1.5-f16",
-    chat_model_name="vicuna:13b-v1.5-q4_0",
+    embeddding_model_name="mxbai-embed-large:v1",
+    chat_model_name="vicuna:13b",
     data_path=DATA_PATH,
     vector_db_collection="ollama",
     defalut_question=DEFAULT_QUESTION,
