@@ -43,5 +43,5 @@ stream_complete_response = llava.stream_complete(
     image_documents=image_documents,
 )
 for r in stream_complete_response:
-    print(r.text, end="")
+    print(r.delta, end="")
 print("\n", "-" * 80, sep="")
