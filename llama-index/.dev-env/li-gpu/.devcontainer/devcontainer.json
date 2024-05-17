@@ -1,6 +1,6 @@
 {
 	"name": "LI-GPU",
-	"image": "jianshao/llamaindex-demo:0.0.8-gpu",
+	"image": "jianshao/llamaindex-demo:0.0.9-gpu",
 	"remoteEnv": {
 		"PYTHONPATH": ".",
 		"BNB_ENABLED": "true",
