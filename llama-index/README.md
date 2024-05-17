@@ -24,7 +24,7 @@ export OPENAI_API_BASE=http://host.docker.internal:8000/v1
 
 ### Build
 ~~~ shell
-export image_ver=0.0.8
+export image_ver=0.0.9
 docker build -t jianshao/llamaindex-demo:$image_ver-cpu .
 docker build -t jianshao/llamaindex-demo:$image_ver-gpu . \
        --build-arg TAG=2.2.1-gpu --build-arg REQUIREMENTS=requirements-gpu.txt
