@@ -1,6 +1,6 @@
 {
 	"name": "LC-DEV",
-	"image": "jianshao/langchain-demo:0.0.2",
+	"image": "jianshao/langchain-demo:0.0.3",
 	"remoteEnv": {
 		"PYTHONPATH": "."
 	},
