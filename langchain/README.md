@@ -16,7 +16,7 @@ pip install -r requirements.txt
 
 ### Build
 ~~~ shell
-export image_ver=0.0.2
+export image_ver=0.0.3
 docker build -t jianshao/langchain-demo:$image_ver .
 docker push jianshao/langchain-demo:$image_ver
 ~~~
