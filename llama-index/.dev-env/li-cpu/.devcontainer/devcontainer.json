@@ -3,7 +3,7 @@
 	"image": "jianshao/llamaindex-demo:0.0.9-cpu",
 	"remoteEnv": {
 		"PYTHONPATH": ".",
-		"HF_MODEL_NAME": "microsoft/phi-2",
+		"HF_MODEL": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
 		"LLAMA_INDEX_CACHE_DIR": "/home/devel/.cache/huggingface/hub"
 	},
 	"runArgs": [
