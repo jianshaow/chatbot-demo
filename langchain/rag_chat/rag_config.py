@@ -5,7 +5,7 @@ from langchain_core.language_models.base import BaseLanguageModel
 from langchain_openai import OpenAIEmbeddings
 from langchain_openai import ChatOpenAI
 from langchain_community.embeddings.ollama import OllamaEmbeddings
-from langchain_community.llms.ollama import Ollama
+from langchain_community.chat_models.ollama import ChatOllama
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_google_genai import ChatGoogleGenerativeAI
 
@@ -53,7 +53,7 @@ class RagChatConfig:
         return self.__embedding_model(model=self.embedding_model_name)
 
     def chat_model(self):
-        if self.__chat_model == Ollama:
+        if self.__chat_model == ChatOllama:
             base_url = os.environ.get(
                 "OLLAMA_BASE_URL", "http://host.docker.internal:11434"
             )
@@ -104,8 +104,8 @@ def __gemini_config(
 
 
 def __ollama_config(
-    embeddding_model_name="znbang/bge:large-en-v1.5-f16",
-    chat_model_name="vicuna:13b-v1.5-q4_0",
+    embeddding_model_name="nomic-embed-text:v1.5",
+    chat_model_name="vicuna:13b",
     data_path=DATA_PATH,
     vector_db_collection="ollama",
     defalut_question=DEFAULT_QUESTION,
@@ -113,7 +113,7 @@ def __ollama_config(
     return RagChatConfig(
         OllamaEmbeddings,
         embeddding_model_name,
-        Ollama,
+        ChatOllama,
         chat_model_name,
         data_path=data_path,
         vector_db_collection=vector_db_collection,
@@ -152,7 +152,7 @@ __config_dict = {
     ),
     "ollama_zh": __ollama_config(
         data_path=DATA_PATH_ZH,
-        embeddding_model_name="znbang/bge:large-zh-v1.5-f16",
+        embeddding_model_name="nomic-embed-text:v1.5",
         vector_db_collection="ollama_zh",
         defalut_question=DEFAULT_QUESTION_ZH,
     ),

@@ -19,7 +19,7 @@ plt.show()
 
 image_documents = load_image_urls(image_urls)
 base_url = os.environ.get("OLLAMA_API_BASE", "http://host.docker.internal:11434")
-model = os.environ.get("OLLAMA_MODEL", "llava:13b-v1.6")
+model = os.environ.get("OLLAMA_MODEL", "llava:13b")
 llava = OllamaMultiModal(base_url=base_url, model=model)
 
 print("-" * 80)

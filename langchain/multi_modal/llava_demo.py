@@ -20,7 +20,7 @@ template = HumanMessagePromptTemplate.from_template(
 prompt = ChatPromptTemplate.from_messages([template])
 
 base_url = os.environ.get("OLLAMA_API_BASE", "http://host.docker.internal:11434")
-model = os.environ.get("OLLAMA_MODEL", "llava:13b-v1.6")
+model = os.environ.get("OLLAMA_MODEL", "llava:13b")
 llm = Ollama(base_url=base_url, model=model)
 output_parser = StrOutputParser()
 chain = prompt | llm | output_parser
