@@ -241,7 +241,7 @@ __config_dict = {
     ),
     "ollama_zh": __ollama_config(
         data_path=DATA_PATH_ZH,
-        embeddding_model_name="znbang/bge:large-zh-v1.5-f16",
+        embeddding_model_name="mxbai-embed-large:v1",
         vector_db_collection="ollama_zh",
         defalut_question=DEFAULT_QUESTION_ZH,
     ),
