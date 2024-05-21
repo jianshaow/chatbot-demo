@@ -10,11 +10,11 @@ chroma_collection = db.get_or_create_collection(collection)
 vectors = chroma_collection.peek(1)
 
 result = chroma_collection.query(vectors["embeddings"][0], n_results=2)
-print("-------------------------- chroma query --------------------------")
+print("-" * 33, "chroma query", "-" * 33)
 for i in range(len(result["ids"][0])):
     print("Text:", result["documents"][0][i][:60])
     print("distance:", result["distances"][0][i])
-    print("------------------------------------------------------------------")
+    print("-" * 80)
 
 vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
 query = VectorStoreQuery(
@@ -22,9 +22,9 @@ query = VectorStoreQuery(
     similarity_top_k=2,
     mode="default",
 )
-print("----------------------- vector store query -----------------------")
+print("-" * 30, "vector store query", "-" * 30)
 result = vector_store.query(query)
 for i in range(len(result.ids)):
     print(result.nodes[i])
     print("similarity:", result.similarities[i])
-    print("------------------------------------------------------------------")
+    print("-" * 80)
