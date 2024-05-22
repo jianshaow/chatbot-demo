@@ -2,7 +2,8 @@ sentencepiece
 langchainhub
 langchain
 langchain-cli
-langchain-openai
-langchain-google-genai
-langchain-huggingface
 langchain-chroma
+langchain-openai
+langchain-community
+langchain-huggingface
+langchain-google-genai
