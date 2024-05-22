@@ -9,6 +9,7 @@ from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 Settings.embed_model = HuggingFaceEmbedding(
     "BAAI/bge-small-zh"
     # "BAAI/bge-large-zh-v1.5"
+    # "thenlper/gte-large-zh"
 )
 print("embed_model:", Settings.embed_model.model_name)
 

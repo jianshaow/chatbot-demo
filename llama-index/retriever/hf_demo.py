@@ -8,6 +8,7 @@ from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 
 Settings.embed_model = HuggingFaceEmbedding(
     # "BAAI/bge-large-en-v1.5"
+    # "mixedbread-ai/mxbai-embed-large-v1"
 )
 print("embed_model:", Settings.embed_model.model_name)
 
