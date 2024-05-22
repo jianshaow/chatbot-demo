@@ -1,3 +1,3 @@
-# lc-cpu
+# lc-gpu
 
 Dev container environment

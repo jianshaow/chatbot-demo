@@ -1,5 +1,5 @@
 {
-	"name": "LC-DEV",
+	"name": "LC-CPU",
 	"image": "jianshao/langchain-demo:0.0.3-cpu",
 	"remoteEnv": {
 		"PYTHONPATH": "."

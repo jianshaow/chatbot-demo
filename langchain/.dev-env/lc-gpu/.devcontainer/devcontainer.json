@@ -1,10 +1,12 @@
 {
-	"name": "LC-DEV",
-	"image": "jianshao/langchain-demo:0.0.2",
+	"name": "LC-GPU",
+	"image": "jianshao/langchain-demo:0.0.3-gpu",
 	"remoteEnv": {
-		"PYTHONPATH": "."
+		"PYTHONPATH": ".",
+		"BNB_ENABLED": "true"
 	},
 	"runArgs": [
+		"--gpus=all",
 		"--add-host=host.docker.internal:host-gateway"
 	],
 	"mounts": [
