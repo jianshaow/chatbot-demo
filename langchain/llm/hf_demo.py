@@ -1,16 +1,27 @@
-import os
+import os, torch
+from transformers import BitsAndBytesConfig
 from langchain_huggingface import HuggingFacePipeline
-from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.prompts import PromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 
-prompt = ChatPromptTemplate.from_messages(
-    [("system", "You are a pirate with a colorful personality."), ("user", "{input}")]
+prompt = PromptTemplate(
+    template="You are a pirate with a colorful personality. USER: {input}",
+    input_variables=["input"],
 )
 
 model_name = os.environ.get("HF_MODEL", "lmsys/vicuna-7b-v1.5")
+
+model_kwargs = {}
+if os.environ.get("BNB_ENABLED", "false") == "true":
+    quantization_config = BitsAndBytesConfig(
+        load_in_4bit=True, bnb_4bit_compute_dtype=torch.float16
+    )
+    model_kwargs["quantization_config"] = quantization_config
+
 llm = HuggingFacePipeline.from_model_id(
     model_id=model_name,
     task="text-generation",
+    model_kwargs=model_kwargs,
 )
 
 output_parser = StrOutputParser()
