@@ -6,7 +6,7 @@ from transformers import (
     BitsAndBytesConfig,
 )
 
-model_name = os.environ.get("HF_MODEL_NAME", "lmsys/vicuna-7b-v1.5")
+model_name = os.environ.get("HF_MODEL", "lmsys/vicuna-7b-v1.5")
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 
 quantization_config = None

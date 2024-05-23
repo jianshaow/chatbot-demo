@@ -1,7 +1,7 @@
 import os, sys, prompts
 from transformers import AutoTokenizer, AutoModelForCausalLM
 
-model_name = os.environ.get("HF_AWQ_MODEL_NAME", "TheBloke/vicuna-13B-v1.5-AWQ")
+model_name = os.environ.get("HF_AWQ_MODEL", "TheBloke/vicuna-13B-v1.5-AWQ")
 
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 model = AutoModelForCausalLM.from_pretrained(model_name, device_map="auto")
