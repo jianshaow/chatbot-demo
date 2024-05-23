@@ -23,6 +23,7 @@ model = AutoModelForCausalLM.from_pretrained(
 
 query_str = len(sys.argv) == 2 and sys.argv[1] or "Who are you?"
 prompt = prompts.chat_prompt(query_str)
+
 input_ids = tokenizer(
     prompt, return_tensors="pt", return_attention_mask=False
 ).input_ids.to(model.device)
@@ -33,4 +34,23 @@ tokens = model.generate(input_ids, generation_config=generation_config)
 token_ids = tokens[0][input_ids.size(1) :]
 response = tokenizer.decode(token_ids, skip_special_tokens=True)
 
+print("-" * 80)
 print(response)
+print("-" * 80)
+
+prompt = prompts.chat_prompt(
+    system_prompt="You are a pirate with a colorful personality.",
+    user_prompt="what is your name?",
+)
+
+input_ids = tokenizer(
+    prompt, return_tensors="pt", return_attention_mask=False
+).input_ids.to(model.device)
+
+tokens = model.generate(input_ids, generation_config=generation_config)
+
+token_ids = tokens[0][input_ids.size(1) :]
+response = tokenizer.decode(token_ids, skip_special_tokens=True)
+
+print(response)
+print("-" * 80)
