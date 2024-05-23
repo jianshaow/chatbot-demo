@@ -1,19 +1,19 @@
 SYSTEM_PROMPT = "A chat between a curious user and an artificial intelligence assistant. The assistant gives helpful, detailed, and polite answers to the user's questions."
 
 prompt_templates = {
-    "vicuna": "{system_prompt} USER: {{prompt}}".format(system_prompt=SYSTEM_PROMPT),
+    "vicuna": "{system_prompt} USER: {user_prompt}",
     "llama": """[INST]<<SYS>>
 {system_prompt}
 <</SYS>
 
-{{prompt}} [/INST]""".format(
-        system_prompt=SYSTEM_PROMPT
-    ),
+{user_prompt} [/INST]""",
 }
 
 
-def chat_prompt(prompt, model_type="vicuna"):
-    return prompt_templates[model_type].format(prompt=prompt)
+def chat_prompt(user_prompt, system_prompt=SYSTEM_PROMPT, model_type="vicuna"):
+    return prompt_templates[model_type].format(
+        user_prompt=user_prompt, system_prompt=system_prompt
+    )
 
 
 if __name__ == "__main__":
