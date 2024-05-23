@@ -1,4 +1,5 @@
-import os, sys, torch
+import os, sys
+from typing import List, Optional
 from langchain_core.embeddings import Embeddings
 from langchain_community.embeddings.ollama import OllamaEmbeddings
 from langchain_core.language_models.base import BaseLanguageModel
@@ -67,6 +68,20 @@ class RagChatConfig:
             return self.defalut_question
 
 
+class ListEmbeddings(GoogleGenerativeAIEmbeddings):
+
+    def embed_documents(
+        self,
+        texts: List[str],
+        task_type: Optional[str] = None,
+        titles: Optional[List[str]] = None,
+        output_dimensionality: Optional[int] = None,
+    ) -> List[List[float]]:
+        docs = super().embed_documents(texts, task_type, titles, output_dimensionality)
+        docs = [list(doc) for doc in docs]
+        return docs
+
+
 def __openai_config(
     embeddding_model_name="text-embedding-ada-002",
     chat_model_name="gpt-3.5-turbo",
@@ -93,7 +108,7 @@ def __gemini_config(
     defalut_question=DEFAULT_QUESTION,
 ):
     return RagChatConfig(
-        GoogleGenerativeAIEmbeddings,
+        ListEmbeddings,
         embeddding_model_name,
         ChatGoogleGenerativeAI,
         chat_model_name,
