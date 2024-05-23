@@ -16,7 +16,7 @@ pip install -r requirements.txt
 
 ### Build
 ~~~ shell
-export transformers_ver=4.39.3
+export transformers_ver=4.41.1
 docker build -t jianshao/transformers-demo:$transformers_ver-cpu .
 docker build -t jianshao/transformers-demo:$transformers_ver-gpu . \
        --build-arg TAG=2.2.1-gpu --build-arg REQUIREMENTS=requirements-gpu.txt
