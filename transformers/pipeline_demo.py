@@ -3,10 +3,7 @@ from transformers import pipeline
 generator = pipeline("conversational")
 
 messages = [
-    {
-        "role": "system",
-        "content": "You are a pirate with a colorful personality.",
-    },
+    {"role": "system", "content": "You are a pirate with a colorful personality."},
     {"role": "user", "content": "What is your name?"},
 ]
 
