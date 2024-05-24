@@ -6,7 +6,7 @@ from transformers import (
     BitsAndBytesConfig,
 )
 
-model_name = os.environ.get("HF_MODEL", "lmsys/vicuna-7b-v1.5")
+model_name = os.environ.get("HF_MODEL", "meta-llama/Llama-2-7b-chat-hf")
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 
 quantization_config = None
@@ -22,7 +22,7 @@ model = AutoModelForCausalLM.from_pretrained(
 )
 
 query_str = len(sys.argv) == 2 and sys.argv[1] or "Who are you?"
-prompt = prompts.chat_prompt(query_str)
+prompt = prompts.chat_prompt(query_str, model_type="llama")
 
 input_ids = tokenizer(
     prompt, return_tensors="pt", return_attention_mask=False
@@ -41,6 +41,7 @@ print("-" * 80)
 prompt = prompts.chat_prompt(
     system_prompt="You are a pirate with a colorful personality.",
     user_prompt="what is your name?",
+    model_type="llama",
 )
 
 input_ids = tokenizer(
