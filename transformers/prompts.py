@@ -4,7 +4,7 @@ SYSTEM_PROMPT = "A chat between a curious user and an artificial intelligence as
 
 prompt_templates = {
     "vicuna": "{system_prompt} USER: {user_prompt}",
-    "llama": """[INST]<<SYS>>
+    "llama": """<s> [INST] <<SYS>>
 {system_prompt}
 <</SYS>
 
@@ -19,7 +19,7 @@ def chat_prompt(user_prompt, system_prompt=SYSTEM_PROMPT, model_type="vicuna"):
 
 
 def tokenizer_prompt(
-    tokenizer: PreTrainedTokenizer, user_prompt, system_prompt=SYSTEM_PROMPT
+    tokenizer: PreTrainedTokenizer, user_prompt: str, system_prompt=SYSTEM_PROMPT
 ):
     messages = [
         {"role": "system", "content": system_prompt},
@@ -30,11 +30,14 @@ def tokenizer_prompt(
 
 
 if __name__ == "__main__":
-    import sys
+    import sys, os
 
     model_type = len(sys.argv) == 2 and sys.argv[1] or "vicuna"
+    print("-" * 80)
     print(chat_prompt("who are you?", model_type=model_type))
 
-    tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-2-7b-chat-hf")
+    model_name = os.environ.get("HF_MODEL", "meta-llama/Llama-2-7b-chat-hf")
+    tokenizer = AutoTokenizer.from_pretrained(model_name)
     print("-" * 80)
     print(tokenizer_prompt(tokenizer, "who are you?"))
+    print("-" * 80)

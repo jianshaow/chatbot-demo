@@ -1,57 +1,25 @@
-import os, sys, torch, prompts
-from transformers import (
-    AutoModelForCausalLM,
-    AutoTokenizer,
-    GenerationConfig,
-    BitsAndBytesConfig,
-)
+import os, sys, common, prompts
 
 model_name = os.environ.get("HF_MODEL", "meta-llama/Llama-2-7b-chat-hf")
-tokenizer = AutoTokenizer.from_pretrained(model_name)
-
-quantization_config = None
-if os.environ.get("BNB_ENABLED", "false") == "true":
-    quantization_config = BitsAndBytesConfig(
-        load_in_4bit=True, bnb_4bit_compute_dtype=torch.float16
-    )
-
-model = AutoModelForCausalLM.from_pretrained(
-    model_name,
-    quantization_config=quantization_config,
-    device_map="auto",
-)
+tokenizer = common.new_tokenizer(model_name)
+model = common.new_model(model_name)
 
 query_str = len(sys.argv) == 2 and sys.argv[1] or "Who are you?"
-prompt = prompts.chat_prompt(query_str, model_type="llama")
+prompt = prompts.tokenizer_prompt(tokenizer, query_str)
 
-input_ids = tokenizer(
-    prompt, return_tensors="pt", return_attention_mask=False
-).input_ids.to(model.device)
-
-generation_config = GenerationConfig.from_pretrained(model_name, max_length=1024)
-tokens = model.generate(input_ids, generation_config=generation_config)
-
-token_ids = tokens[0][input_ids.size(1) :]
-response = tokenizer.decode(token_ids, skip_special_tokens=True)
+response = common.generate(model, tokenizer, prompt)
 
 print("-" * 80)
 print(response)
-print("-" * 80)
 
-prompt = prompts.chat_prompt(
+prompt = prompts.tokenizer_prompt(
+    tokenizer,
     system_prompt="You are a pirate with a colorful personality.",
     user_prompt="what is your name?",
-    model_type="llama",
 )
 
-input_ids = tokenizer(
-    prompt, return_tensors="pt", return_attention_mask=False
-).input_ids.to(model.device)
+response = common.generate(model, tokenizer, prompt)
 
-tokens = model.generate(input_ids, generation_config=generation_config)
-
-token_ids = tokens[0][input_ids.size(1) :]
-response = tokenizer.decode(token_ids, skip_special_tokens=True)
-
+print("-" * 80)
 print(response)
 print("-" * 80)
