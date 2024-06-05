@@ -1,7 +1,6 @@
 import os, sys, common, prompts
 
-model_name = os.environ.get("HF_AWQ_MODEL", "TheBloke/vicuna-13B-v1.5-AWQ")
-
+model_name = os.environ.get("HF_AWQ_MODEL", "TheBloke/vicuna-7B-v1.5-AWQ")
 tokenizer = common.new_tokenizer(model_name)
 model = common.new_model(model_name, bnb_enabled=False)
 
