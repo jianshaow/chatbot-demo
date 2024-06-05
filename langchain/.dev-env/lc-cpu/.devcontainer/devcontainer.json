@@ -1,6 +1,6 @@
 {
 	"name": "LC-CPU",
-	"image": "jianshao/langchain-demo:0.0.3-cpu",
+	"image": "jianshao/langchain-demo:0.2.2-cpu",
 	"remoteEnv": {
 		"PYTHONPATH": "."
 	},

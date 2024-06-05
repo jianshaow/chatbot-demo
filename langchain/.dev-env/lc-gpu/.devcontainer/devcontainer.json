@@ -1,6 +1,6 @@
 {
 	"name": "LC-GPU",
-	"image": "jianshao/langchain-demo:0.0.3-gpu",
+	"image": "jianshao/langchain-demo:0.2.2-gpu",
 	"remoteEnv": {
 		"PYTHONPATH": ".",
 		"BNB_ENABLED": "true"

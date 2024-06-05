@@ -1,6 +1,6 @@
 {
 	"name": "LI-CPU",
-	"image": "jianshao/llamaindex-demo:0.0.9-cpu",
+	"image": "jianshao/llamaindex-demo:0.10.43-cpu",
 	"remoteEnv": {
 		"PYTHONPATH": ".",
 		"HF_MODEL": "google/gemma-1.1-2b-it",
