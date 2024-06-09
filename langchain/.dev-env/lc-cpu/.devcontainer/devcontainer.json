@@ -30,8 +30,7 @@
 				"ms-python.python",
 				"ms-python.vscode-pylance",
 				"ms-python.black-formatter",
-				"ms-python.isort",
-				"alphabotsec.vscode-eclipse-keybindings"
+				"ms-python.isort"
 			]
 		}
 	}
