@@ -25,10 +25,11 @@ export OPENAI_API_BASE=http://host.docker.internal:8000/v1
 ### Build
 ~~~ shell
 export llamaindex_ver=0.10.43
+export torch_ver=2.3.1
 docker build -t jianshao/llamaindex-demo:$llamaindex_ver-cpu . \
-       --build-arg TAG=2.3.0-cpu
+       --build-arg TAG=$torch_ver-cpu
 docker build -t jianshao/llamaindex-demo:$llamaindex_ver-gpu . \
-       --build-arg TAG=2.3.0-gpu --build-arg REQUIREMENTS=requirements-gpu.txt
+       --build-arg TAG=$torch_ver-gpu --build-arg REQUIREMENTS=requirements-gpu.txt
 docker push jianshao/llamaindex-demo:$llamaindex_ver-cpu
 docker push jianshao/llamaindex-demo:$llamaindex_ver-gpu
 ~~~
