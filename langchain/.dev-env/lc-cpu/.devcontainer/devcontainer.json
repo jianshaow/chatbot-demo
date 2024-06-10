@@ -2,7 +2,8 @@
 	"name": "LC-CPU",
 	"image": "jianshao/langchain-demo:0.2.3-cpu",
 	"remoteEnv": {
-		"PYTHONPATH": "."
+		"PYTHONPATH": ".",
+		"HF_MODEL": "google/gemma-1.1-2b-it"
 	},
 	"runArgs": [
 		"--add-host=host.docker.internal:host-gateway"
