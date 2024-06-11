@@ -9,7 +9,7 @@ if os.environ.get("BNB_ENABLED", "false") == "true":
     quantization_config = BitsAndBytesConfig(
         load_in_4bit=True, bnb_4bit_compute_dtype=torch.float16
     )
-    model_kwargs.update({"quantization_config": quantization_config})
+    model_kwargs["quantization_config"] = quantization_config
 
 llm = HuggingFaceLLM(
     context_window=4096,
