@@ -1,5 +1,5 @@
 {
-	"name": "LC-CPU",
+	"name": "LLM-API",
 	"image": "jianshao/llm-api-demo:0.0.1",
 	"remoteEnv": {
 		"PYTHONPATH": "."
