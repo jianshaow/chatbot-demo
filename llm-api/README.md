@@ -17,8 +17,7 @@ pip install -r requirements.txt
 ### Build
 ~~~ shell
 export images_ver=0.0.1
-docker build -t jianshao/llm-api-demo:$images_ver . \
-       --build-arg TAG=2.3.0-cpu
+docker build -t jianshao/llm-api-demo:$images_ver .
 docker push jianshao/llm-api-demo:$images_ver
 ~~~
 ### Test
