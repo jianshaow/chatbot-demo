@@ -1,0 +1,32 @@
+{
+	"name": "LC-CPU",
+	"image": "jianshao/llm-api-demo:0.0.1",
+	"remoteEnv": {
+		"PYTHONPATH": "."
+	},
+	"runArgs": [
+		"--add-host=host.docker.internal:host-gateway"
+	],
+	"mounts": [
+		{
+			"source": "${localEnv:HOME}/.config",
+			"target": "/home/devel/.config",
+			"type": "bind"
+		},
+		{
+			"source": "${localEnv:HOME}/.ssh",
+			"target": "/home/devel/.ssh",
+			"type": "bind"
+		}
+	],
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"ms-python.python",
+				"ms-python.vscode-pylance",
+				"ms-python.black-formatter",
+				"ms-python.isort"
+			]
+		}
+	}
+}
