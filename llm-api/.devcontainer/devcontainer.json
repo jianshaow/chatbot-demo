@@ -2,7 +2,8 @@
 	"name": "LLM-API",
 	"image": "jianshao/llm-api-demo:0.0.1",
 	"remoteEnv": {
-		"PYTHONPATH": "."
+		"PYTHONPATH": ".",
+		"OLLAMA_HOST": "host.docker.internal"
 	},
 	"runArgs": [
 		"--add-host=host.docker.internal:host-gateway"
