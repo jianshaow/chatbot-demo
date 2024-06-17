@@ -2,7 +2,7 @@ import os
 from llama_index.llms.gemini import Gemini
 from llama_index.core.llms import ChatMessage
 
-model = os.environ.get("GEMINI_MODEL", "models/gemini-pro")
+model = os.environ.get("GEMINI_MODEL", "models/gemini-1.5-flash")
 llm = Gemini(model_name=model)
 
 messages = [
