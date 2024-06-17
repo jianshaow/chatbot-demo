@@ -1,4 +1,4 @@
-import sys
+import os, sys
 from llama_index.core import (
     Settings,
     VectorStoreIndex,
@@ -6,11 +6,8 @@ from llama_index.core import (
 )
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 
-Settings.embed_model = HuggingFaceEmbedding(
-    "BAAI/bge-small-zh"
-    # "BAAI/bge-large-zh-v1.5"
-    # "thenlper/gte-large-zh"
-)
+model_name = os.environ.get("HF_MODEL", "BAAI/bge-small-zh")
+Settings.embed_model = HuggingFaceEmbedding(model_name)
 print("embed_model:", Settings.embed_model.model_name)
 
 documents = SimpleDirectoryReader("data_zh").load_data(show_progress=True)

@@ -1,4 +1,4 @@
-import sys
+import os, sys
 from llama_index.core import (
     Settings,
     VectorStoreIndex,
@@ -6,10 +6,9 @@ from llama_index.core import (
 )
 from llama_index.embeddings.ollama import OllamaEmbedding
 
-Settings.embed_model = OllamaEmbedding(
-    base_url="http://host.docker.internal:11434",
-    model_name="nomic-embed-text:v1.5",
-)
+base_url = os.environ.get("OLLAMA_BASE_URL", "http://host.docker.internal:11434")
+model_name = os.environ.get("OLLAMA_MODEL", "nomic-embed-text:v1.5")
+Settings.embed_model = OllamaEmbedding(base_url=base_url, model_name=model_name)
 print("embed_model:", Settings.embed_model.model_name)
 
 documents = SimpleDirectoryReader("data_zh").load_data(show_progress=True)
