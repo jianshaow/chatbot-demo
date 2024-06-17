@@ -24,5 +24,5 @@ docker push jianshao/llm-api-demo:$images_ver
 ~~~ shell
 docker run --name llm-api-demo -it --rm --gpus all \
            -v $HOME/.cache:/home/devel/.cache -v $PWD:/workspaces/llm-api \
-           jianshao/llm-api-demo:$langchain_ver bash
+           jianshao/llm-api-demo:$images_ver bash
 ~~~
