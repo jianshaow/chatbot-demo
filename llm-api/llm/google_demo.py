@@ -6,5 +6,5 @@ response = model.generate_content("Hello, how are you today?", stream=True)
 
 print("-" * 80)
 for chunk in response:
-    print(chunk.text)
+    print(chunk.text, end="")
 print("_" * 80)
