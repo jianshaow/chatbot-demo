@@ -102,7 +102,7 @@ def __openai_config(
 
 def __gemini_config(
     embeddding_model_name="models/embedding-001",
-    chat_model_name="models/gemini-pro",
+    chat_model_name="models/gemini-1.5-flash",
     data_path=DATA_PATH,
     vector_db_collection="gemini",
     defalut_question=DEFAULT_QUESTION,
@@ -120,7 +120,7 @@ def __gemini_config(
 
 def __ollama_config(
     embeddding_model_name="nomic-embed-text:v1.5",
-    chat_model_name="vicuna:13b",
+    chat_model_name="llama3:8b",
     data_path=DATA_PATH,
     vector_db_collection="ollama",
     defalut_question=DEFAULT_QUESTION,
