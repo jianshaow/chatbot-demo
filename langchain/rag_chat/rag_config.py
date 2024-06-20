@@ -1,5 +1,4 @@
 import os, sys
-from typing import List, Optional
 from langchain_core.embeddings import Embeddings
 from langchain_community.embeddings.ollama import OllamaEmbeddings
 from langchain_core.language_models.base import BaseLanguageModel
