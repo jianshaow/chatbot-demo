@@ -25,7 +25,9 @@ else:
         embedding_function=embedding,
     )
 
-retriever = vectorstore.as_retriever(search_kwargs={"k": 2})
+retriever = vectorstore.as_retriever(
+    search_kwargs={"k": 2},
+)
 question = config.get_question()
 docs = retriever.invoke(question)
 for doc in docs:

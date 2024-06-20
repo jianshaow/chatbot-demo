@@ -26,7 +26,9 @@ if chroma_collection.count() == 0:
 else:
     index = VectorStoreIndex.from_vector_store(vector_store)
 
-retriever = index.as_retriever()
+retriever = index.as_retriever(
+    # similarity_top_k=4,
+)
 question = config.get_question()
 nodes = retriever.retrieve(question)
 for node in nodes:
