@@ -23,6 +23,11 @@
 			"source": "${localEnv:HOME}/.ssh",
 			"target": "/home/devel/.ssh",
 			"type": "bind"
+		},
+		{
+			"source": "${localEnv:HOME}/nltk_data",
+			"target": "/home/devel/nltk_data",
+			"type": "bind"
 		}
 	],
 	"customizations": {
