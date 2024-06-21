@@ -7,6 +7,9 @@ prompt = ChatPromptTemplate.from_messages(
 )
 
 llm = ChatOpenAI()
+print("-" * 80)
+print("chat model:", llm.model_name)
+
 output_parser = StrOutputParser()
 chain = prompt | llm | output_parser
 

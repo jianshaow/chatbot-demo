@@ -23,6 +23,8 @@ llm = HuggingFacePipeline.from_model_id(
     task="text-generation",
     model_kwargs=model_kwargs,
 )
+print("-" * 80)
+print("chat model:", model_name)
 
 output_parser = StrOutputParser()
 chain = prompt | llm | output_parser

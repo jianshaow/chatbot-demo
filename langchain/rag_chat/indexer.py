@@ -7,7 +7,9 @@ config = rag_config.get_config()
 
 db = chromadb.PersistentClient(path=config.vector_db_path)
 chroma_collection = db.get_or_create_collection(config.vector_db_collection)
-embedding = config.embedding_model()
+embedding = config.embed_model()
+print("-" * 80)
+print("embed_model:", embedding.model)
 
 if chroma_collection.count() == 0:
     data = DirectoryLoader(config.data_path).load()
@@ -33,3 +35,4 @@ docs = retriever.invoke(question)
 for doc in docs:
     print("-" * 80)
     print(doc.page_content[:80])
+print("-" * 80, sep="")

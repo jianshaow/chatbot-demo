@@ -19,8 +19,11 @@ template = HumanMessagePromptTemplate.from_template(
 )
 prompt = ChatPromptTemplate.from_messages([template])
 
-model_name = os.environ.get("OPENAI_MODEL", "gpt-4-vision-preview")
+model_name = os.environ.get("OPENAI_MM_MODEL", "gpt-4-vision-preview")
 llm = ChatOpenAI(model=model_name)
+print("-" * 80)
+print("multi-modal model:", model_name)
+
 output_parser = StrOutputParser()
 chain = prompt | llm | output_parser
 

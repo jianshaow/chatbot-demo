@@ -23,8 +23,8 @@ DEFAULT_QUESTION_ZH = "地球发动机都安装在哪里？"
 class RagChatConfig:
     def __init__(
         self,
-        embedding_model: Type[Embeddings],
-        embedding_model_name: str,
+        embed_model: Type[Embeddings],
+        embed_model_name: str,
         chat_model: Type[BaseLanguageModel],
         chat_model_name: str,
         bnb_quantized: bool = True,
@@ -32,8 +32,8 @@ class RagChatConfig:
         vector_db_collection: str = "hface",
         defalut_question: str = DEFAULT_QUESTION,
     ):
-        self.__embedding_model = embedding_model
-        self.embedding_model_name = embedding_model_name
+        self.__embed_model = embed_model
+        self.embed_model_name = embed_model_name
         self.__chat_model = chat_model
         self.chat_model_name = chat_model_name
         self.bnb_quantized = bnb_quantized
@@ -42,15 +42,13 @@ class RagChatConfig:
         self.vector_db_collection = vector_db_collection
         self.defalut_question = defalut_question
 
-    def embedding_model(self):
-        if self.__embedding_model == OllamaEmbeddings:
+    def embed_model(self):
+        if self.__embed_model == OllamaEmbeddings:
             base_url = os.environ.get(
                 "OLLAMA_BASE_URL", "http://host.docker.internal:11434"
             )
-            return self.__embedding_model(
-                base_url=base_url, model=self.embedding_model_name
-            )
-        return self.__embedding_model(model=self.embedding_model_name)
+            return self.__embed_model(base_url=base_url, model=self.embed_model_name)
+        return self.__embed_model(model=self.embed_model_name)
 
     def chat_model(self):
         if self.__chat_model == ChatOllama:
@@ -68,15 +66,15 @@ class RagChatConfig:
 
 
 def __openai_config(
-    embeddding_model_name="text-embedding-ada-002",
-    chat_model_name="gpt-3.5-turbo",
+    embed_model_name=os.environ.get("OPENAI_EMBED_MODEL", "text-embedding-ada-002"),
+    chat_model_name=os.environ.get("OPENAI_CHAT_MODEL", "gpt-3.5-turbo"),
     data_path=DATA_PATH,
     vector_db_collection="openai",
     defalut_question=DEFAULT_QUESTION,
 ):
     return RagChatConfig(
         OpenAIEmbeddings,
-        embeddding_model_name,
+        embed_model_name,
         ChatOpenAI,
         chat_model_name,
         data_path=data_path,
@@ -86,15 +84,15 @@ def __openai_config(
 
 
 def __gemini_config(
-    embeddding_model_name="models/embedding-001",
-    chat_model_name="models/gemini-1.5-flash",
+    embed_model_name=os.environ.get("GEMINI_EMBED_MODEL", "models/embedding-001"),
+    chat_model_name=os.environ.get("GEMINI_CHAT_MODEL", "models/gemini-1.5-flash"),
     data_path=DATA_PATH,
     vector_db_collection="gemini",
     defalut_question=DEFAULT_QUESTION,
 ):
     return RagChatConfig(
         GoogleGenerativeAIEmbeddings,
-        embeddding_model_name,
+        embed_model_name,
         ChatGoogleGenerativeAI,
         chat_model_name,
         data_path=data_path,
@@ -104,15 +102,15 @@ def __gemini_config(
 
 
 def __ollama_config(
-    embeddding_model_name="nomic-embed-text:v1.5",
-    chat_model_name="vicuna:13b",
+    embed_model_name=os.environ.get("OLLAMA_EMBED_MODEL", "nomic-embed-text:v1.5"),
+    chat_model_name=os.environ.get("OLLAMA_CHAT_MODEL", "vicuna:13b"),
     data_path=DATA_PATH,
     vector_db_collection="ollama",
     defalut_question=DEFAULT_QUESTION,
 ):
     return RagChatConfig(
         OllamaEmbeddings,
-        embeddding_model_name,
+        embed_model_name,
         ChatOllama,
         chat_model_name,
         data_path=data_path,
@@ -152,14 +150,13 @@ __config_dict = {
     ),
     "ollama_zh": __ollama_config(
         data_path=DATA_PATH_ZH,
-        embeddding_model_name="nomic-embed-text:v1.5",
         vector_db_collection="ollama_zh",
         defalut_question=DEFAULT_QUESTION_ZH,
     ),
 }
 
 
-def get_config(name="gemini"):
+def get_config(name="ollama"):
     if len(sys.argv) >= 2:
         return __config_dict[sys.argv[1]]
     else:

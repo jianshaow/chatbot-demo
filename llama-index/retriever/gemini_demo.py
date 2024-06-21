@@ -1,4 +1,4 @@
-import sys
+import os, sys
 from llama_index.core import (
     Settings,
     VectorStoreIndex,
@@ -6,8 +6,10 @@ from llama_index.core import (
 )
 from llama_index.embeddings.gemini import GeminiEmbedding
 
-Settings.embed_model = GeminiEmbedding()
-print("embed_model:", Settings.embed_model.model_name)
+model_name = os.environ.get("GEMINI_EMBED_MODEL", "models/embedding-001")
+Settings.embed_model = GeminiEmbedding(model_name=model_name)
+print("-" * 80)
+print("embed model:", model_name)
 
 documents = SimpleDirectoryReader("data").load_data(show_progress=True)
 index = VectorStoreIndex.from_documents(

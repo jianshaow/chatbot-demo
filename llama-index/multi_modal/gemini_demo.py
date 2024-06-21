@@ -18,8 +18,10 @@ plt.imshow(img)
 plt.show()
 
 image_documents = load_image_urls(image_urls)
-model_name = os.environ.get("GEMINI_MODEL", "models/gemini-pro-vision")
+model_name = os.environ.get("GEMINI_MM_MODEL", "models/gemini-pro-vision")
 gemini_pro = GeminiMultiModal(model_name=model_name)
+print("-" * 80)
+print("multi-modal model:", model_name)
 
 print("-" * 80)
 # prompt = "Identify the city where this photo was taken."

@@ -18,8 +18,10 @@ plt.imshow(img)
 plt.show()
 
 image_documents = load_image_urls(image_urls)
-model_name = os.environ.get("OPENAI_MODEL", "gpt-4-vision-preview")
+model_name = os.environ.get("OPENAI_MM_MODEL", "gpt-4-vision-preview")
 mm_model = OpenAIMultiModal(model=model_name)
+print("-" * 80)
+print("multi-modal model:", model_name)
 
 print("-" * 80)
 prompt = "Identify the city where this photo was taken."

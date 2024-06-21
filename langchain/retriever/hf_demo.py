@@ -10,10 +10,13 @@ data = loader.load()
 text_splitter = CharacterTextSplitter()
 documents = text_splitter.split_documents(data)
 
-model = os.environ.get("HF_MODEL", "mixedbread-ai/mxbai-embed-large-v1")
+model_name = os.environ.get("HF_EMBED_MODEL", "BAAI/bge-small-en")
 vectorstore = Chroma.from_documents(
-    documents=documents, embedding=HuggingFaceEmbeddings(model_name=model)
+    documents=documents, embedding=HuggingFaceEmbeddings(model_name=model_name)
 )
+print("-" * 80)
+print("embed model:", model_name)
+
 question = len(sys.argv) == 2 and sys.argv[1] or "What did the author do growing up?"
 retriever = vectorstore.as_retriever()
 docs = retriever.invoke(question)

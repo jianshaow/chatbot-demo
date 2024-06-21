@@ -24,8 +24,8 @@ DEFAULT_QUESTION_ZH = "地球发动机都安装在哪里？"
 class RagChatConfig:
     def __init__(
         self,
-        embedding_model: Type[BaseEmbedding],
-        embedding_model_name: str,
+        embed_model: Type[BaseEmbedding],
+        embed_model_name: str,
         chat_model: Type[LLM],
         chat_model_name: str,
         bnb_quantized: bool = True,
@@ -33,8 +33,8 @@ class RagChatConfig:
         vector_db_collection: str = "hface",
         defalut_question: str = DEFAULT_QUESTION,
     ):
-        self.__embedding_model = embedding_model
-        self.embedding_model_name = embedding_model_name
+        self.__embed_model = embed_model
+        self.embed_model_name = embed_model_name
         self.__chat_model = chat_model
         self.chat_model_name = chat_model_name
         self.bnb_quantized = bnb_quantized
@@ -43,18 +43,18 @@ class RagChatConfig:
         self.vector_db_collection = vector_db_collection
         self.defalut_question = defalut_question
 
-    def embedding_model(self):
-        if self.__embedding_model == OllamaEmbedding:
+    def embed_model(self):
+        if self.__embed_model == OllamaEmbedding:
             base_url = os.environ.get(
                 "OLLAMA_BASE_URL", "http://host.docker.internal:11434"
             )
-            return self.__embedding_model(
-                base_url=base_url, model_name=self.embedding_model_name
+            return self.__embed_model(
+                base_url=base_url, model_name=self.embed_model_name
             )
-        if self.__embedding_model == OpenAIEmbedding:
-            return self.__embedding_model(model=self.embedding_model_name)
+        if self.__embed_model == OpenAIEmbedding:
+            return self.__embed_model(model=self.embed_model_name)
 
-        return self.__embedding_model(model_name=self.embedding_model_name)
+        return self.__embed_model(model_name=self.embed_model_name)
 
     def chat_model(self):
         if self.__chat_model == HuggingFaceLLM:
@@ -100,15 +100,15 @@ class RagChatConfig:
 
 
 def __openai_config(
-    embeddding_model_name="text-embedding-ada-002",
-    chat_model_name="gpt-3.5-turbo",
+    embed_model_name=os.environ.get("OPENAI_EMBED_MODEL", "text-embedding-ada-002"),
+    chat_model_name=os.environ.get("OPENAI_CHAT_MODEL", "gpt-3.5-turbo"),
     data_path=DATA_PATH,
     vector_db_collection="openai",
     defalut_question=DEFAULT_QUESTION,
 ):
     return RagChatConfig(
         OpenAIEmbedding,
-        embeddding_model_name,
+        embed_model_name,
         OpenAI,
         chat_model_name,
         data_path=data_path,
@@ -118,15 +118,15 @@ def __openai_config(
 
 
 def __gemini_config(
-    embeddding_model_name="models/embedding-001",
-    chat_model_name="models/gemini-pro",
+    embed_model_name=os.environ.get("GEMINI_EMBED_MODEL", "models/embedding-001"),
+    chat_model_name=os.environ.get("GEMINI_CHAT_MODEL", "models/gemini-1.5-flash"),
     data_path=DATA_PATH,
     vector_db_collection="gemini",
     defalut_question=DEFAULT_QUESTION,
 ):
     return RagChatConfig(
         GeminiEmbedding,
-        embeddding_model_name,
+        embed_model_name,
         Gemini,
         chat_model_name,
         data_path=data_path,
@@ -136,15 +136,15 @@ def __gemini_config(
 
 
 def __ollama_config(
-    embeddding_model_name="nomic-embed-text:v1.5",
-    chat_model_name="vicuna:13b",
+    embed_model_name=os.environ.get("OLLAMA_EMBED_MODEL", "nomic-embed-text:v1.5"),
+    chat_model_name=os.environ.get("OLLAMA_CHAT_MODEL", "vicuna:13b"),
     data_path=DATA_PATH,
     vector_db_collection="ollama",
     defalut_question=DEFAULT_QUESTION,
 ):
     return RagChatConfig(
         OllamaEmbedding,
-        embeddding_model_name,
+        embed_model_name,
         Ollama,
         chat_model_name,
         data_path=data_path,
@@ -154,7 +154,7 @@ def __ollama_config(
 
 
 def __hf_config(
-    embeddding_model_name="BAAI/bge-small-en",
+    embed_model_name="BAAI/bge-small-en",
     chat_model_name="lmsys/vicuna-7b-v1.5",
     bnb_quantized=True,
     data_path=DATA_PATH,
@@ -163,7 +163,7 @@ def __hf_config(
 ):
     return RagChatConfig(
         HuggingFaceEmbedding,
-        embeddding_model_name,
+        embed_model_name,
         HuggingFaceLLM,
         chat_model_name,
         bnb_quantized=bnb_quantized,
@@ -241,7 +241,7 @@ __config_dict = {
     ),
     "ollama_zh": __ollama_config(
         data_path=DATA_PATH_ZH,
-        embeddding_model_name="nomic-embed-text:v1.5",
+        embed_model_name="nomic-embed-text:v1.5",
         vector_db_collection="ollama_zh",
         defalut_question=DEFAULT_QUESTION_ZH,
     ),
@@ -253,25 +253,25 @@ __config_dict = {
     ),
     "hf_zh": __hf_config(
         data_path=DATA_PATH_ZH,
-        embeddding_model_name="BAAI/bge-small-zh",
+        embed_model_name="BAAI/bge-small-zh",
         vector_db_collection="hface_zh",
         defalut_question=DEFAULT_QUESTION_ZH,
     ),
     "hf_large": __hf_config(
-        embeddding_model_name="BAAI/bge-large-en-v1.5",
+        embed_model_name="BAAI/bge-large-en-v1.5",
         chat_model_name="TheBloke/vicuna-13B-v1.5-AWQ",
         bnb_quantized=False,
         vector_db_collection="hface_large",
     ),
     "hf_large_en": __hf_config(
-        embeddding_model_name="BAAI/bge-large-en-v1.5",
+        embed_model_name="BAAI/bge-large-en-v1.5",
         chat_model_name="TheBloke/vicuna-13B-v1.5-AWQ",
         bnb_quantized=False,
         vector_db_collection="hface_large_en",
         defalut_question=DEFAULT_QUESTION_EN,
     ),
     "hf_large_zh": __hf_config(
-        embeddding_model_name="BAAI/bge-large-zh-v1.5",
+        embed_model_name="BAAI/bge-large-zh-v1.5",
         chat_model_name="TheBloke/vicuna-13B-v1.5-AWQ",
         bnb_quantized=False,
         data_path=DATA_PATH_ZH,
@@ -285,7 +285,7 @@ __config_dict = {
 }
 
 
-def get_config(name="gemini"):
+def get_config(name="ollama"):
     if len(sys.argv) >= 2:
         return __config_dict[sys.argv[1]]
     else:

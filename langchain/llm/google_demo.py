@@ -7,8 +7,11 @@ prompt = ChatPromptTemplate.from_messages(
     [("system", "You are a pirate with a colorful personality."), ("user", "{input}")]
 )
 
-model = os.environ.get("GEMINI_MODEL", "models/gemini-1.5-flash")
-llm = ChatGoogleGenerativeAI(model=model)
+model_name = os.environ.get("GEMINI_MODEL", "models/gemini-1.5-flash")
+llm = ChatGoogleGenerativeAI(model=model_name)
+print("-" * 80)
+print("chat model:", model_name)
+
 output_parser = StrOutputParser()
 chain = prompt | llm | output_parser
 

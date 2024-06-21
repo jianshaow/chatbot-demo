@@ -2,7 +2,7 @@ import os, torch
 from transformers import BitsAndBytesConfig
 from llama_index.llms.huggingface import HuggingFaceLLM
 
-model_name = os.environ.get("HF_MODEL", "lmsys/vicuna-7b-v1.5")
+model_name = os.environ.get("HF_CHAT_MODEL", "lmsys/vicuna-7b-v1.5")
 
 model_kwargs = {}
 if os.environ.get("BNB_ENABLED", "false") == "true":
@@ -21,6 +21,8 @@ llm = HuggingFaceLLM(
     system_prompt="You are a pirate with a colorful personality.",
     query_wrapper_prompt="USER: {query_str}",
 )
+print("-" * 80)
+print("chat model:", model_name)
 
 print("-" * 80)
 resp = llm.stream_complete("What is your name?")

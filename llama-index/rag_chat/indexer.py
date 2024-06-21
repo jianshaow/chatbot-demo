@@ -12,8 +12,9 @@ config = rag_config.get_config()
 db = chromadb.PersistentClient(path=config.vector_db_path)
 chroma_collection = db.get_or_create_collection(config.vector_db_collection)
 vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
-Settings.embed_model = config.embedding_model()
-print("embed_model:", Settings.embed_model.model_name)
+Settings.embed_model = config.embed_model()
+print("-" * 80)
+print("embed model:", Settings.embed_model.model_name)
 
 if chroma_collection.count() == 0:
     documents = SimpleDirectoryReader(config.data_path).load_data(show_progress=True)
@@ -31,5 +32,7 @@ retriever = index.as_retriever(
 )
 question = config.get_question()
 nodes = retriever.retrieve(question)
+print("-" * 80)
 for node in nodes:
     print(node)
+print("-" * 80, sep="")

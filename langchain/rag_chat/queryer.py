@@ -8,8 +8,11 @@ from langchain_core.output_parsers import StrOutputParser
 
 config = rag_config.get_config()
 
-embedding = config.embedding_model()
+embedding = config.embed_model()
 llm = config.chat_model()
+print("-" * 80)
+print("embed_model:", embedding.model)
+print("chat model:", llm.model)
 
 db = chromadb.PersistentClient(path=config.vector_db_path)
 chroma_collection = db.get_or_create_collection(config.vector_db_collection)

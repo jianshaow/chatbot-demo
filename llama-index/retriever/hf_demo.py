@@ -6,9 +6,10 @@ from llama_index.core import (
 )
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 
-model_name = os.environ.get("HF_MODEL", "BAAI/bge-small-en")
+model_name = os.environ.get("HF_EMBED_MODEL", "BAAI/bge-small-en")
 Settings.embed_model = HuggingFaceEmbedding(model_name)
-print("embed_model:", Settings.embed_model.model_name)
+print("-" * 80)
+print("embed model:", model_name)
 
 documents = SimpleDirectoryReader("data").load_data(show_progress=True)
 index = VectorStoreIndex.from_documents(
