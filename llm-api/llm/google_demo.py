@@ -1,6 +1,8 @@
 import os, google.generativeai as genai
 
-model_name = os.environ.get("GEMINI_MODEL", "models/gemini-1.5-flash")
+model_name = os.environ.get("GEMINI_CHAT_MODEL", "models/gemini-1.5-flash")
+print("-" * 80)
+print("chat model:", model_name)
 model = genai.GenerativeModel(
     model_name, system_instruction="You are a pirate with a colorful personality."
 )

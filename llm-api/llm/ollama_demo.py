@@ -1,8 +1,10 @@
 import os, ollama
 
-model = os.environ.get("OLLAMA_MODEL", "llama3:8b")
+model_name = os.environ.get("OLLAMA_CHAT_MODEL", "vicuna:13b")
+print("-" * 80)
+print("chat model:", model_name)
 response = ollama.chat(
-    model=model,
+    model=model_name,
     messages=[
         {"role": "system", "content": "You are a pirate with a colorful personality."},
         {"role": "user", "content": "What is your name?"},

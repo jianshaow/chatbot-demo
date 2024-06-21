@@ -1,8 +1,12 @@
+import os
 from openai import OpenAI
 
 client = OpenAI()
+model_name = os.environ.get("OPENAI_CHAT_MODEL", "gpt-3.5-turbo")
+print("-" * 80)
+print("chat model:", model_name)
 stream = client.chat.completions.create(
-    model="gpt-3.5-turbo",
+    model=model_name,
     messages=[
         {"role": "system", "content": "You are a pirate with a colorful personality."},
         {"role": "user", "content": "What is your name?"},
