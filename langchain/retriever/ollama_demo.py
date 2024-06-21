@@ -17,7 +17,9 @@ vectorstore = Chroma.from_documents(
     documents=documents, embedding=OllamaEmbeddings(base_url=base_url, model=model)
 )
 question = len(sys.argv) == 2 and sys.argv[1] or "What did the author do growing up?"
-retriever = vectorstore.as_retriever()
+retriever = vectorstore.as_retriever(
+    # search_kwargs={"k": 2},
+)
 docs = retriever.invoke(question)
 for doc in docs:
     print("-" * 80)
