@@ -4,7 +4,7 @@ from llama_index.vector_stores.chroma import ChromaVectorStore
 
 path = os.environ.get("CHROMA_DB_DIR", "chroma")
 db = chromadb.PersistentClient(path=path)
-collection = len(sys.argv) == 2 and sys.argv[1] or "hface"
+collection = len(sys.argv) == 2 and sys.argv[1] or "ollama"
 chroma_collection = db.get_or_create_collection(collection)
 
 vectors = chroma_collection.peek(1)

@@ -4,7 +4,7 @@ path = os.environ.get("CHROMA_DB_DIR", "chroma")
 db = chromadb.PersistentClient(path=path)
 collections = db.list_collections()
 print("collections size:", len(collections))
-print("===================")
+print("=" * 80)
 for collection in collections:
     print(collection)
     count = collection.count()
@@ -13,4 +13,4 @@ for collection in collections:
     for embeddings in vectors["embeddings"]:
         print("embeddings dimension:", len(embeddings))
         print(embeddings[:5])
-    print("-------------------")
+    print("-" * 80)
