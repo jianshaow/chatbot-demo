@@ -3,8 +3,9 @@
 	"image": "jianshao/llamaindex-demo:0.10.43-gpu",
 	"remoteEnv": {
 		"PYTHONPATH": ".",
-		"BNB_ENABLED": "true",
-		"LLAMA_INDEX_CACHE_DIR": "/home/devel/.cache/huggingface/hub"
+		"OLLAMA_BASE_URL": "http://host.docker.internal:11434",
+		"LLAMA_INDEX_CACHE_DIR": "/home/devel/.cache/huggingface/hub",
+		"BNB_ENABLED": "true"
 	},
 	"runArgs": [
 		"--gpus=all",

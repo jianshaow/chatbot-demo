@@ -2,8 +2,8 @@ import os
 from llama_index.llms.ollama import Ollama
 from llama_index.core.llms import ChatMessage
 
-base_url = os.environ.get("OLLAMA_BASE_URL", "http://host.docker.internal:11434")
-model = os.environ.get("OLLAMA_CHAT_MODEL", "vicuna:13b")
+base_url = os.environ.get("OLLAMA_BASE_URL", "http://localhost:11434")
+model = os.environ.get("OLLAMA_CHAT_MODEL", "vicuna:7b")
 llm = Ollama(base_url=base_url, model=model)
 print("-" * 80)
 print("chat model:", model)
