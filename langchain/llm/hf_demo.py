@@ -9,7 +9,7 @@ prompt = PromptTemplate(
     input_variables=["input"],
 )
 
-model_name = os.environ.get("HF_MODEL", "lmsys/vicuna-7b-v1.5")
+model_name = os.environ.get("HF_CHAT_MODEL", "lmsys/vicuna-7b-v1.5")
 
 model_kwargs = {}
 if os.environ.get("BNB_ENABLED", "false") == "true":

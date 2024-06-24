@@ -4,7 +4,7 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 
 base_url = os.environ.get("OLLAMA_BASE_URL", "http://host.docker.internal:11434")
-model_name = os.environ.get("OLLAMA_MODEL", "vicuna:13b")
+model_name = os.environ.get("OLLAMA_CHAT_MODEL", "vicuna:13b")
 llm = ChatOllama(base_url=base_url, model=model_name)
 print("-" * 80)
 print("chat model:", model_name)

@@ -3,7 +3,7 @@ from langchain_chroma import Chroma
 
 path = os.environ.get("CHROMA_DB_DIR", "chroma")
 db = chromadb.PersistentClient(path=path)
-collection = len(sys.argv) == 2 and sys.argv[1] or "openai"
+collection = len(sys.argv) == 2 and sys.argv[1] or "ollama"
 chroma_collection = db.get_or_create_collection(collection)
 
 vectors = chroma_collection.peek(1)
