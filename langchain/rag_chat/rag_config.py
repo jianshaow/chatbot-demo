@@ -45,7 +45,7 @@ class RagChatConfig:
     def embed_model(self):
         if self.__embed_model == OllamaEmbeddings:
             base_url = os.environ.get(
-                "OLLAMA_BASE_URL", "http://host.docker.internal:11434"
+                "OLLAMA_BASE_URL", "http://localhost:11434"
             )
             return self.__embed_model(base_url=base_url, model=self.embed_model_name)
         return self.__embed_model(model=self.embed_model_name)
@@ -53,7 +53,7 @@ class RagChatConfig:
     def chat_model(self):
         if self.__chat_model == ChatOllama:
             base_url = os.environ.get(
-                "OLLAMA_BASE_URL", "http://host.docker.internal:11434"
+                "OLLAMA_BASE_URL", "http://localhost:11434"
             )
             return self.__chat_model(base_url=base_url, model=self.chat_model_name)
         return self.__chat_model(model=self.chat_model_name)
@@ -103,7 +103,7 @@ def __gemini_config(
 
 def __ollama_config(
     embed_model_name=os.environ.get("OLLAMA_EMBED_MODEL", "nomic-embed-text:v1.5"),
-    chat_model_name=os.environ.get("OLLAMA_CHAT_MODEL", "vicuna:13b"),
+    chat_model_name=os.environ.get("OLLAMA_CHAT_MODEL", "vicuna:7b"),
     data_path=DATA_PATH,
     vector_db_collection="ollama",
     defalut_question=DEFAULT_QUESTION,

@@ -3,6 +3,7 @@
 	"image": "jianshao/langchain-demo:0.2.3-gpu",
 	"remoteEnv": {
 		"PYTHONPATH": ".",
+		"OLLAMA_BASE_URL": "http://host.docker.internal:11434",
 		"BNB_ENABLED": "true"
 	},
 	"runArgs": [

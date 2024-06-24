@@ -3,7 +3,8 @@
 	"image": "jianshao/langchain-demo:0.2.3-cpu",
 	"remoteEnv": {
 		"PYTHONPATH": ".",
-		"HF_MODEL": "google/gemma-1.1-2b-it"
+		"OLLAMA_BASE_URL": "http://host.docker.internal:11434",
+		"HF_CHAT_MODEL": "google/gemma-1.1-2b-it"
 	},
 	"runArgs": [
 		"--add-host=host.docker.internal:host-gateway"
