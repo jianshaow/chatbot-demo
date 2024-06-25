@@ -1,6 +1,8 @@
 import os, sys
 import google.generativeai as genai
 
+genai.configure(transport="rest")
+
 question = len(sys.argv) == 2 and sys.argv[1] or "What did the author do growing up?"
 
 model_name = os.environ.get("GEMINI_EMBED_MODEL", "models/embedding-001")

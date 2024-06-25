@@ -1,5 +1,7 @@
 import os, google.generativeai as genai
 
+genai.configure(transport="rest")
+
 model_name = os.environ.get("GEMINI_CHAT_MODEL", "models/gemini-1.5-flash")
 print("-" * 80)
 print("chat model:", model_name)

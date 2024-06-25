@@ -8,7 +8,7 @@ prompt = ChatPromptTemplate.from_messages(
 )
 
 model_name = os.environ.get("GEMINI_CHAT_MODEL", "models/gemini-1.5-flash")
-llm = ChatGoogleGenerativeAI(model=model_name)
+llm = ChatGoogleGenerativeAI(model=model_name, transport="rest")
 print("-" * 80)
 print("chat model:", model_name)
 

@@ -2,7 +2,7 @@ import os, sys
 from llama_index.embeddings.gemini import GeminiEmbedding
 
 model_name = os.environ.get("GEMINI_EMBED_MODEL", "models/embedding-001")
-embed_model = GeminiEmbedding(model_name=model_name)
+embed_model = GeminiEmbedding(model_name=model_name, transport="rest")
 print("-" * 80)
 print("embed model:", model_name)
 

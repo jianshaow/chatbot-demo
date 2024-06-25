@@ -14,7 +14,7 @@ documents = text_splitter.split_documents(data)
 model_name = os.environ.get("GEMINI_EMBED_MODEL", "models/embedding-001")
 vectorstore = Chroma.from_documents(
     documents=documents,
-    embedding=GoogleGenerativeAIEmbeddings(model=model_name),
+    embedding=GoogleGenerativeAIEmbeddings(model=model_name, transport="rest"),
 )
 print("-" * 80)
 print("embed model:", model_name)

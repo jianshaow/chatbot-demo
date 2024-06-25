@@ -20,7 +20,7 @@ template = HumanMessagePromptTemplate.from_template(
 prompt = ChatPromptTemplate.from_messages([template])
 
 model_name = os.environ.get("GEMINI_MM_MODEL", "models/gemini-pro-vision")
-llm = ChatGoogleGenerativeAI(model=model_name)
+llm = ChatGoogleGenerativeAI(model=model_name, transport="rest")
 print("-" * 80)
 print("multi-modal model:", model_name)
 

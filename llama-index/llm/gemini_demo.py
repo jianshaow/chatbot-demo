@@ -3,7 +3,7 @@ from llama_index.llms.gemini import Gemini
 from llama_index.core.llms import ChatMessage
 
 model_name = os.environ.get("GEMINI_CHAT_MODEL", "models/gemini-1.5-flash")
-llm = Gemini(model_name=model_name)
+llm = Gemini(model_name=model_name, transport="rest")
 print("-" * 80)
 print("chat model:", model_name)
 
