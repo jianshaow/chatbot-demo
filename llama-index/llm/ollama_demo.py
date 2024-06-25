@@ -9,8 +9,8 @@ print("-" * 80)
 print("chat model:", model)
 
 messages = [
-    ChatMessage(role="system", content="You are a pirate with a colorful personality"),
-    ChatMessage(role="user", content="What is your name"),
+    ChatMessage(role="system", content="You are a pirate with a colorful personality."),
+    ChatMessage(role="user", content="What is your name?"),
 ]
 print("-" * 80)
 resp = llm.stream_chat(messages)
