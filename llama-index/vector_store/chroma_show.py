@@ -6,7 +6,7 @@ collections = db.list_collections()
 print("collections size:", len(collections))
 print("=" * 80)
 for collection in collections:
-    print(collection)
+    print(collection.get_model())
     count = collection.count()
     print("record count:", count)
     vectors = collection.peek(1)
