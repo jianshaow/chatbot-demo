@@ -12,5 +12,5 @@ for collection in collections:
     vectors = collection.peek(1)
     for embeddings in vectors["embeddings"]:
         print("embeddings dimension:", len(embeddings))
-        print(embeddings[:5])
+        print(embeddings[:4])
     print("-" * 80)
