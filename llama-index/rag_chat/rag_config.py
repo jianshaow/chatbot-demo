@@ -24,6 +24,7 @@ DEFAULT_QUESTION_ZH = "地球发动机都安装在哪里？"
 class RagChatConfig:
     def __init__(
         self,
+        name: str,
         embed_model: Type[BaseEmbedding],
         embed_model_name: str,
         chat_model: Type[LLM],
@@ -33,6 +34,7 @@ class RagChatConfig:
         vector_db_collection: str = "hface",
         defalut_question: str = DEFAULT_QUESTION,
     ):
+        self.name = name
         self.__embed_model = embed_model
         self.embed_model_name = embed_model_name
         self.__chat_model = chat_model
@@ -45,9 +47,7 @@ class RagChatConfig:
 
     def embed_model(self):
         if self.__embed_model == OllamaEmbedding:
-            base_url = os.environ.get(
-                "OLLAMA_BASE_URL", "http://localhost:11434"
-            )
+            base_url = os.environ.get("OLLAMA_BASE_URL", "http://localhost:11434")
             return self.__embed_model(
                 base_url=base_url, model_name=self.embed_model_name
             )
@@ -60,9 +60,7 @@ class RagChatConfig:
         if self.__chat_model == HuggingFaceLLM:
             return self.__hf_chat_model()
         if self.__chat_model == Ollama:
-            base_url = os.environ.get(
-                "OLLAMA_BASE_URL", "http://localhost:11434"
-            )
+            base_url = os.environ.get("OLLAMA_BASE_URL", "http://localhost:11434")
             return self.__chat_model(base_url=base_url, model=self.chat_model_name)
         if self.__chat_model == OpenAI:
             return self.__chat_model(model=self.chat_model_name)
@@ -107,6 +105,7 @@ def __openai_config(
     defalut_question=DEFAULT_QUESTION,
 ):
     return RagChatConfig(
+        "openai",
         OpenAIEmbedding,
         embed_model_name,
         OpenAI,
@@ -125,6 +124,7 @@ def __gemini_config(
     defalut_question=DEFAULT_QUESTION,
 ):
     return RagChatConfig(
+        "gemini",
         GeminiEmbedding,
         embed_model_name,
         Gemini,
@@ -143,6 +143,7 @@ def __ollama_config(
     defalut_question=DEFAULT_QUESTION,
 ):
     return RagChatConfig(
+        "ollama",
         OllamaEmbedding,
         embed_model_name,
         Ollama,
@@ -162,6 +163,7 @@ def __hf_config(
     defalut_question=DEFAULT_QUESTION,
 ):
     return RagChatConfig(
+        "hface",
         HuggingFaceEmbedding,
         embed_model_name,
         HuggingFaceLLM,
@@ -174,6 +176,7 @@ def __hf_config(
 
 
 HYBRID = RagChatConfig(
+    "hybrid",
     HuggingFaceEmbedding,
     "BAAI/bge-small-en",
     OpenAI,
@@ -181,6 +184,7 @@ HYBRID = RagChatConfig(
 )
 
 HYBRID_ZH = RagChatConfig(
+    "hybrid_zh",
     HuggingFaceEmbedding,
     "BAAI/bge-small-en",
     OpenAI,
@@ -191,6 +195,7 @@ HYBRID_ZH = RagChatConfig(
 )
 
 HYBRID_LARGE = RagChatConfig(
+    "hybrid_large",
     HuggingFaceEmbedding,
     "BAAI/bge-large-en-v1.5",
     OpenAI,
@@ -200,6 +205,7 @@ HYBRID_LARGE = RagChatConfig(
 )
 
 HYBRID_LARGE_ZH = RagChatConfig(
+    "hybrid_large_zh",
     HuggingFaceEmbedding,
     "BAAI/bge-large-zh-v1.5",
     OpenAI,
