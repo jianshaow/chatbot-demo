@@ -35,4 +35,4 @@ nodes = retriever.retrieve(question)
 print("-" * 80)
 for node in nodes:
     print(node)
-print("-" * 80, sep="")
+print("-" * 80)

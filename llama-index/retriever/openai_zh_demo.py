@@ -10,5 +10,5 @@ retriever = index.as_retriever()
 question = len(sys.argv) == 2 and sys.argv[1] or "地球发动机都安装在哪里？"
 nodes = retriever.retrieve(question)
 for node in nodes:
-    print("---------------------------------------------")
+    print("-" * 80)
     print(node)
