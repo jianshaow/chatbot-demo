@@ -1,6 +1,6 @@
 chromadb
 sentencepiece
-llama-index-core==0.10.50
+llama-index-core==0.10.55
 llama-index-cli
 llama-index-readers-file
 llama-index-vector-stores-chroma
