@@ -16,14 +16,14 @@ pip install -r requirements.txt
 
 ### Build
 ~~~ shell
-export langchain_ver=0.2.5
+export langchain_core_ver=0.2.18
 export torch_ver=2.3.1
-docker build -t jianshao/langchain-demo:$langchain_ver-cpu . \
+docker build -t jianshao/langchain-demo:$langchain_core_ver-cpu . \
        --build-arg TAG=$torch_ver-cpu
-docker build -t jianshao/langchain-demo:$langchain_ver-gpu . \
+docker build -t jianshao/langchain-demo:$langchain_core_ver-gpu . \
        --build-arg TAG=$torch_ver-gpu --build-arg REQUIREMENTS=requirements-gpu.txt
-docker push jianshao/langchain-demo:$langchain_ver-cpu
-docker push jianshao/langchain-demo:$langchain_ver-gpu
+docker push jianshao/langchain-demo:$langchain_core_ver-cpu
+docker push jianshao/langchain-demo:$langchain_core_ver-gpu
 ~~~
 ### Test
 ~~~ shell

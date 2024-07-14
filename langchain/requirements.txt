@@ -1,7 +1,8 @@
 unstructured
 sentencepiece
 langchainhub
-langchain==0.2.5
+langchain
+langchain-core==0.2.18
 langchain-cli
 langchain-chroma
 langchain-openai
