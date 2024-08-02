@@ -1,6 +1,6 @@
 {
 	"name": "LI-GPU",
-	"image": "jianshao/llamaindex-demo:0.10.55-gpu",
+	"image": "jianshao/llamaindex-demo:0.10.59-gpu",
 	"remoteEnv": {
 		"PYTHONPATH": ".",
 		"OLLAMA_BASE_URL": "http://host.docker.internal:11434",

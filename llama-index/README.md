@@ -16,7 +16,7 @@ pip install -r requirements.txt
 
 ### Build
 ~~~ shell
-export llamaindex_ver=0.10.55
+export llamaindex_ver=0.10.59
 export torch_ver=2.3.1
 docker build -t jianshao/llamaindex-demo:$llamaindex_ver-cpu . \
        --build-arg TAG=$torch_ver-cpu
