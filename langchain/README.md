@@ -16,7 +16,7 @@ pip install -r requirements.txt
 
 ### Build
 ~~~ shell
-export langchain_core_ver=0.2.18
+export langchain_core_ver=0.2.27
 export torch_ver=2.3.1
 docker build -t jianshao/langchain-demo:$langchain_core_ver-cpu . \
        --build-arg TAG=$torch_ver-cpu
