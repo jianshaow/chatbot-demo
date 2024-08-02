@@ -16,7 +16,7 @@ pip install -r requirements.txt
 
 ### Build
 ~~~ shell
-export transformers_ver=4.41.2
+export transformers_ver=4.43.3
 export torch_ver=2.3.1
 docker build -t jianshao/transformers-demo:$transformers_ver-cpu . \
        --build-arg TAG=$torch_ver-cpu
