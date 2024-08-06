@@ -1,6 +1,6 @@
 {
 	"name": "TRFS-CPU",
-	"image": "jianshao/transformers-demo:4.43.3-cpu",
+	"image": "jianshao/transformers-demo:4.43.3",
 	"remoteEnv": {
 		"PYTHONPATH": ".",
 		"HF_MODEL": "google/gemma-1.1-2b-it"
