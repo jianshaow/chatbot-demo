@@ -1,5 +1,7 @@
-unstructured
+autoawq
+bitsandbytes
 sentencepiece
+unstructured
 langchainhub
 langchain
 langchain-core==0.2.27

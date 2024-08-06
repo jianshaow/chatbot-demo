@@ -24,5 +24,5 @@ export torch_ver=2.3.1
 docker run --name llamaindex-demo -it --rm --gpus all \
            -v $HOME/.cache:/home/devel/.cache \
            -v $PWD:/workspaces/llama-index \
-           jianshao/llamaindex-demo:$llamaindex_ver bash
+           jianshao/llamaindex-demo:latest bash
 ~~~
