@@ -54,12 +54,12 @@ tools = [
 ]
 
 model = "llama3.1:8b"
-messages = [{"role": "user", "content": "What is (121 * 3) + 42?"}]
+messages = [{"role": "user", "content": "What is 121 * 3"}]
 
 response = ollama.chat(model=model, messages=messages, tools=tools)
 
 tool_calls = response["message"]["tool_calls"]
-print("tool_calls", tool_calls)
+print("tool_calls:", tool_calls)
 
 messages.append(response["message"])
 
@@ -68,9 +68,9 @@ for tool in tool_calls:
     function_response = function_to_call(
         tool["function"]["arguments"]["a"], tool["function"]["arguments"]["b"]
     )
-    print("function_response", function_response)
+    print("function_response:", function_response)
     messages.append({"role": "tool", "content": str(function_response)})
 
+print("messages:", messages)
 response = ollama.chat(model=model, messages=messages)
-print("messages", messages)
 print(response["message"]["content"])
