@@ -16,18 +16,12 @@ pip install -r requirements.txt
 
 ### Build
 ~~~ shell
-export transformers_ver=4.43.3
 export torch_ver=2.3.1
-docker build -t jianshao/transformers-demo:$transformers_ver-cpu . \
-       --build-arg TAG=$torch_ver-cpu
-docker build -t jianshao/transformers-demo:$transformers_ver-gpu . \
-       --build-arg TAG=$torch_ver-gpu --build-arg REQUIREMENTS=requirements-gpu.txt
-docker push jianshao/transformers-demo:$transformers_ver-cpu
-docker push jianshao/transformers-demo:$transformers_ver-gpu
+./build-image.sh
 ~~~
 ### Test
 ~~~ shell
 docker run --name transformers-demo -it --rm --gpus all \
            -v $HOME/.cache:/home/devel/.cache -v $PWD:/workspaces/transformers \
-           jianshao/transformers-demo:$transformers_ver-gpu bash
+           jianshao/transformers-demo:latest bash
 ~~~
