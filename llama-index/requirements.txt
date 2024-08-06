@@ -1,5 +1,7 @@
-chromadb
+autoawq
+bitsandbytes
 sentencepiece
+chromadb
 llama-index-core
 llama-index-cli
 llama-index-readers-file
