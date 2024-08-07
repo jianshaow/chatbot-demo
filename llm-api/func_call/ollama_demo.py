@@ -53,8 +53,9 @@ tools = [
     },
 ]
 
-model = "llama3.1:8b"
-messages = [{"role": "user", "content": "What is 121 * 3"}]
+# model = "llama3.1:8b"
+model = "mistral-nemo:12b"
+messages = [{"role": "user", "content": "What is (121 * 3) + 40"}]
 
 response = ollama.chat(model=model, messages=messages, tools=tools)
 
