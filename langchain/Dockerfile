@@ -3,6 +3,11 @@ ARG TAG=2.3.1
 
 FROM ${BASE_IMAGE}:${TAG}
 
+USER root
+COPY packages.txt /
+RUN /apt-install.sh /packages.txt
+USER devel
+
 COPY requirements*.txt ./
 ARG REQUIREMENTS=requirements.txt
 RUN pip install --no-cache-dir --upgrade pip && \
