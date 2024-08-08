@@ -1,3 +1,4 @@
+import os
 from langchain_core.tools import tool
 from langchain_core.messages import HumanMessage
 from langchain_openai import ChatOpenAI
@@ -17,7 +18,8 @@ def multiply(a: int, b: int) -> int:
 
 tools = [add, multiply]
 
-llm = ChatOpenAI()
+model = os.environ.get("OPENAI_FC_MODEL", "gpt-4o-mini")
+llm = ChatOpenAI(model=model)
 llm_with_tools = llm.bind_tools(tools)
 
 query = "What is (121 * 3) + 42?"
