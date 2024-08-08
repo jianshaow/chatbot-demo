@@ -2,14 +2,16 @@ import os, ollama
 
 
 def multiply(a: int, b: int) -> int:
+    print("multiply:", a, b)
     return a * b
 
 
 def add(a: int, b: int) -> int:
+    print("add:", a, b)
     return a + b
 
 
-available_functions = {
+fns = {
     "multiply": multiply,
     "add": add,
 }
@@ -54,7 +56,7 @@ tools = [
 ]
 
 model = os.environ.get("OLLAMA_FC_MODEL", "mistral-nemo:12b")
-messages = [{"role": "user", "content": "What is (121 * 3) + 40"}]
+messages = [{"role": "user", "content": "What is (121 * 3) + 42"}]
 
 response = ollama.chat(model=model, messages=messages, tools=tools)
 
@@ -64,12 +66,11 @@ print("tool_calls:", tool_calls)
 messages.append(response["message"])
 
 for tool in tool_calls:
-    function_to_call = available_functions[tool["function"]["name"]]
-    function_response = function_to_call(
-        tool["function"]["arguments"]["a"], tool["function"]["arguments"]["b"]
-    )
-    print("function_response:", function_response)
-    messages.append({"role": "tool", "content": str(function_response)})
+    fn = fns[tool["function"]["name"]]
+    fn_args = tool["function"]["arguments"]
+    fn_response = fn(**fn_args)
+    print("fn_response:", fn_response)
+    messages.append({"role": "tool", "content": str(fn_response)})
 
 print("messages:", messages)
 response = ollama.chat(model=model, messages=messages)
