@@ -1,4 +1,4 @@
-import ollama
+import os, ollama
 
 
 def multiply(a: int, b: int) -> int:
@@ -53,8 +53,7 @@ tools = [
     },
 ]
 
-# model = "llama3.1:8b"
-model = "mistral-nemo:12b"
+model = os.environ.get("OLLAMA_FC_MODEL", "mistral-nemo:12b")
 messages = [{"role": "user", "content": "What is (121 * 3) + 40"}]
 
 response = ollama.chat(model=model, messages=messages, tools=tools)
