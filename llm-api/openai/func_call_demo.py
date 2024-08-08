@@ -1,4 +1,4 @@
-import openai, json
+import os, json, openai
 
 
 def multiply(a: int, b: int) -> int:
@@ -60,11 +60,12 @@ messages = [
         "role": "system",
         "content": "You are a helpful customer support assistant. Use the supplied tools to assist the user.",
     },
-    {"role": "user", "content": "What is (234325 * 67756) + 2342353"},
+    {"role": "user", "content": "What is (121 * 3) + 42?"},
 ]
 
+model = os.environ.get("OPENAI_FC_MODEL", "gpt-4o-mini")
 response = openai.chat.completions.create(
-    model="gpt-4o", messages=messages, tools=tools
+    model=model, messages=messages, tools=tools
 )
 print("response:", response)
 
@@ -83,6 +84,6 @@ for tool_call in response.choices[0].message.tool_calls:
     )
 
 print("messges:", messages)
-response = openai.chat.completions.create(model="gpt-4o", messages=messages)
+response = openai.chat.completions.create(model=model, messages=messages)
 
 print(response.choices[0].message.content)
