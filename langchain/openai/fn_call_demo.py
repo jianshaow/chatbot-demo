@@ -18,6 +18,8 @@ def multiply(a: int, b: int) -> int:
 
 tools = [add, multiply]
 
+available_tools = {"add": add, "multiply": multiply}
+
 model = os.environ.get("OPENAI_FC_MODEL", "gpt-4o-mini")
 llm = ChatOpenAI(model=model)
 llm_with_tools = llm.bind_tools(tools)
@@ -25,14 +27,14 @@ llm_with_tools = llm.bind_tools(tools)
 query = "What is (121 * 3) + 42?"
 messages = [HumanMessage(query)]
 response = llm_with_tools.invoke(messages)
-messages.append(response)
 
-print(response.tool_calls)
-for tool_call in response.tool_calls:
-    selected_tool = {"add": add, "multiply": multiply}[tool_call["name"]]
-    tool_result = selected_tool.invoke(tool_call)
-    messages.append(tool_result)
+while response.response_metadata["finish_reason"] == "tool_calls":
+    messages.append(response)
 
+    for tool_call in response.tool_calls:
+        selected_tool = available_tools[tool_call["name"]]
+        tool_result = selected_tool.invoke(tool_call)
+        messages.append(tool_result)
+    response = llm_with_tools.invoke(messages)
 
-response = llm_with_tools.invoke(messages)
 print(response.content)
