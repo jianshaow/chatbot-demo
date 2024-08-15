@@ -65,7 +65,16 @@ while response.choices[0].finish_reason == "tool_calls":
     for tool_call in response.choices[0].message.tool_calls:
         fn = fns[tool_call.function.name]
         fn_args = json.loads(tool_call.function.arguments)
+        print("=== Calling Function ===")
+        print(
+            "Calling function:",
+            tool_call.function.name,
+            "with args:",
+            tool_call.function.arguments,
+        )
         fn_response = fn(**fn_args)
+        print("Got output:", fn_response)
+        print("========================\n")
         messages.append(
             {
                 "role": "tool",
