@@ -72,13 +72,13 @@ while response.choices[0].finish_reason == "tool_calls":
             "with args:",
             tool_call.function.arguments,
         )
-        fn_response = fn(**fn_args)
-        print("Got output:", fn_response)
+        fn_result = fn(**fn_args)
+        print("Got output:", fn_result)
         print("========================\n")
         messages.append(
             {
                 "role": "tool",
-                "content": str(fn_response),
+                "content": str(fn_result),
                 "tool_call_id": tool_call.id,
             }
         )
