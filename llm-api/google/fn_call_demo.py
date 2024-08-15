@@ -1,4 +1,4 @@
-import os, json, google.generativeai as genai
+import os, google.generativeai as genai
 
 genai.configure(transport="rest")
 
