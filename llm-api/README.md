@@ -12,17 +12,3 @@ pip install --upgrade pip
 pip install -r requirements.txt
 ~~~
 
-## Docker Environment
-
-### Build
-~~~ shell
-export images_ver=0.0.3
-docker build -t jianshao/llm-api-demo:$images_ver .
-docker push jianshao/llm-api-demo:$images_ver
-~~~
-### Test
-~~~ shell
-docker run --name llm-api-demo -it --rm \
-           -v $PWD:/workspaces/llm-api \
-           jianshao/llm-api-demo:$images_ver bash
-~~~
