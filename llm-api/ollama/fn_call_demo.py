@@ -25,10 +25,10 @@ tools = [
                 "type": "object",
                 "properties": {
                     "a": {
-                        "type": "int",
+                        "type": "integer",
                     },
                     "b": {
-                        "type": "int",
+                        "type": "integer",
                     },
                 },
                 "required": ["a", "b"],
@@ -43,10 +43,10 @@ tools = [
                 "type": "object",
                 "properties": {
                     "a": {
-                        "type": "int",
+                        "type": "integer",
                     },
                     "b": {
-                        "type": "int",
+                        "type": "integer",
                     },
                 },
                 "required": ["a", "b"],
@@ -55,23 +55,65 @@ tools = [
     },
 ]
 
-model = os.environ.get("OLLAMA_FC_MODEL", "mistral-nemo:12b")
-messages = [{"role": "user", "content": "What is (121 * 3) + 42"}]
+examples = [
+    {
+        "role": "user",
+        "content": "What is (2 * 3) + 4",
+    },
+    {
+        "role": "assistant",
+        "content": "",
+        "tool_calls": [
+            {"function": {"name": "multiply", "arguments": {"a": 2, "b": 3}}}
+        ],
+    },
+    {
+        "role": "tool",
+        "content": "6",
+    },
+    {
+        "role": "assistant",
+        "content": "",
+        "tool_calls": [{"function": {"name": "add", "arguments": {"a": 6, "b": 4}}}],
+    },
+    {
+        "role": "tool",
+        "content": "10",
+    },
+    {
+        "role": "assistant",
+        "content": "(2 * 3) + 4 = 10.",
+    },
+]
 
+messages = [
+    {
+        "role": "system",
+        "content": "You are bad at math but are an expert at using a calculator",
+    },
+    *examples,
+    {"role": "user", "content": "What is (121 * 3) + 42"},
+]
+
+model = os.environ.get("OLLAMA_FC_MODEL", "llama3.1:8b")
 response = ollama.chat(model=model, messages=messages, tools=tools)
 
-tool_calls = response["message"]["tool_calls"]
-print("tool_calls:", tool_calls)
 
-messages.append(response["message"])
+while response["message"].get("tool_calls"):
+    messages.append(response["message"])
 
-for tool in tool_calls:
-    fn = fns[tool["function"]["name"]]
-    fn_args = tool["function"]["arguments"]
-    fn_response = fn(**fn_args)
-    print("fn_response:", fn_response)
-    messages.append({"role": "tool", "content": str(fn_response)})
+    tool_calls = response["message"]["tool_calls"]
+    for tool in tool_calls:
+        fn_name = tool["function"]["name"]
+        fn = fns[fn_name]
+        fn_args = tool["function"]["arguments"]
+        print("=== Calling Function ===")
+        print("Calling function:", fn_name, "with args:", fn_args)
+        fn_result = fn(**fn_args)
+        print("Got output:", fn_result)
+        print("========================\n")
+        messages.append({"role": "tool", "content": str(fn_result)})
 
-print("messages:", messages)
-response = ollama.chat(model=model, messages=messages)
+    response = ollama.chat(model=model, messages=messages, tools=tools)
+
 print(response["message"]["content"])
