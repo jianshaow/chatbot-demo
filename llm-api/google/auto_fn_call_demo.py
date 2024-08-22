@@ -1,15 +1,8 @@
 import os, google.generativeai as genai
 
+from common.functions import multiply, add
+
 genai.configure(transport="rest")
-
-
-def multiply(a: int, b: int) -> int:
-    return a * b
-
-
-def add(a: int, b: int) -> int:
-    return a + b
-
 
 tools = [multiply, add]
 

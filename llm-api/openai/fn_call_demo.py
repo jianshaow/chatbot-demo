@@ -1,57 +1,8 @@
 import os, json, openai
 
+from common.functions import fns
+from common.fn_tools import tools
 
-def multiply(a: int, b: int) -> int:
-    return a * b
-
-
-def add(a: int, b: int) -> int:
-    return a + b
-
-
-tools = [
-    {
-        "type": "function",
-        "function": {
-            "name": "multiply",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "a": {
-                        "type": "integer",
-                    },
-                    "b": {
-                        "type": "integer",
-                    },
-                },
-                "required": ["a", "b"],
-            },
-        },
-    },
-    {
-        "type": "function",
-        "function": {
-            "name": "add",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "a": {
-                        "type": "integer",
-                    },
-                    "b": {
-                        "type": "integer",
-                    },
-                },
-                "required": ["a", "b"],
-            },
-        },
-    },
-]
-
-fns = {
-    "multiply": multiply,
-    "add": add,
-}
 
 messages = [
     {"role": "user", "content": "What is (121 * 3) + 42?"},

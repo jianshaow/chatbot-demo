@@ -1,21 +1,10 @@
 import os, google.generativeai as genai
 
+from common.functions import multiply, add, fns
+
 genai.configure(transport="rest")
 
-
-def multiply(a: int, b: int) -> int:
-    return a * b
-
-
-def add(a: int, b: int) -> int:
-    return a + b
-
-
 tools = [multiply, add]
-fns = {
-    "multiply": multiply,
-    "add": add,
-}
 
 model_name = os.environ.get("GEMINI_FC_MODEL", "models/gemini-1.5-flash")
 model = genai.GenerativeModel(model_name=model_name, tools=tools)
