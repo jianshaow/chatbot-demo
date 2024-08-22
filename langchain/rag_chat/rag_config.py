@@ -44,17 +44,17 @@ class RagChatConfig:
 
     def embed_model(self):
         if self.__embed_model == OllamaEmbeddings:
-            base_url = os.environ.get(
-                "OLLAMA_BASE_URL", "http://localhost:11434"
+            host = os.environ.get("OLLAMA_HOST", "localhost")
+            base_url = base_url = os.environ.get(
+                "OLLAMA_BASE_URL", f"http://{host}:11434"
             )
             return self.__embed_model(base_url=base_url, model=self.embed_model_name)
         return self.__embed_model(model=self.embed_model_name)
 
     def chat_model(self):
         if self.__chat_model == ChatOllama:
-            base_url = os.environ.get(
-                "OLLAMA_BASE_URL", "http://localhost:11434"
-            )
+            host = os.environ.get("OLLAMA_HOST", "localhost")
+            base_url = os.environ.get("OLLAMA_BASE_URL", f"http://{host}:11434")
             return self.__chat_model(base_url=base_url, model=self.chat_model_name)
         return self.__chat_model(model=self.chat_model_name)
 

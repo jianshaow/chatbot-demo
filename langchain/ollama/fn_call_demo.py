@@ -1,13 +1,10 @@
-import os
-
 from langchain_core.messages import HumanMessage
 from langchain_community.chat_models.ollama import ChatOllama
 
+from common import ollama_base_url as base_url, ollama_fc_model as model
 from common.fn_tools import tools
 from common.functions import fns
 
-base_url = os.environ.get("OLLAMA_BASE_URL", "http://localhost:11434")
-model = os.environ.get("OLLAMA_FC_MODEL", "llama3.1:8b")
 llm = ChatOllama(base_url=base_url, model=model)
 llm_with_tools = llm.bind_tools(tools)
 

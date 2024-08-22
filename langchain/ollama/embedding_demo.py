@@ -1,11 +1,11 @@
-import os, sys
+import sys
 from langchain_community.embeddings.ollama import OllamaEmbeddings
 
-base_url = os.environ.get("OLLAMA_BASE_URL", "http://localhost:11434")
-model_name = os.environ.get("OLLAMA_EMBED_MODEL", "nomic-embed-text:v1.5")
-embed_model = OllamaEmbeddings(base_url=base_url, model=model_name)
+from common import ollama_base_url as base_url, ollama_embed_model as model
+
+embed_model = OllamaEmbeddings(base_url=base_url, model=model)
 print("-" * 80)
-print("embed model:", model_name)
+print("embed model:", model)
 
 question = len(sys.argv) == 2 and sys.argv[1] or "What did the author do growing up?"
 embeddings = embed_model.embed_query(question)

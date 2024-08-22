@@ -1,9 +1,11 @@
-import os, sys
+import sys
 
 from langchain_community.document_loaders import DirectoryLoader
 from langchain_text_splitters import CharacterTextSplitter
 from langchain_chroma import Chroma
 from langchain_community.embeddings import OllamaEmbeddings
+
+from common import ollama_base_url as base_url, ollama_embed_model as model
 
 loader = DirectoryLoader("data")
 data = loader.load()
@@ -11,13 +13,11 @@ data = loader.load()
 text_splitter = CharacterTextSplitter()
 documents = text_splitter.split_documents(data)
 
-base_url = os.environ.get("OLLAMA_BASE_URL", "http://localhost:11434")
-model_name = os.environ.get("OLLAMA_EMBED_MODEL", "nomic-embed-text:v1.5")
 vectorstore = Chroma.from_documents(
-    documents=documents, embedding=OllamaEmbeddings(base_url=base_url, model=model_name)
+    documents=documents, embedding=OllamaEmbeddings(base_url=base_url, model=model)
 )
 print("-" * 80)
-print("embed model:", model_name)
+print("embed model:", model)
 
 question = len(sys.argv) == 2 and sys.argv[1] or "What did the author do growing up?"
 retriever = vectorstore.as_retriever(

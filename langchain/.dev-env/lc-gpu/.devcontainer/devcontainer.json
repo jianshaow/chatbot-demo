@@ -3,7 +3,7 @@
 	"image": "jianshao/langchain-demo:0.2.29",
 	"remoteEnv": {
 		"PYTHONPATH": ".",
-		"OLLAMA_BASE_URL": "http://host.docker.internal:11434",
+		"OLLAMA_HOST": "host.docker.internal",
 		"BNB_ENABLED": "true"
 	},
 	"runArgs": [
