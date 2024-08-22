@@ -5,7 +5,7 @@
 		"PYTHONPATH": ".",
 		"OLLAMA_HOST": "host.docker.internal",
 		"OLLAMA_CHAT_MODEL": "qwen2:0.5b",
-		"HF_CHAT_MODEL": "google/gemma-1.1-2b-it"
+		"HF_CHAT_MODEL": "Qwen/Qwen2-0.5B-Instruct"
 	},
 	"runArgs": [
 		"--add-host=host.docker.internal:host-gateway"
