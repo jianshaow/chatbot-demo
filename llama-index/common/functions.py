@@ -4,3 +4,9 @@ def multiply(a: int, b: int) -> int:
 
 def add(a: int, b: int) -> int:
     return a + b
+
+
+fns = {
+    "multiply": multiply,
+    "add": add,
+}
