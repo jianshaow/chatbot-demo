@@ -1,10 +1,12 @@
-import requests, os
+import requests
 import matplotlib.pyplot as plt
 from PIL import Image
 from io import BytesIO
 
 from llama_index.multi_modal_llms.ollama import OllamaMultiModal
 from llama_index.core.multi_modal_llms.generic_utils import load_image_urls
+
+from common import ollama_base_url as base_url, ollama_mm_model as model
 
 image_urls = [
     "https://storage.googleapis.com/generativeai-downloads/data/scene.jpg",
@@ -18,11 +20,9 @@ plt.imshow(img)
 plt.show()
 
 image_documents = load_image_urls(image_urls)
-base_url = os.environ.get("OLLAMA_BASE_URL", "http://localhost:11434")
-model_name = os.environ.get("OLLAMA_MM_MODEL", "llava:7b")
-llava = OllamaMultiModal(base_url=base_url, model=model_name)
+llava = OllamaMultiModal(base_url=base_url, model=model)
 print("-" * 80)
-print("multi-modal model:", model_name)
+print("multi-modal model:", model)
 
 print("-" * 80)
 prompt = "Identify the city where this photo was taken."

@@ -6,8 +6,8 @@ from llama_index.core import (
 )
 from llama_index.embeddings.ollama import OllamaEmbedding
 
-base_url = os.environ.get("OLLAMA_BASE_URL", "http://localhost:11434")
-model_name = os.environ.get("OLLAMA_EMBED_MODEL", "nomic-embed-text:v1.5")
+from common import ollama_base_url as base_url, ollama_embed_model as model_name
+
 Settings.embed_model = OllamaEmbedding(base_url=base_url, model_name=model_name)
 print("-" * 80)
 print("embed model:", model_name)

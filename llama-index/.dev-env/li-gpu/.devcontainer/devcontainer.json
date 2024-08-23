@@ -3,7 +3,7 @@
 	"image": "jianshao/llamaindex-demo:0.10.61",
 	"remoteEnv": {
 		"PYTHONPATH": ".",
-		"OLLAMA_BASE_URL": "http://host.docker.internal:11434",
+		"OLLAMA_HOST": "host.docker.internal",
 		"LLAMA_INDEX_CACHE_DIR": "/home/devel/.cache/huggingface/hub",
 		"BNB_ENABLED": "true"
 	},

@@ -47,7 +47,10 @@ class RagChatConfig:
 
     def embed_model(self):
         if self.__embed_model == OllamaEmbedding:
-            base_url = os.environ.get("OLLAMA_BASE_URL", "http://localhost:11434")
+            host = os.environ.get("OLLAMA_HOST", "localhost")
+            base_url = base_url = os.environ.get(
+                "OLLAMA_BASE_URL", f"http://{host}:11434"
+            )
             return self.__embed_model(
                 base_url=base_url, model_name=self.embed_model_name
             )
@@ -60,7 +63,8 @@ class RagChatConfig:
         if self.__chat_model == HuggingFaceLLM:
             return self.__hf_chat_model()
         if self.__chat_model == Ollama:
-            base_url = os.environ.get("OLLAMA_BASE_URL", "http://localhost:11434")
+            host = os.environ.get("OLLAMA_HOST", "localhost")
+            base_url = os.environ.get("OLLAMA_BASE_URL", f"http://{host}:11434")
             return self.__chat_model(base_url=base_url, model=self.chat_model_name)
         if self.__chat_model == OpenAI:
             return self.__chat_model(model=self.chat_model_name)
