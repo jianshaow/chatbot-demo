@@ -2,7 +2,7 @@ import requests
 import matplotlib.pyplot as plt
 from PIL import Image
 from io import BytesIO
-from langchain_community.llms.ollama import Ollama
+from langchain_ollama.llms import OllamaLLM
 from langchain_core.prompts import ChatPromptTemplate, HumanMessagePromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 
@@ -21,7 +21,7 @@ template = HumanMessagePromptTemplate.from_template(
 )
 prompt = ChatPromptTemplate.from_messages([template])
 
-llm = Ollama(base_url=base_url, model=model)
+llm = OllamaLLM(base_url=base_url, model=model)
 print("-" * 80)
 print("multi-modal model:", model)
 

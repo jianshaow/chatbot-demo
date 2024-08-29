@@ -3,7 +3,7 @@ import sys
 from langchain_community.document_loaders import DirectoryLoader
 from langchain_text_splitters import CharacterTextSplitter
 from langchain_chroma import Chroma
-from langchain_community.embeddings import OllamaEmbeddings
+from langchain_ollama.embeddings import OllamaEmbeddings
 
 from common import ollama_base_url as base_url, ollama_embed_model as model
 

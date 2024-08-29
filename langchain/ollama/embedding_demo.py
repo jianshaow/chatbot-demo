@@ -1,5 +1,5 @@
 import sys
-from langchain_community.embeddings.ollama import OllamaEmbeddings
+from langchain_ollama.embeddings import OllamaEmbeddings
 
 from common import ollama_base_url as base_url, ollama_embed_model as model
 

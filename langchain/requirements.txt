@@ -7,7 +7,8 @@ langchain
 langchain-core
 langchain-cli
 langchain-chroma
-langchain-openai
 langchain-community
+langchain-openai
+langchain-ollama
 langchain-huggingface
 langchain-google-genai
