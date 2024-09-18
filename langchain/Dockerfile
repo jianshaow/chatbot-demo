@@ -1,5 +1,5 @@
 ARG BASE_IMAGE=jianshao/torch-dev-base
-ARG TAG=2.4.1
+ARG TAG=2.3.1
 
 FROM ${BASE_IMAGE}:${TAG}
 
