@@ -1,9 +1,12 @@
 #!/bin/bash
 
 if [ "$torch_ver" == "" ]; then
-    torch_ver=2.3.1
+    torch_ver=2.4.1
 fi
 echo "Using torch version: ${torch_ver}"
+
+base_image=jianshao/torch-dev-base
+docker pull ${base_image}:${torch_ver}
 
 docker build -t jianshao/langchain-demo:latest . \
        --build-arg TAG=$torch_ver
