@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ "$torch_ver" == "" ]; then
-    torch_ver=2.4.1
+    torch_ver=2.3.1
 fi
 echo "Using torch version: ${torch_ver}"
 
