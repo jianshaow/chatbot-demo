@@ -1,9 +1,9 @@
-import os, ollama
+import ollama
 
 from common.functions import fns
 from common.fn_tools import tools
 from common.prompts import examples, system_prompt
-
+from common import ollama_fc_model as model
 
 messages = [
     system_prompt,
@@ -11,9 +11,7 @@ messages = [
     {"role": "user", "content": "What is (121 * 3) + 42"},
 ]
 
-model = os.environ.get("OLLAMA_FC_MODEL", "llama3.1:8b")
 response = ollama.chat(model=model, messages=messages, tools=tools)
-
 
 while response["message"].get("tool_calls"):
     messages.append(response["message"])
