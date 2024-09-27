@@ -3,9 +3,7 @@
 	"image": "jianshao/langchain-demo:0.3.6",
 	"remoteEnv": {
 		"PYTHONPATH": ".",
-		"OLLAMA_HOST": "host.docker.internal",
-		"OLLAMA_CHAT_MODEL": "qwen2:0.5b",
-		"HF_CHAT_MODEL": "Qwen/Qwen2-0.5B-Instruct"
+		"OLLAMA_HOST": "host.docker.internal"
 	},
 	"runArgs": [
 		"--add-host=host.docker.internal:host-gateway"
