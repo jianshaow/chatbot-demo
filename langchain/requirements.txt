@@ -1,10 +1,9 @@
-autoawq
 bitsandbytes
 sentencepiece
 unstructured
 langchainhub
 langchain
-langchain-core>=0.2,<0.3
+langchain-core>=0.3,<0.4
 langchain-cli
 langchain-chroma
 langchain-community
