@@ -1,4 +1,5 @@
 import os, torch
+from dotenv import load_dotenv
 from transformers import (
     AutoModelForCausalLM,
     AutoTokenizer,
@@ -8,6 +9,10 @@ from transformers import (
     PreTrainedTokenizer,
 )
 
+load_dotenv()
+
+hf_embed_model = os.getenv("HF_EMBED_MODEL", "BAAI/bge-small-en")
+hf_chat_model = os.getenv("HF_CHAT_MODEL", "lmsys/vicuna-7b-v1.5")
 
 def new_model(
     model_name: str, bnb_enabled=os.environ.get("BNB_ENABLED", "false") == "true"

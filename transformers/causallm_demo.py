@@ -1,6 +1,6 @@
 import os, sys, common, prompts
 
-model_name = os.environ.get("HF_MODEL", "meta-llama/Llama-2-7b-chat-hf")
+model_name = common.hf_chat_model
 tokenizer = common.new_tokenizer(model_name)
 model = common.new_model(model_name)
 
