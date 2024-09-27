@@ -6,7 +6,8 @@ from llama_index.core import (
 )
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 
-model_name = os.environ.get("HF_EMBED_MODEL", "BAAI/bge-small-zh")
+from common import hf_embed_model as model_name
+
 Settings.embed_model = HuggingFaceEmbedding(model_name)
 print("-" * 80)
 print("embed model:", model_name)

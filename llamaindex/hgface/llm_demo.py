@@ -2,7 +2,7 @@ import os, torch
 from transformers import BitsAndBytesConfig
 from llama_index.llms.huggingface import HuggingFaceLLM
 
-model_name = os.environ.get("HF_CHAT_MODEL", "lmsys/vicuna-7b-v1.5")
+from common import hf_chat_model as model_name
 
 model_kwargs = {}
 if os.environ.get("BNB_ENABLED", "false") == "true":

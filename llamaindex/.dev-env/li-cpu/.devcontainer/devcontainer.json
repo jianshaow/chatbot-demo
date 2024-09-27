@@ -4,8 +4,6 @@
 	"remoteEnv": {
 		"PYTHONPATH": ".",
 		"OLLAMA_HOST": "host.docker.internal",
-		"OLLAMA_CHAT_MODEL": "qwen2:0.5b",
-		"HF_CHAT_MODEL": "Qwen/Qwen2-0.5B-Instruct",
 		"LLAMA_INDEX_CACHE_DIR": "/home/devel/.cache/huggingface/hub"
 	},
 	"runArgs": [
