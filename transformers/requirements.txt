@@ -1,6 +1,5 @@
 protobuf
-autoawq
 bitsandbytes
 accelerate
 sentencepiece
-transformers==4.43.3
+transformers
