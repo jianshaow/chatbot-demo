@@ -1,7 +1,8 @@
-import os, sys
+import sys
 from langchain_huggingface import HuggingFaceEmbeddings
 
-model_name = os.environ.get("HF_EMBED_MODEL", "BAAI/bge-small-en")
+from common import hf_embed_model as model_name
+
 embed_model = HuggingFaceEmbeddings(model_name=model_name)
 print("-" * 80)
 print("embed model:", model_name)

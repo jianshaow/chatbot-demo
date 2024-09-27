@@ -4,15 +4,15 @@ from langchain_huggingface import HuggingFacePipeline
 from langchain_core.prompts import PromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 
+from common import hf_chat_model as model_name
+
 prompt = PromptTemplate(
     template="You are a pirate with a colorful personality. USER: {input}",
     input_variables=["input"],
 )
 
-model_name = os.environ.get("HF_CHAT_MODEL", "lmsys/vicuna-7b-v1.5")
-
 model_kwargs = {}
-if os.environ.get("BNB_ENABLED", "false") == "true":
+if os.getenv("BNB_ENABLED", "false") == "true":
     quantization_config = BitsAndBytesConfig(
         load_in_4bit=True, bnb_4bit_compute_dtype=torch.float16
     )
