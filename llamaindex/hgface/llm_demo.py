@@ -19,7 +19,7 @@ llm = HuggingFaceLLM(
     model_name=model_name,
     model_kwargs=model_kwargs,
     system_prompt="You are a pirate with a colorful personality.",
-    query_wrapper_prompt="USER: {query_str}",
+    query_wrapper_prompt="<|eot_id|><|start_header_id|>user<|end_header_id|>\n\n{query_str}<|eot_id|>",
 )
 print("-" * 80)
 print("chat model:", model_name)
