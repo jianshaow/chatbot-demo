@@ -31,12 +31,12 @@ def tokenizer_prompt(
 
 if __name__ == "__main__":
     import sys, os
+    from common import hf_chat_model as model_name
 
     model_type = len(sys.argv) == 2 and sys.argv[1] or "vicuna"
     print("-" * 80)
     print(chat_prompt("who are you?", model_type=model_type))
 
-    model_name = os.environ.get("HF_MODEL", "meta-llama/Llama-2-7b-chat-hf")
     tokenizer = AutoTokenizer.from_pretrained(model_name)
     print("-" * 80)
     print(tokenizer_prompt(tokenizer, "who are you?"))

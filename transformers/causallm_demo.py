@@ -1,4 +1,4 @@
-import os, sys, common, prompts
+import sys, common, prompts
 
 model_name = common.hf_chat_model
 tokenizer = common.new_tokenizer(model_name)
