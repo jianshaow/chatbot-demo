@@ -5,7 +5,7 @@ from llama_index.llms.huggingface import HuggingFaceLLM
 from common import hf_chat_model as model_name
 
 model_kwargs = {}
-if os.environ.get("BNB_ENABLED", "false") == "true":
+if os.getenv("BNB_ENABLED", "false") == "true":
     quantization_config = BitsAndBytesConfig(
         load_in_4bit=True, bnb_4bit_compute_dtype=torch.float16
     )

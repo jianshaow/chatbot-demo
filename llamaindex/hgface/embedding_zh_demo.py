@@ -1,4 +1,4 @@
-import os, sys
+import sys
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 
 from common import hf_embed_model as model_name

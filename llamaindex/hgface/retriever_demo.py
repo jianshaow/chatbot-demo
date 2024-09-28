@@ -1,4 +1,4 @@
-import os, sys
+import sys
 from llama_index.core import (
     Settings,
     VectorStoreIndex,
