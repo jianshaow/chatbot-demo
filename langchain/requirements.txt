@@ -1,3 +1,4 @@
+accelerate
 bitsandbytes
 sentencepiece
 unstructured
