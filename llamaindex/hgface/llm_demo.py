@@ -14,18 +14,16 @@ if os.getenv("BNB_ENABLED", "false") == "true":
 llm = HuggingFaceLLM(
     context_window=4096,
     max_new_tokens=2048,
-    # generate_kwargs={"temperature": 0.0, "do_sample": False},
     tokenizer_name=model_name,
     model_name=model_name,
     model_kwargs=model_kwargs,
     system_prompt="You are a pirate with a colorful personality.",
-    query_wrapper_prompt="<|eot_id|><|start_header_id|>user<|end_header_id|>\n\n{query_str}<|eot_id|>",
 )
 print("-" * 80)
 print("chat model:", model_name)
 
-print("-" * 80)
 resp = llm.stream_complete("What is your name?")
+print("-" * 80)
 for r in resp:
     print(r.delta, end="")
 print("\n", "-" * 80, sep="")
