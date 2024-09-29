@@ -1,4 +1,5 @@
 import os, sys
+from typing import Type
 from langchain_core.embeddings import Embeddings
 from langchain_community.embeddings.ollama import OllamaEmbeddings
 from langchain_core.language_models.base import BaseLanguageModel
@@ -9,7 +10,13 @@ from langchain_community.chat_models.ollama import ChatOllama
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_google_genai import ChatGoogleGenerativeAI
 
-from typing import Type
+from common import (
+    ollama_base_url,
+    ollama_embed_model,
+    ollama_chat_model,
+    hf_embed_model,
+    hf_chat_model,
+)
 
 DATA_PATH = "data"
 DATA_PATH_EN = "data_en"
@@ -44,18 +51,16 @@ class RagChatConfig:
 
     def embed_model(self):
         if self.__embed_model == OllamaEmbeddings:
-            host = os.environ.get("OLLAMA_HOST", "localhost")
-            base_url = base_url = os.environ.get(
-                "OLLAMA_BASE_URL", f"http://{host}:11434"
+            return self.__embed_model(
+                base_url=ollama_base_url, model=self.embed_model_name
             )
-            return self.__embed_model(base_url=base_url, model=self.embed_model_name)
         return self.__embed_model(model=self.embed_model_name)
 
     def chat_model(self):
         if self.__chat_model == ChatOllama:
-            host = os.environ.get("OLLAMA_HOST", "localhost")
-            base_url = os.environ.get("OLLAMA_BASE_URL", f"http://{host}:11434")
-            return self.__chat_model(base_url=base_url, model=self.chat_model_name)
+            return self.__chat_model(
+                base_url=ollama_base_url, model=self.chat_model_name
+            )
         return self.__chat_model(model=self.chat_model_name)
 
     def get_question(self):
@@ -102,8 +107,8 @@ def __gemini_config(
 
 
 def __ollama_config(
-    embed_model_name=os.environ.get("OLLAMA_EMBED_MODEL", "nomic-embed-text:v1.5"),
-    chat_model_name=os.environ.get("OLLAMA_CHAT_MODEL", "vicuna:7b"),
+    embed_model_name=ollama_embed_model,
+    chat_model_name=ollama_chat_model,
     data_path=DATA_PATH,
     vector_db_collection="ollama",
     defalut_question=DEFAULT_QUESTION,
