@@ -20,6 +20,6 @@ prompt = prompts.tokenizer_prompt(
 
 response = common.generate(model, tokenizer, prompt)
 
-print("-" * 80)
+print("=" * 80)
 print(response)
 print("-" * 80)
