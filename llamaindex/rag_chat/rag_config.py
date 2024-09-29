@@ -12,6 +12,14 @@ from llama_index.llms.ollama import Ollama
 from llama_index.llms.huggingface import HuggingFaceLLM
 from llama_index.core import PromptTemplate
 
+from common import (
+    ollama_base_url,
+    ollama_embed_model,
+    ollama_chat_model,
+    hf_embed_model,
+    hf_chat_model,
+)
+
 DATA_PATH = "data"
 DATA_PATH_EN = "data_en"
 DATA_PATH_ZH = "data_zh"
@@ -47,12 +55,8 @@ class RagChatConfig:
 
     def embed_model(self):
         if self.__embed_model == OllamaEmbedding:
-            host = os.environ.get("OLLAMA_HOST", "localhost")
-            base_url = base_url = os.environ.get(
-                "OLLAMA_BASE_URL", f"http://{host}:11434"
-            )
             return self.__embed_model(
-                base_url=base_url, model_name=self.embed_model_name
+                base_url=ollama_base_url, model_name=self.embed_model_name
             )
         if self.__embed_model == OpenAIEmbedding:
             return self.__embed_model(model=self.embed_model_name)
@@ -63,9 +67,9 @@ class RagChatConfig:
         if self.__chat_model == HuggingFaceLLM:
             return self.__hf_chat_model()
         if self.__chat_model == Ollama:
-            host = os.environ.get("OLLAMA_HOST", "localhost")
-            base_url = os.environ.get("OLLAMA_BASE_URL", f"http://{host}:11434")
-            return self.__chat_model(base_url=base_url, model=self.chat_model_name)
+            return self.__chat_model(
+                base_url=ollama_base_url, model=self.chat_model_name
+            )
         if self.__chat_model == OpenAI:
             return self.__chat_model(model=self.chat_model_name)
 
@@ -140,8 +144,8 @@ def __gemini_config(
 
 
 def __ollama_config(
-    embed_model_name=os.environ.get("OLLAMA_EMBED_MODEL", "nomic-embed-text:v1.5"),
-    chat_model_name=os.environ.get("OLLAMA_CHAT_MODEL", "vicuna:7b"),
+    embed_model_name=ollama_embed_model,
+    chat_model_name=ollama_chat_model,
     data_path=DATA_PATH,
     vector_db_collection="ollama",
     defalut_question=DEFAULT_QUESTION,
@@ -159,8 +163,8 @@ def __ollama_config(
 
 
 def __hf_config(
-    embed_model_name="BAAI/bge-small-en",
-    chat_model_name="lmsys/vicuna-7b-v1.5",
+    embed_model_name=hf_embed_model,
+    chat_model_name=hf_chat_model,
     bnb_quantized=True,
     data_path=DATA_PATH,
     vector_db_collection="hface",
