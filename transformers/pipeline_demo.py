@@ -2,7 +2,7 @@ import torch
 from transformers import pipeline
 from common import hf_chat_model as model
 
-generator = pipeline(
+pipe = pipeline(
     "text-generation",
     model=model,
     torch_dtype=torch.bfloat16,
@@ -14,7 +14,7 @@ messages = [
     {"role": "user", "content": "What is your name?"},
 ]
 
-response = generator(messages, max_new_tokens=256)
+response = pipe(messages, max_new_tokens=256)
 
 print("-" * 80)
 print(response[0]["generated_text"][-1]["content"])
