@@ -183,47 +183,6 @@ def __hf_config(
     )
 
 
-HYBRID = RagChatConfig(
-    "hybrid",
-    HuggingFaceEmbedding,
-    "BAAI/bge-small-en",
-    OpenAI,
-    "gpt-3.5-turbo",
-)
-
-HYBRID_ZH = RagChatConfig(
-    "hybrid_zh",
-    HuggingFaceEmbedding,
-    "BAAI/bge-small-en",
-    OpenAI,
-    "gpt-3.5-turbo",
-    data_path=DATA_PATH_ZH,
-    vector_db_collection="hface_zh",
-    defalut_question=DEFAULT_QUESTION_ZH,
-)
-
-HYBRID_LARGE = RagChatConfig(
-    "hybrid_large",
-    HuggingFaceEmbedding,
-    "BAAI/bge-large-en-v1.5",
-    OpenAI,
-    "gpt-3.5-turbo",
-    bnb_quantized=False,
-    vector_db_collection="hface_large",
-)
-
-HYBRID_LARGE_ZH = RagChatConfig(
-    "hybrid_large_zh",
-    HuggingFaceEmbedding,
-    "BAAI/bge-large-zh-v1.5",
-    OpenAI,
-    "gpt-3.5-turbo",
-    bnb_quantized=False,
-    data_path=DATA_PATH_ZH,
-    vector_db_collection="hface_large_zh",
-    defalut_question=DEFAULT_QUESTION_ZH,
-)
-
 __config_dict = {
     "openai": __openai_config(),
     "openai_en": __openai_config(
@@ -271,31 +230,6 @@ __config_dict = {
         vector_db_collection="hface_zh",
         defalut_question=DEFAULT_QUESTION_ZH,
     ),
-    "hf_large": __hf_config(
-        embed_model_name="BAAI/bge-large-en-v1.5",
-        chat_model_name="TheBloke/vicuna-13B-v1.5-AWQ",
-        bnb_quantized=False,
-        vector_db_collection="hface_large",
-    ),
-    "hf_large_en": __hf_config(
-        embed_model_name="BAAI/bge-large-en-v1.5",
-        chat_model_name="TheBloke/vicuna-13B-v1.5-AWQ",
-        bnb_quantized=False,
-        vector_db_collection="hface_large_en",
-        defalut_question=DEFAULT_QUESTION_EN,
-    ),
-    "hf_large_zh": __hf_config(
-        embed_model_name="BAAI/bge-large-zh-v1.5",
-        chat_model_name="TheBloke/vicuna-13B-v1.5-AWQ",
-        bnb_quantized=False,
-        data_path=DATA_PATH_ZH,
-        vector_db_collection="hface_large_zh",
-        defalut_question=DEFAULT_QUESTION_ZH,
-    ),
-    "hybrid": HYBRID,
-    "hybrid_zh": HYBRID_ZH,
-    "hybrid_large": HYBRID_LARGE,
-    "hybrid_large_zh": HYBRID_LARGE_ZH,
 }
 
 

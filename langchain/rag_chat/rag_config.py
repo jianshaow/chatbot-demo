@@ -1,12 +1,11 @@
 import os, sys
 from typing import Type
 from langchain_core.embeddings import Embeddings
-from langchain_community.embeddings.ollama import OllamaEmbeddings
 from langchain_core.language_models.base import BaseLanguageModel
 from langchain_openai import OpenAIEmbeddings
 from langchain_openai import ChatOpenAI
-from langchain_community.embeddings.ollama import OllamaEmbeddings
-from langchain_community.chat_models.ollama import ChatOllama
+from langchain_ollama import OllamaEmbeddings
+from langchain_ollama import ChatOllama
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_google_genai import ChatGoogleGenerativeAI
 
@@ -14,8 +13,6 @@ from common import (
     ollama_base_url,
     ollama_embed_model,
     ollama_chat_model,
-    hf_embed_model,
-    hf_chat_model,
 )
 
 DATA_PATH = "data"
