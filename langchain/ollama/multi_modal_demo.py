@@ -2,7 +2,7 @@ import requests
 import matplotlib.pyplot as plt
 from PIL import Image
 from io import BytesIO
-from langchain_ollama.llms import OllamaLLM
+from langchain_ollama import OllamaLLM
 from langchain_core.prompts import ChatPromptTemplate, HumanMessagePromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 

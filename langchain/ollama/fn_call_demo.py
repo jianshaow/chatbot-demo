@@ -1,5 +1,5 @@
 from langchain_core.messages import HumanMessage
-from langchain_ollama.chat_models import ChatOllama
+from langchain_ollama import ChatOllama
 
 from common import ollama_base_url as base_url, ollama_fc_model as model
 from common.fn_tools import tools
