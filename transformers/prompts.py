@@ -30,7 +30,7 @@ def tokenizer_prompt(
 
 
 if __name__ == "__main__":
-    import sys, os
+    import sys
     from common import hf_chat_model as model_name
 
     model_type = len(sys.argv) == 2 and sys.argv[1] or "vicuna"
