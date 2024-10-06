@@ -1,10 +1,9 @@
-import os, torch
+import os
 from dotenv import load_dotenv
 from transformers import (
     AutoModelForCausalLM,
     AutoTokenizer,
     GenerationConfig,
-    BitsAndBytesConfig,
     PreTrainedModel,
     PreTrainedTokenizer,
 )
@@ -14,18 +13,27 @@ load_dotenv()
 hf_embed_model = os.getenv("HF_EMBED_MODEL", "BAAI/bge-small-en")
 hf_chat_model = os.getenv("HF_CHAT_MODEL", "meta-llama/Llama-3.2-3B-Instruct")
 
-def new_model(
-    model_name: str, bnb_enabled=os.environ.get("BNB_ENABLED", "false") == "true"
-) -> PreTrainedModel:
-    model_args = {}
+
+def default_model_kwargs() -> dict[str, str]:
+    model_kwargs = {}
+    bnb_enabled = os.environ.get("BNB_ENABLED", "false") == "true"
     if bnb_enabled:
-        model_args["quantization_config"] = BitsAndBytesConfig(
+        import torch
+        from transformers import BitsAndBytesConfig
+
+        model_kwargs["quantization_config"] = BitsAndBytesConfig(
             load_in_4bit=True, bnb_4bit_compute_dtype=torch.float16
         )
+    return model_kwargs
+
+
+def new_model(model_name: str, model_kwargs=None) -> PreTrainedModel:
+    if model_kwargs is None:
+        model_kwargs = default_model_kwargs()
 
     model = AutoModelForCausalLM.from_pretrained(
         model_name,
-        **model_args,
+        **model_kwargs,
         device_map="auto",
     )
     return model

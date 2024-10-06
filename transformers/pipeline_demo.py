@@ -1,10 +1,11 @@
 from transformers import pipeline
-from common import hf_chat_model as model
+from common import default_model_kwargs, hf_chat_model as model
 
 pipe = pipeline(
     "text-generation",
     model=model,
     device_map="auto",
+    model_kwargs=default_model_kwargs(),
 )
 
 messages = [
