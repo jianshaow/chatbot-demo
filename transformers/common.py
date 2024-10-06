@@ -53,9 +53,8 @@ def generate(model: PreTrainedModel, tokenizer: PreTrainedTokenizer, prompt: str
 
 
 if __name__ == "__main__":
-    model_name = os.environ.get("HF_MODEL", "meta-llama/Llama-2-7b-chat-hf")
-    model = new_model(model_name)
-    tokenizer = new_tokenizer(model_name)
+    model = new_model(hf_chat_model)
+    tokenizer = new_tokenizer(hf_chat_model)
     print("-" * 80)
     print(generate(model, tokenizer, "who are you?"))
     print("-" * 80)
