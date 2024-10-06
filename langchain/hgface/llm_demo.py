@@ -1,5 +1,3 @@
-import os, torch
-from transformers import BitsAndBytesConfig
 from langchain_huggingface import HuggingFacePipeline
 from langchain_core.prompts import PromptTemplate
 from langchain_core.output_parsers import StrOutputParser
@@ -18,6 +16,7 @@ llm = HuggingFacePipeline.from_model_id(
     model_id=model_name,
     task="text-generation",
     model_kwargs=model_kwargs,
+    pipeline_kwargs={"max_new_tokens": 256},
 )
 print("-" * 80)
 print("chat model:", model_name)
