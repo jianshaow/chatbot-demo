@@ -3,6 +3,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+vectordb_path = os.environ.get("CHROMA_DB_DIR", "chroma")
+
 ollama_host = os.getenv("OLLAMA_HOST", "localhost")
 ollama_base_url = os.getenv("OLLAMA_BASE_URL", f"http://{ollama_host}:11434")
 ollama_embed_model = os.getenv("OLLAMA_EMBED_MODEL", "nomic-embed-text:v1.5")

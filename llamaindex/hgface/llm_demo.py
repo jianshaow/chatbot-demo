@@ -1,16 +1,10 @@
-import os, torch
-from transformers import BitsAndBytesConfig
 from llama_index.llms.huggingface import HuggingFaceLLM
 from llama_index.core.llms import ChatMessage
 
 from common import hf_chat_model as model_name
+from common.models import default_model_kwargs
 
-model_kwargs = {}
-if os.getenv("BNB_ENABLED", "false") == "true":
-    quantization_config = BitsAndBytesConfig(
-        load_in_4bit=True, bnb_4bit_compute_dtype=torch.float16
-    )
-    model_kwargs["quantization_config"] = quantization_config
+model_kwargs = default_model_kwargs()
 
 llm = HuggingFaceLLM(
     context_window=4096,

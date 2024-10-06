@@ -1,4 +1,4 @@
-import os, sys, torch, prompts
+import os, sys, prompts
 from typing import Type
 from llama_index.core.embeddings import BaseEmbedding
 from llama_index.embeddings.openai import OpenAIEmbedding
@@ -13,12 +13,14 @@ from llama_index.llms.huggingface import HuggingFaceLLM
 from llama_index.core import PromptTemplate
 
 from common import (
+    vectordb_path,
     ollama_base_url,
     ollama_embed_model,
     ollama_chat_model,
     hf_embed_model,
     hf_chat_model,
 )
+from common.models import default_model_kwargs
 
 DATA_PATH = "data"
 DATA_PATH_EN = "data_en"
@@ -37,9 +39,8 @@ class RagChatConfig:
         embed_model_name: str,
         chat_model: Type[LLM],
         chat_model_name: str,
-        bnb_quantized: bool = True,
         data_path: str = DATA_PATH,
-        vector_db_collection: str = "hface",
+        vectordb_collection: str = "hface",
         defalut_question: str = DEFAULT_QUESTION,
     ):
         self.name = name
@@ -47,10 +48,9 @@ class RagChatConfig:
         self.embed_model_name = embed_model_name
         self.__chat_model = chat_model
         self.chat_model_name = chat_model_name
-        self.bnb_quantized = bnb_quantized
         self.data_path = data_path
-        self.vector_db_path = os.environ.get("CHROMA_DB_DIR", "chroma")
-        self.vector_db_collection = vector_db_collection
+        self.vectordb_path = vectordb_path
+        self.vectordb_collection = vectordb_collection
         self.defalut_question = defalut_question
 
     def embed_model(self):
@@ -82,18 +82,7 @@ class RagChatConfig:
             return self.defalut_question
 
     def __hf_chat_model(self):
-        model_kwargs = {}
-        if self.bnb_quantized:
-            from transformers import BitsAndBytesConfig
-
-            model_kwargs.update(
-                {
-                    "quantization_config": BitsAndBytesConfig(
-                        load_in_4bit=True,
-                        bnb_4bit_compute_dtype=torch.float16,
-                    )
-                }
-            )
+        model_kwargs = default_model_kwargs()
         return HuggingFaceLLM(
             context_window=4096,
             max_new_tokens=2048,
@@ -119,7 +108,7 @@ def __openai_config(
         OpenAI,
         chat_model_name,
         data_path=data_path,
-        vector_db_collection=vector_db_collection,
+        vectordb_collection=vector_db_collection,
         defalut_question=defalut_question,
     )
 
@@ -138,7 +127,7 @@ def __gemini_config(
         Gemini,
         chat_model_name,
         data_path=data_path,
-        vector_db_collection=vector_db_collection,
+        vectordb_collection=vector_db_collection,
         defalut_question=defalut_question,
     )
 
@@ -157,7 +146,7 @@ def __ollama_config(
         Ollama,
         chat_model_name,
         data_path=data_path,
-        vector_db_collection=vector_db_collection,
+        vectordb_collection=vector_db_collection,
         defalut_question=defalut_question,
     )
 
@@ -178,7 +167,7 @@ def __hf_config(
         chat_model_name,
         bnb_quantized=bnb_quantized,
         data_path=data_path,
-        vector_db_collection=vector_db_collection,
+        vectordb_collection=vector_db_collection,
         defalut_question=defalut_question,
     )
 
