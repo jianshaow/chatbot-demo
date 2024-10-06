@@ -1,16 +1,16 @@
-import os
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
+
+from common import google_chat_model as model
 
 prompt = ChatPromptTemplate.from_messages(
     [("system", "You are a pirate with a colorful personality."), ("user", "{input}")]
 )
 
-model_name = os.environ.get("GEMINI_CHAT_MODEL", "models/gemini-1.5-flash")
-llm = ChatGoogleGenerativeAI(model=model_name, transport="rest")
+llm = ChatGoogleGenerativeAI(model=model, transport="rest")
 print("-" * 80)
-print("chat model:", model_name)
+print("chat model:", model)
 
 output_parser = StrOutputParser()
 chain = prompt | llm | output_parser

@@ -6,6 +6,8 @@ from io import BytesIO
 from llama_index.multi_modal_llms.gemini import GeminiMultiModal
 from llama_index.core.multi_modal_llms.generic_utils import load_image_urls
 
+from common import google_mm_model as model_name
+
 image_urls = [
     "https://storage.googleapis.com/generativeai-downloads/data/scene.jpg",
     # "",
@@ -18,7 +20,6 @@ plt.imshow(img)
 plt.show()
 
 image_documents = load_image_urls(image_urls)
-model_name = os.environ.get("GEMINI_MM_MODEL", "models/gemini-1.5-flash")
 gemini_pro = GeminiMultiModal(model_name=model_name, transport="rest")
 print("-" * 80)
 print("multi-modal model:", model_name)

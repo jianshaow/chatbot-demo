@@ -1,10 +1,12 @@
-import requests, os
+import requests
 import matplotlib.pyplot as plt
 from PIL import Image
 from io import BytesIO
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate, HumanMessagePromptTemplate
 from langchain_core.output_parsers import StrOutputParser
+
+from common import openai_mm_model as model
 
 image_url = "https://storage.googleapis.com/generativeai-downloads/data/scene.jpg"
 
@@ -19,10 +21,9 @@ template = HumanMessagePromptTemplate.from_template(
 )
 prompt = ChatPromptTemplate.from_messages([template])
 
-model_name = os.environ.get("OPENAI_MM_MODEL", "gpt-4-vision-preview")
-llm = ChatOpenAI(model=model_name)
+llm = ChatOpenAI(model=model)
 print("-" * 80)
-print("multi-modal model:", model_name)
+print("multi-modal model:", model)
 
 output_parser = StrOutputParser()
 chain = prompt | llm | output_parser

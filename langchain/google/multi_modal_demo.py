@@ -1,10 +1,12 @@
-import requests, os
+import requests
 import matplotlib.pyplot as plt
 from PIL import Image
 from io import BytesIO
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.prompts import ChatPromptTemplate, HumanMessagePromptTemplate
 from langchain_core.output_parsers import StrOutputParser
+
+from common import google_mm_model as model
 
 image_url = "https://storage.googleapis.com/generativeai-downloads/data/scene.jpg"
 
@@ -19,10 +21,9 @@ template = HumanMessagePromptTemplate.from_template(
 )
 prompt = ChatPromptTemplate.from_messages([template])
 
-model_name = os.environ.get("GEMINI_MM_MODEL", "models/gemini-1.5-flash")
-llm = ChatGoogleGenerativeAI(model=model_name, transport="rest")
+llm = ChatGoogleGenerativeAI(model=model, transport="rest")
 print("-" * 80)
-print("multi-modal model:", model_name)
+print("multi-modal model:", model)
 
 output_parser = StrOutputParser()
 chain = prompt | llm | output_parser

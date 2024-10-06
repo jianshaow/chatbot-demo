@@ -1,10 +1,9 @@
-import os
 from llama_index.agent.openai import OpenAIAgent
 from llama_index.llms.openai import OpenAI
 
+from common import openai_fc_model as model
 from common.fn_tools import tools
 
-model = os.environ.get("OPENAI_FC_MODEL", "gpt-4o-mini")
 llm = OpenAI(model=model)
 agent = OpenAIAgent.from_tools(tools, llm=llm, verbose=True)
 

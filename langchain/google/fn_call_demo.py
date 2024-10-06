@@ -1,13 +1,10 @@
-import os
-
 from langchain_core.messages import HumanMessage
 from langchain_google_genai import ChatGoogleGenerativeAI
 
+from common import google_fc_model as model
 from common.fn_tools import tools
 from common.functions import fns
 
-
-model = os.environ.get("GEMINI_FC_MODEL", "models/gemini-1.5-flash")
 llm = ChatGoogleGenerativeAI(model=model, transport="rest")
 llm_with_tools = llm.bind_tools(tools)
 

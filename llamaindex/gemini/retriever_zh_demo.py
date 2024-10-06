@@ -6,6 +6,8 @@ from llama_index.core import (
 )
 from llama_index.embeddings.gemini import GeminiEmbedding
 
+from common import google_embed_model as model_name
+
 model_name = os.environ.get("GEMINI_EMBED_MODEL", "models/embedding-001")
 Settings.embed_model = GeminiEmbedding(model_name=model_name, transport="rest")
 print("-" * 80)

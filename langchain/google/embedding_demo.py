@@ -1,10 +1,11 @@
-import os, sys
+import sys
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 
-model_name = os.environ.get("GEMINI_EMBED_MODEL", "models/embedding-001")
-embed_model = GoogleGenerativeAIEmbeddings(model=model_name, transport="rest")
+from common import google_embed_model as model
+
+embed_model = GoogleGenerativeAIEmbeddings(model=model, transport="rest")
 print("-" * 80)
-print("embed model:", model_name)
+print("embed model:", model)
 
 question = len(sys.argv) == 2 and sys.argv[1] or "What did the author do growing up?"
 embeddings = embed_model.embed_query(question)

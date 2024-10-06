@@ -1,9 +1,10 @@
-import os, sys
+import sys
 from langchain_community.document_loaders import DirectoryLoader
 from langchain_text_splitters import CharacterTextSplitter
 from langchain_chroma import Chroma
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 
+from common import google_chat_model as model
 
 loader = DirectoryLoader("data")
 data = loader.load()
@@ -11,13 +12,12 @@ data = loader.load()
 text_splitter = CharacterTextSplitter()
 documents = text_splitter.split_documents(data)
 
-model_name = os.environ.get("GEMINI_EMBED_MODEL", "models/embedding-001")
 vectorstore = Chroma.from_documents(
     documents=documents,
-    embedding=GoogleGenerativeAIEmbeddings(model=model_name, transport="rest"),
+    embedding=GoogleGenerativeAIEmbeddings(model=model, transport="rest"),
 )
 print("-" * 80)
-print("embed model:", model_name)
+print("embed model:", model)
 
 question = len(sys.argv) == 2 and sys.argv[1] or "What did the author do growing up?"
 retriever = vectorstore.as_retriever()

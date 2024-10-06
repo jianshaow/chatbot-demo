@@ -1,12 +1,10 @@
-import os
-
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain.agents import AgentExecutor, create_tool_calling_agent
 
+from common import google_fc_model as model
 from common.fn_tools import tools
 
-model = os.environ.get("GEMINI_FC_MODEL", "models/gemini-1.5-flash")
 llm = ChatGoogleGenerativeAI(model=model, transport="rest")
 
 prompt = ChatPromptTemplate.from_messages(

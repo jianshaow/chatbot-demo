@@ -1,13 +1,10 @@
-import os
-
 from langchain_core.messages import HumanMessage
 from langchain_openai import ChatOpenAI
 
+from common import openai_fc_model as model
 from common.fn_tools import tools
 from common.functions import fns
 
-
-model = os.environ.get("OPENAI_FC_MODEL", "gpt-4o-mini")
 llm = ChatOpenAI(model=model)
 llm_with_tools = llm.bind_tools(tools)
 

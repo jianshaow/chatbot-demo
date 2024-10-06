@@ -1,12 +1,10 @@
-import os
-
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain.agents import AgentExecutor, create_tool_calling_agent
 
+from common import openai_fc_model as model
 from common.fn_tools import tools
 
-model = os.environ.get("OPENAI_FC_MODEL", "gpt-4o-mini")
 llm = ChatOpenAI(model=model)
 
 prompt = ChatPromptTemplate.from_messages(

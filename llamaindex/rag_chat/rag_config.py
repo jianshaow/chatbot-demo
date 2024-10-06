@@ -1,4 +1,4 @@
-import os, sys, prompts
+import sys, prompts
 from typing import Type
 from llama_index.core.embeddings import BaseEmbedding
 from llama_index.embeddings.openai import OpenAIEmbedding
@@ -19,6 +19,10 @@ from common import (
     ollama_chat_model,
     hf_embed_model,
     hf_chat_model,
+    openai_embed_model,
+    openai_chat_model,
+    google_embed_model,
+    google_chat_model,
 )
 from common.models import default_model_kwargs
 
@@ -95,8 +99,6 @@ class RagChatConfig:
 
 
 def __openai_config(
-    embed_model_name=os.environ.get("OPENAI_EMBED_MODEL", "text-embedding-ada-002"),
-    chat_model_name=os.environ.get("OPENAI_CHAT_MODEL", "gpt-3.5-turbo"),
     data_path=DATA_PATH,
     vector_db_collection="openai",
     defalut_question=DEFAULT_QUESTION,
@@ -104,9 +106,9 @@ def __openai_config(
     return RagChatConfig(
         "openai",
         OpenAIEmbedding,
-        embed_model_name,
+        openai_embed_model,
         OpenAI,
-        chat_model_name,
+        openai_chat_model,
         data_path=data_path,
         vector_db_collection=vector_db_collection,
         defalut_question=defalut_question,
@@ -114,8 +116,6 @@ def __openai_config(
 
 
 def __gemini_config(
-    embed_model_name=os.environ.get("GEMINI_EMBED_MODEL", "models/embedding-001"),
-    chat_model_name=os.environ.get("GEMINI_CHAT_MODEL", "models/gemini-1.5-flash"),
     data_path=DATA_PATH,
     vector_db_collection="gemini",
     defalut_question=DEFAULT_QUESTION,
@@ -123,9 +123,9 @@ def __gemini_config(
     return RagChatConfig(
         "gemini",
         GeminiEmbedding,
-        embed_model_name,
+        google_embed_model,
         Gemini,
-        chat_model_name,
+        google_chat_model,
         data_path=data_path,
         vector_db_collection=vector_db_collection,
         defalut_question=defalut_question,

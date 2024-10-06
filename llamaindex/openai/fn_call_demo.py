@@ -1,11 +1,11 @@
-import os, json
+import json
 from llama_index.llms.openai import OpenAI
 from llama_index.core.llms import ChatMessage
 
+from common import openai_fc_model as model
 from common.fn_tools import tools
 from common.functions import fns
 
-model = os.environ.get("OPENAI_FC_MODEL", "gpt-4o-mini")
 llm = OpenAI(model=model)
 
 messages = [ChatMessage(role="user", content="What is (121 * 3) + 42?")]

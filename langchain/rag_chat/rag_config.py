@@ -1,4 +1,4 @@
-import os, sys
+import sys
 from typing import Type
 from langchain_core.embeddings import Embeddings
 from langchain_core.language_models.base import BaseLanguageModel
@@ -14,6 +14,10 @@ from common import (
     ollama_base_url,
     ollama_embed_model,
     ollama_chat_model,
+    openai_embed_model,
+    openai_chat_model,
+    google_embed_model,
+    google_chat_model,
 )
 
 DATA_PATH = "data"
@@ -67,17 +71,15 @@ class RagChatConfig:
 
 
 def __openai_config(
-    embed_model_name=os.environ.get("OPENAI_EMBED_MODEL", "text-embedding-ada-002"),
-    chat_model_name=os.environ.get("OPENAI_CHAT_MODEL", "gpt-3.5-turbo"),
     data_path=DATA_PATH,
     vector_db_collection="openai",
     defalut_question=DEFAULT_QUESTION,
 ):
     return RagChatConfig(
         OpenAIEmbeddings,
-        embed_model_name,
+        openai_embed_model,
         ChatOpenAI,
-        chat_model_name,
+        openai_chat_model,
         data_path=data_path,
         vector_db_collection=vector_db_collection,
         defalut_question=defalut_question,
@@ -85,17 +87,15 @@ def __openai_config(
 
 
 def __gemini_config(
-    embed_model_name=os.environ.get("GEMINI_EMBED_MODEL", "models/embedding-001"),
-    chat_model_name=os.environ.get("GEMINI_CHAT_MODEL", "models/gemini-1.5-flash"),
     data_path=DATA_PATH,
     vector_db_collection="gemini",
     defalut_question=DEFAULT_QUESTION,
 ):
     return RagChatConfig(
         GoogleGenerativeAIEmbeddings,
-        embed_model_name,
+        google_embed_model,
         ChatGoogleGenerativeAI,
-        chat_model_name,
+        google_chat_model,
         data_path=data_path,
         vector_db_collection=vector_db_collection,
         defalut_question=defalut_question,

@@ -14,3 +14,13 @@ ollama_fc_model = os.getenv("OLLAMA_FC_MODEL", "llama3.1:8b")
 
 hf_embed_model = os.getenv("HF_EMBED_MODEL", "BAAI/bge-small-en")
 hf_chat_model = os.getenv("HF_CHAT_MODEL", "meta-llama/Llama-3.2-3B-Instruct")
+
+openai_embed_model = os.getenv("OPENAI_EMBED_MODEL", "text-embedding-ada-002")
+openai_chat_model = os.getenv("OPENAI_CHAT_MODEL", "gpt-4o-mini")
+openai_mm_model = os.getenv("OPENAI_MM_MODEL", "gpt-4o-mini")
+openai_fc_model = os.getenv("OPENAI_FC_MODEL", "gpt-4o-mini")
+
+google_embed_model = os.getenv("GOOGLE_EMBED_MODEL", "models/embedding-001")
+google_chat_model = os.getenv("GOOGLE_CHAT_MODEL", "models/gemini-1.5-flash")
+google_mm_model = os.getenv("GOOGLE_MM_MODEL", "models/gemini-1.5-flash")
+google_fc_model = os.getenv("GOOGLE_FC_MODEL", "models/gemini-1.5-flash")
