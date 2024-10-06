@@ -10,8 +10,8 @@ print("-" * 80)
 print("embed model:", Settings.embed_model.model_name)
 print("chat model:", Settings.llm.model)
 
-db = chromadb.PersistentClient(path=config.vectordb_path)
-chroma_collection = db.get_or_create_collection(config.vectordb_collection)
+db = chromadb.PersistentClient(path=config.vector_db_path)
+chroma_collection = db.get_or_create_collection(config.vector_db_collection)
 vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
 index = VectorStoreIndex.from_vector_store(vector_store)
 

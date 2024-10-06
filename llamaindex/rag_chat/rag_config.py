@@ -13,7 +13,7 @@ from llama_index.llms.huggingface import HuggingFaceLLM
 from llama_index.core import PromptTemplate
 
 from common import (
-    vectordb_path,
+    vector_db_path,
     ollama_base_url,
     ollama_embed_model,
     ollama_chat_model,
@@ -40,7 +40,7 @@ class RagChatConfig:
         chat_model: Type[LLM],
         chat_model_name: str,
         data_path: str = DATA_PATH,
-        vectordb_collection: str = "hface",
+        vector_db_collection: str = "hface",
         defalut_question: str = DEFAULT_QUESTION,
     ):
         self.name = name
@@ -49,8 +49,8 @@ class RagChatConfig:
         self.__chat_model = chat_model
         self.chat_model_name = chat_model_name
         self.data_path = data_path
-        self.vectordb_path = vectordb_path
-        self.vectordb_collection = vectordb_collection
+        self.vector_db_path = vector_db_path
+        self.vector_db_collection = vector_db_collection
         self.defalut_question = defalut_question
 
     def embed_model(self):
@@ -108,7 +108,7 @@ def __openai_config(
         OpenAI,
         chat_model_name,
         data_path=data_path,
-        vectordb_collection=vector_db_collection,
+        vector_db_collection=vector_db_collection,
         defalut_question=defalut_question,
     )
 
@@ -127,7 +127,7 @@ def __gemini_config(
         Gemini,
         chat_model_name,
         data_path=data_path,
-        vectordb_collection=vector_db_collection,
+        vector_db_collection=vector_db_collection,
         defalut_question=defalut_question,
     )
 
@@ -146,7 +146,7 @@ def __ollama_config(
         Ollama,
         chat_model_name,
         data_path=data_path,
-        vectordb_collection=vector_db_collection,
+        vector_db_collection=vector_db_collection,
         defalut_question=defalut_question,
     )
 
@@ -167,7 +167,7 @@ def __hf_config(
         chat_model_name,
         bnb_quantized=bnb_quantized,
         data_path=data_path,
-        vectordb_collection=vector_db_collection,
+        vector_db_collection=vector_db_collection,
         defalut_question=defalut_question,
     )
 

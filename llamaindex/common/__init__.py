@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-vectordb_path = os.environ.get("CHROMA_DB_DIR", "chroma")
+vector_db_path = os.environ.get("CHROMA_DB_DIR", "chroma")
 
 ollama_host = os.getenv("OLLAMA_HOST", "localhost")
 ollama_base_url = os.getenv("OLLAMA_BASE_URL", f"http://{ollama_host}:11434")

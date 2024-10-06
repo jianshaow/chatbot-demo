@@ -5,18 +5,14 @@ from langchain_core.prompts import PromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 
 from common import hf_chat_model as model_name
+from common.models import default_model_kwargs
 
 prompt = PromptTemplate(
     template="You are a pirate with a colorful personality. USER: {input}",
     input_variables=["input"],
 )
 
-model_kwargs = {}
-if os.getenv("BNB_ENABLED", "false") == "true":
-    quantization_config = BitsAndBytesConfig(
-        load_in_4bit=True, bnb_4bit_compute_dtype=torch.float16
-    )
-    model_kwargs["quantization_config"] = quantization_config
+model_kwargs = default_model_kwargs()
 
 llm = HuggingFacePipeline.from_model_id(
     model_id=model_name,

@@ -10,6 +10,7 @@ from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_google_genai import ChatGoogleGenerativeAI
 
 from common import (
+    vector_db_path,
     ollama_base_url,
     ollama_embed_model,
     ollama_chat_model,
@@ -31,7 +32,6 @@ class RagChatConfig:
         embed_model_name: str,
         chat_model: Type[BaseLanguageModel],
         chat_model_name: str,
-        bnb_quantized: bool = True,
         data_path: str = DATA_PATH,
         vector_db_collection: str = "hface",
         defalut_question: str = DEFAULT_QUESTION,
@@ -40,9 +40,8 @@ class RagChatConfig:
         self.embed_model_name = embed_model_name
         self.__chat_model = chat_model
         self.chat_model_name = chat_model_name
-        self.bnb_quantized = bnb_quantized
         self.data_path = data_path
-        self.vector_db_path = os.environ.get("CHROMA_DB_DIR", "chroma")
+        self.vector_db_path = vector_db_path
         self.vector_db_collection = vector_db_collection
         self.defalut_question = defalut_question
 
