@@ -154,7 +154,6 @@ def __ollama_config(
 def __hf_config(
     embed_model_name=hf_embed_model,
     chat_model_name=hf_chat_model,
-    bnb_quantized=True,
     data_path=DATA_PATH,
     vector_db_collection="hface",
     defalut_question=DEFAULT_QUESTION,
@@ -165,7 +164,6 @@ def __hf_config(
         embed_model_name,
         HuggingFaceLLM,
         chat_model_name,
-        bnb_quantized=bnb_quantized,
         data_path=data_path,
         vector_db_collection=vector_db_collection,
         defalut_question=defalut_question,
