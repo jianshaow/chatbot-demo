@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 from transformers import (
     AutoModelForCausalLM,
     AutoTokenizer,
-    GenerationConfig,
+    TextStreamer,
     PreTrainedModel,
     PreTrainedTokenizer,
 )
@@ -39,23 +39,25 @@ def new_model(model_name: str, model_kwargs=None) -> PreTrainedModel:
     return model
 
 
-def new_tokenizer(model_name: str):
+def new_tokenizer(model_name: str) -> PreTrainedTokenizer:
     return AutoTokenizer.from_pretrained(model_name)
 
 
 def generate(model: PreTrainedModel, tokenizer: PreTrainedTokenizer, prompt: str):
+    inputs = tokenizer(prompt, return_tensors="pt").to(model.device)
+    input_ids = inputs.input_ids
 
-    input_ids = tokenizer(
-        prompt, return_tensors="pt", return_attention_mask=False
-    ).input_ids.to(model.device)
-
-    generation_config = GenerationConfig.from_pretrained(
-        model.name_or_path, max_length=1024
+    streamer = TextStreamer(tokenizer, skip_prompt=True)
+    outputs = model.generate(
+        **inputs,
+        streamer=streamer,
+        max_new_tokens=1024,
     )
-    tokens = model.generate(input_ids, generation_config=generation_config)
 
-    token_ids = tokens[0][input_ids.size(1) :]
-    response = tokenizer.decode(token_ids, skip_special_tokens=True)
+    token_ids = outputs[0][input_ids.size(1) :]
+    response = tokenizer.decode(
+        token_ids, skip_special_tokens=True, clean_up_tokenization_spaces=True
+    )
 
     return response
 
