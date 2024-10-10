@@ -25,8 +25,9 @@ def tokenizer_prompt(
         {"role": "system", "content": system_prompt},
         {"role": "user", "content": user_prompt},
     ]
-    tokens = tokenizer.apply_chat_template(messages)
-    return tokenizer.decode(tokens)
+    return tokenizer.apply_chat_template(
+        messages, tokenize=False, add_generation_prompt=True
+    )
 
 
 if __name__ == "__main__":
