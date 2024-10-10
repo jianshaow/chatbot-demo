@@ -1,7 +1,7 @@
 from transformers import (
     AutoModelForCausalLM,
     AutoTokenizer,
-    TextStreamer,
+    TextIteratorStreamer,
     PreTrainedModel,
     PreTrainedTokenizer,
 )
@@ -39,25 +39,28 @@ def new_tokenizer(model_name: str) -> PreTrainedTokenizer:
     return AutoTokenizer.from_pretrained(model_name)
 
 
-def generate(model: PreTrainedModel, tokenizer: PreTrainedTokenizer, prompt: str):
+def generate(
+    model: PreTrainedModel, tokenizer: PreTrainedTokenizer, prompt: str, streaming=False
+):
     inputs = tokenizer(prompt, return_tensors="pt").to(model.device)
 
-    # streamer = TextStreamer(tokenizer, skip_prompt=True)
-    outputs = model.generate(
-        **inputs,
-        # streamer=streamer,
-        max_new_tokens=512,
-    )
+    generate_kwargs = {"max_new_tokens": 512}
+    if streaming:
+        streamer = TextIteratorStreamer(tokenizer, skip_prompt=True)
+        generate_kwargs["streamer"] = streamer
 
-    token_ids = [
-        output_ids[len(input_ids) :]
-        for input_ids, output_ids in zip(inputs.input_ids, outputs)
-    ]
-    response = tokenizer.batch_decode(
-        token_ids, skip_special_tokens=True, clean_up_tokenization_spaces=True
-    )
+    outputs = model.generate(**inputs, **generate_kwargs)
 
-    return response[0]
+    if streaming:
+        return streamer
+    else:
+        token_ids = [
+            output_ids[len(input_ids) :]
+            for input_ids, output_ids in zip(inputs.input_ids, outputs)
+        ]
+        return tokenizer.batch_decode(
+            token_ids, skip_special_tokens=True, clean_up_tokenization_spaces=True
+        )[0]
 
 
 if __name__ == "__main__":

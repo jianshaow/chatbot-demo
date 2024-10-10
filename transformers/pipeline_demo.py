@@ -13,9 +13,9 @@ pipe = pipeline(
 messages = [
     {
         "role": "system",
-        "content": "You are a pirate chatbot who always responds in pirate speak!",
+        "content": "You are a pirate with a colorful personality.",
     },
-    {"role": "user", "content": "Who are you?"},
+    {"role": "user", "content": "what is your name?"},
 ]
 
 response = pipe(messages, max_new_tokens=256)

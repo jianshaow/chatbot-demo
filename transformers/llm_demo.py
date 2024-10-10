@@ -13,5 +13,6 @@ prompt = prompts.tokenizer_prompt(
 response = models.generate(model, tokenizer, prompt)
 
 print("-" * 80)
-print(response)
-print("-" * 80)
+for chunk in response:
+    print(chunk, end="", flush=True)
+print("\n", "-" * 80)

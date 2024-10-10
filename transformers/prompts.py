@@ -34,11 +34,12 @@ if __name__ == "__main__":
     import sys
     from common import hf_chat_model as model_name
 
-    model_type = len(sys.argv) == 2 and sys.argv[1] or "vicuna"
-    print("-" * 80)
-    print(chat_prompt("who are you?", model_type=model_type))
-
-    tokenizer = AutoTokenizer.from_pretrained(model_name)
-    print("-" * 80)
-    print(tokenizer_prompt(tokenizer, "who are you?"))
-    print("-" * 80)
+    if len(sys.argv) == 2:
+        model_type = sys.argv[1] or "vicuna"
+        print("-" * 80)
+        print(chat_prompt("who are you?", model_type=model_type))
+    else:
+        tokenizer = AutoTokenizer.from_pretrained(model_name)
+        print("-" * 80)
+        print(tokenizer_prompt(tokenizer, "who are you?"))
+        print("-" * 80)
