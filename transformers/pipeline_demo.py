@@ -26,5 +26,5 @@ streamer = TextStreamer(
 )
 
 print("-" * 80)
-response = pipe(messages, max_new_tokens=256, streamer=streamer)
+pipe(messages, max_new_tokens=256, streamer=streamer)
 print("-" * 80)
