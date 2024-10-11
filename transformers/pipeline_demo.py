@@ -1,4 +1,4 @@
-from transformers import pipeline
+from transformers import pipeline, TextStreamer
 from common import hf_chat_model as model
 from models import default_model_kwargs
 
@@ -18,8 +18,13 @@ messages = [
     {"role": "user", "content": "what is your name?"},
 ]
 
-response = pipe(messages, max_new_tokens=256)
+streamer = TextStreamer(
+    pipe.tokenizer,
+    skip_prompt=True,
+    skip_special_tokens=True,
+    clean_up_tokenization_spaces=True,
+)
 
 print("-" * 80)
-print(response[0]["generated_text"][-1]["content"])
+response = pipe(messages, max_new_tokens=256, streamer=streamer)
 print("-" * 80)
