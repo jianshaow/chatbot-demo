@@ -1,3 +1,4 @@
+from threading import Thread
 from transformers import (
     AutoModelForCausalLM,
     AutoTokenizer,
@@ -44,16 +45,23 @@ def generate(
 ):
     inputs = tokenizer(prompt, return_tensors="pt").to(model.device)
 
-    generate_kwargs = {"max_new_tokens": 512}
-    if streaming:
-        streamer = TextIteratorStreamer(tokenizer, skip_prompt=True)
-        generate_kwargs["streamer"] = streamer
-
-    outputs = model.generate(**inputs, **generate_kwargs)
+    generation_kwargs = {**inputs, "max_new_tokens": 512}
 
     if streaming:
+        streamer = TextIteratorStreamer(
+            tokenizer,
+            skip_prompt=True,
+            skip_special_tokens=True,
+            clean_up_tokenization_spaces=True,
+        )
+        generation_kwargs = {**generation_kwargs, "streamer": streamer}
+
+        thread = Thread(target=model.generate, kwargs=generation_kwargs)
+        thread.start()
+
         return streamer
     else:
+        outputs = model.generate(**generation_kwargs)
         token_ids = [
             output_ids[len(input_ids) :]
             for input_ids, output_ids in zip(inputs.input_ids, outputs)
@@ -66,6 +74,8 @@ def generate(
 if __name__ == "__main__":
     model = new_model(hf_chat_model)
     tokenizer = new_tokenizer(hf_chat_model)
+    response = generate(model, tokenizer, "who are you?", streaming=True)
     print("-" * 80)
-    print(generate(model, tokenizer, "who are you?"))
-    print("-" * 80)
+    for chunk in response:
+        print(chunk, end="", flush=True)
+    print("\n", "-" * 80, sep="")

@@ -10,7 +10,7 @@ prompt = prompts.tokenizer_prompt(
     user_prompt="what is your name?",
 )
 
-response = models.generate(model, tokenizer, prompt)
+response = models.generate(model, tokenizer, prompt, streaming=True)
 
 print("-" * 80)
 for chunk in response:
