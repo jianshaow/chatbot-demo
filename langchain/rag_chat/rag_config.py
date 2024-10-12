@@ -1,7 +1,7 @@
 import sys
 from typing import Type
 from langchain_core.embeddings import Embeddings
-from langchain_core.language_models.base import BaseLanguageModel
+from langchain_core.language_models import BaseChatModel
 from langchain_openai import OpenAIEmbeddings
 from langchain_openai import ChatOpenAI
 from langchain_ollama import OllamaEmbeddings
@@ -34,7 +34,7 @@ class RagChatConfig:
         self,
         embed_model: Type[Embeddings],
         embed_model_name: str,
-        chat_model: Type[BaseLanguageModel],
+        chat_model: Type[BaseChatModel],
         chat_model_name: str,
         data_path: str = DATA_PATH,
         vector_db_collection: str = "hface",
