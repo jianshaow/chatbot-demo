@@ -1,4 +1,3 @@
-import json
 from llama_index.llms.ollama import Ollama
 from llama_index.core.llms import ChatMessage
 
@@ -30,10 +29,7 @@ while response.message.additional_kwargs.get("tool_calls"):
         tool_message = ChatMessage(
             content=str(fn_result),
             role="tool",
-            additional_kwargs={
-                "name": fn_name,
-                # "tool_call_id": tool_call.id,
-            },
+            additional_kwargs={"name": fn_name},
         )
         messages.append(tool_message)
     response = llm.chat_with_tools(tools, chat_history=messages)
