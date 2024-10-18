@@ -12,6 +12,7 @@ messages = [HumanMessage("What is (121 * 3) + 42?")]
 response = llm_with_tools.invoke(messages)
 
 while response.tool_calls:
+    print("-" * 80)
     messages.append(response)
 
     for tool_call in response.tool_calls:

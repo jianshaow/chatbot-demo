@@ -12,6 +12,7 @@ messages = [ChatMessage(role="user", content="What is (121 * 3) + 42?")]
 response = llm.chat_with_tools(tools, messages[0])
 
 while response.message.additional_kwargs.get("tool_calls"):
+    print("-" * 80)
     messages.append(response.message)
     for tool_call in response.message.additional_kwargs.get("tool_calls"):
         fn_name = tool_call.function.name

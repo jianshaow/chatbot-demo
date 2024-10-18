@@ -13,6 +13,7 @@ messages = [HumanMessage(query)]
 response = llm_with_tools.invoke(messages)
 
 while response.response_metadata["finish_reason"] == "tool_calls":
+    print("-" * 80)
     messages.append(response)
 
     for tool_call in response.tool_calls:

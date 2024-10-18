@@ -15,6 +15,7 @@ response = chat.send_message("What is (121 * 3) + 42?")
 results = {}
 going = True
 while going:
+    print("-" * 80)
     for part in response.parts:
         if fn := part.function_call:
             args = (

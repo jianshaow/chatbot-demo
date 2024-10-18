@@ -12,6 +12,7 @@ model = os.environ.get("OPENAI_FC_MODEL", "gpt-4o-mini")
 response = openai.chat.completions.create(model=model, messages=messages, tools=tools)
 
 while response.choices[0].finish_reason == "tool_calls":
+    print("-" * 80)
     messages.append(response.choices[0].message)
     for tool_call in response.choices[0].message.tool_calls:
         fn = fns[tool_call.function.name]
