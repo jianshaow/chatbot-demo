@@ -14,6 +14,7 @@ messages = [
 response = ollama.chat(model=model, messages=messages, tools=tools)
 
 while response["message"].get("tool_calls"):
+    print("-" * 80)
     messages.append(response["message"])
 
     tool_calls = response["message"]["tool_calls"]
