@@ -38,4 +38,5 @@ while response.choices[0].finish_reason == "tool_calls":
         model=model, messages=messages, tools=tools
     )
 
+print("-" * 80)
 print(response.choices[0].message.content)

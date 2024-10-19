@@ -39,4 +39,5 @@ while response.message.additional_kwargs.get("tool_calls"):
         messages.append(tool_message)
     response = llm.chat_with_tools(tools, chat_history=messages)
 
+print("-" * 80)
 print(response.message.content)

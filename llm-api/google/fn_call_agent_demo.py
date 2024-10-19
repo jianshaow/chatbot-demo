@@ -11,4 +11,5 @@ model = genai.GenerativeModel(model_name=model_name, tools=tools)
 
 chat = model.start_chat(enable_automatic_function_calling=True)
 response = chat.send_message("What is (121 * 3) + 42?")
+print("-" * 80)
 print(response.text)

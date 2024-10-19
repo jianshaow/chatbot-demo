@@ -30,4 +30,5 @@ while response.tool_calls:
         messages.append(fn_result)
     response = llm_with_tools.invoke(messages)
 
+print("-" * 80)
 print(response.content)
