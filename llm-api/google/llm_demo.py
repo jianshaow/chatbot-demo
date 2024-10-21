@@ -1,8 +1,9 @@
-import os, google.generativeai as genai
+import google.generativeai as genai
+
+from common import google_chat_model as model_name
 
 genai.configure(transport="rest")
 
-model_name = os.environ.get("GEMINI_CHAT_MODEL", "models/gemini-1.5-flash")
 print("-" * 80)
 print("chat model:", model_name)
 model = genai.GenerativeModel(

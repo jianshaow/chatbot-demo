@@ -1,14 +1,15 @@
-import os, json, openai
+import json, openai
 
 from common.functions import fns
 from common.fn_tools import tools
+
+from common import openai_fc_model as model
 
 
 messages = [
     {"role": "user", "content": "What is (121 * 3) + 42?"},
 ]
 
-model = os.environ.get("OPENAI_FC_MODEL", "gpt-4o-mini")
 response = openai.chat.completions.create(model=model, messages=messages, tools=tools)
 
 while response.choices[0].finish_reason == "tool_calls":

@@ -1,15 +1,14 @@
-import os, sys
+import sys
 from openai import OpenAI
+
+from common import openai_embed_model as model
 
 client = OpenAI()
 
 question = len(sys.argv) == 2 and sys.argv[1] or "What did the author do growing up?"
-model_name = os.environ.get("OPENAI_EMBED_MODEL", "text-embedding-ada-002")
 print("-" * 80)
-print("embed model:", model_name)
-embeddings = (
-    client.embeddings.create(model=model_name, input=[question]).data[0].embedding
-)
+print("embed model:", model)
+embeddings = client.embeddings.create(model=model, input=[question]).data[0].embedding
 print("-" * 80)
 print("dimension:", len(embeddings))
 print(embeddings[:4])
