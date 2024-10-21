@@ -1,7 +1,9 @@
 import sys
 from langchain_openai import OpenAIEmbeddings
 
-embed_model = OpenAIEmbeddings()
+from common import openai_embed_model as model
+
+embed_model = OpenAIEmbeddings(model=model)
 print("-" * 80)
 print("embed model:", embed_model.model)
 

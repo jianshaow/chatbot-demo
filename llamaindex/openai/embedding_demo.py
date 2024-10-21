@@ -1,7 +1,9 @@
 import sys
 from llama_index.embeddings.openai import OpenAIEmbedding
 
-embed_model = OpenAIEmbedding()
+from common import openai_embed_model as model
+
+embed_model = OpenAIEmbedding(model=model)
 print("-" * 80)
 print("embed model:", embed_model.model_name)
 

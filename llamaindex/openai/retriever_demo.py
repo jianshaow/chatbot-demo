@@ -1,6 +1,10 @@
 import sys
 from llama_index.core import Settings, VectorStoreIndex, SimpleDirectoryReader
+from llama_index.embeddings.openai import OpenAIEmbedding
 
+from common import openai_embed_model as model
+
+Settings.embed_model = OpenAIEmbedding(model=model)
 documents = SimpleDirectoryReader("data").load_data(show_progress=True)
 index = VectorStoreIndex.from_documents(documents, show_progress=True)
 print("-" * 80)

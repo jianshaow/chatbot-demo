@@ -1,7 +1,9 @@
 from llama_index.llms.openai import OpenAI
 from llama_index.core.llms import ChatMessage
 
-llm = OpenAI()
+from common import openai_chat_model as model
+
+llm = OpenAI(model=model)
 print("-" * 80)
 print("chat model:", llm.model)
 
