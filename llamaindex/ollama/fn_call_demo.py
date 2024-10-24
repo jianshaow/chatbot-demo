@@ -4,10 +4,15 @@ from llama_index.core.llms import ChatMessage
 from common import ollama_base_url as base_url, ollama_fc_model as model
 from common.fn_tools import tools
 from common.functions import fns
+from common.prompts import system_prompt, examples
 
 llm = Ollama(base_url=base_url, model=model)
 
-messages = [ChatMessage(role="user", content="What is (121 * 3) + 42?")]
+messages = [
+    # system_prompt,
+    # *examples,
+    ChatMessage(role="user", content="What is (121 * 3) + 42?"),
+]
 response = llm.chat_with_tools(tools, messages[0])
 
 while response.message.additional_kwargs.get("tool_calls"):
