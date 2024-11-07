@@ -18,9 +18,8 @@ response = ollama.chat(
             "images": [image],
         }
     ],
+    stream=True,
 )
-
-print(response)
 
 print("-" * 80)
 for chunk in response:
