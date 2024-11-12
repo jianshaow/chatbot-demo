@@ -6,30 +6,30 @@ system_prompt = {
 examples = [
     {
         "role": "user",
-        "content": "What is (2 * 3) + 4",
+        "content": "What is (2 + 3) * 4",
     },
     {
         "role": "assistant",
         "content": "",
         "tool_calls": [
-            {"function": {"name": "multiply", "arguments": {"a": 2, "b": 3}}}
+            {"function": {"name": "add", "arguments": {"a": 2, "b": 3}}}
         ],
     },
     {
         "role": "tool",
-        "content": "6",
+        "content": "5",
     },
     {
         "role": "assistant",
         "content": "",
-        "tool_calls": [{"function": {"name": "add", "arguments": {"a": 6, "b": 4}}}],
+        "tool_calls": [{"function": {"name": "multiply", "arguments": {"a": 5, "b": 4}}}],
     },
     {
         "role": "tool",
-        "content": "10",
+        "content": "20",
     },
     {
         "role": "assistant",
-        "content": "(2 * 3) + 4 = 10.",
+        "content": "(2 + 3) * 4 = 20.",
     },
 ]
