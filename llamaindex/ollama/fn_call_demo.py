@@ -9,8 +9,8 @@ from common.prompts import system_prompt, examples
 llm = Ollama(base_url=base_url, model=model)
 
 messages = [
-    # system_prompt,
-    # *examples,
+    system_prompt,
+    *examples,
     ChatMessage(role="user", content="What is (121 * 3) + 42?"),
 ]
 response = llm.chat_with_tools(tools, messages[0])

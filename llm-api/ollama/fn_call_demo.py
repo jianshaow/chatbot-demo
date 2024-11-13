@@ -6,8 +6,8 @@ from common.prompts import examples, system_prompt
 from common import ollama_fc_model as model
 
 messages = [
-    # system_prompt,
-    # *examples,
+    system_prompt,
+    *examples,
     {"role": "user", "content": "What is (121 * 3) + 42"},
 ]
 
