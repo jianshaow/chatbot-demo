@@ -1,6 +1,6 @@
 {
 	"name": "LC-GPU",
-	"image": "jianshao/langchain-demo:0.3.13",
+	"image": "jianshao/langchain-demo:0.3.19",
 	"remoteEnv": {
 		"PYTHONPATH": ".",
 		"OLLAMA_HOST": "host.docker.internal",
