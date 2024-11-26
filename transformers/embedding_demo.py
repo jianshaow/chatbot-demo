@@ -6,7 +6,7 @@ from common import hf_embed_model as model_name
 question = "What did the author do growing up?"
 
 tokenizer = AutoTokenizer.from_pretrained(model_name)
-model = AutoModel.from_pretrained(model_name)
+model = AutoModel.from_pretrained(model_name, trust_remote_code=True)
 model.eval()
 
 encoded_input = tokenizer(

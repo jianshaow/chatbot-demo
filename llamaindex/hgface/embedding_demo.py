@@ -3,7 +3,7 @@ from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 
 from common import hf_embed_model as model_name
 
-embed_model = HuggingFaceEmbedding(model_name=model_name)
+embed_model = HuggingFaceEmbedding(model_name=model_name, trust_remote_code=True)
 print("-" * 80)
 print("embed model:", model_name)
 

@@ -1,5 +1,6 @@
 python-dotenv
 protobuf
+einops
 bitsandbytes
 accelerate
 sentencepiece

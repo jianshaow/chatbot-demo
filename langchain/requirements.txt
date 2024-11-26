@@ -1,3 +1,4 @@
+einops
 accelerate
 bitsandbytes
 sentencepiece
