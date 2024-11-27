@@ -1,5 +1,4 @@
-import torch, numpy as np
-import torch.nn.functional as F
+import torch, torch.nn.functional as F
 from transformers import AutoTokenizer, AutoModel
 
 from common import hf_embed_model as model_name
