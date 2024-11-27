@@ -62,6 +62,8 @@ class RagChatConfig:
             return self.__embed_model(
                 base_url=ollama_base_url, model=self.embed_model_name
             )
+        if self.__embed_model == GoogleGenerativeAIEmbeddings:
+            return self.__embed_model(model=self.embed_model_name, transport="rest")
         return self.__embed_model(model=self.embed_model_name)
 
     def chat_model(self):
@@ -69,6 +71,8 @@ class RagChatConfig:
             return self.__chat_model(
                 base_url=ollama_base_url, model=self.chat_model_name
             )
+        if self.__chat_model == ChatGoogleGenerativeAI:
+            return self.__chat_model(model=self.chat_model_name, transport="rest")
         return self.__chat_model(model=self.chat_model_name)
 
     def get_question(self):

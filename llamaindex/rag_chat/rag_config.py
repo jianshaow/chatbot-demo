@@ -74,6 +74,10 @@ class RagChatConfig:
             )
         if self.__embed_model == OpenAIEmbedding:
             return self.__embed_model(model=self.embed_model_name)
+        if self.__embed_model == GeminiEmbedding:
+            return self.__embed_model(
+                model_name=self.embed_model_name, transport="rest"
+            )
 
         return self.__embed_model(model_name=self.embed_model_name)
 
@@ -86,6 +90,8 @@ class RagChatConfig:
             return self.__hf_chat_model()
         if self.__chat_model == OpenAI:
             return self.__chat_model(model=self.chat_model_name)
+        if self.__chat_model == Gemini:
+            return self.__chat_model(model_name=self.chat_model_name, transport="rest")
 
         return self.__chat_model(model_name=self.chat_model_name)
 
