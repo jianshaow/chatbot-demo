@@ -44,9 +44,8 @@ with torch.no_grad():
 pooling = pooling_func(model_name)
 sentence_embeddings = pooling(model_output, encoded_input["attention_mask"])
 sentence_embeddings = F.normalize(sentence_embeddings, p=2, dim=1)
-sentence_embeddings = np.asarray([emb.numpy() for emb in sentence_embeddings]).tolist()
 
-embedding = sentence_embeddings[0]
+embedding = sentence_embeddings[0].tolist()
 
 print("-" * 80)
 print("dimension:", len(embedding))
