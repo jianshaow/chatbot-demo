@@ -1,4 +1,4 @@
-import sys
+import os, sys
 from typing import Type
 from langchain_core.embeddings import Embeddings
 from langchain_core.language_models import BaseChatModel
@@ -10,7 +10,7 @@ from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_google_genai import ChatGoogleGenerativeAI
 
 from common import (
-    vector_db_path,
+    db_base_dir,
     ollama_base_url,
     ollama_embed_model,
     ollama_chat_model,
@@ -24,6 +24,8 @@ DATA_PATH = "data"
 DATA_PATH_EN = "data_en"
 DATA_PATH_ZH = "data_zh"
 
+DEFAULT_COLLECTION = "default"
+
 DEFAULT_QUESTION = "What did the author do growing up?"
 DEFAULT_QUESTION_EN = "Why the old man go fishing?"
 DEFAULT_QUESTION_ZH = "地球发动机都安装在哪里？"
@@ -32,6 +34,7 @@ DEFAULT_QUESTION_ZH = "地球发动机都安装在哪里？"
 class RagChatConfig:
     def __init__(
         self,
+        name: str,
         embed_model: Type[Embeddings],
         embed_model_name: str,
         chat_model: Type[BaseChatModel],
@@ -40,14 +43,19 @@ class RagChatConfig:
         vector_db_collection: str = "hface",
         defalut_question: str = DEFAULT_QUESTION,
     ):
+        self.name = name
         self.__embed_model = embed_model
         self.embed_model_name = embed_model_name
         self.__chat_model = chat_model
         self.chat_model_name = chat_model_name
         self.data_path = data_path
-        self.vector_db_path = vector_db_path
+        self.db_base_dir = db_base_dir
         self.vector_db_collection = vector_db_collection
         self.defalut_question = defalut_question
+
+    @property
+    def vector_db_path(self):
+        return os.path.join(self.db_base_dir, self.name)
 
     def embed_model(self):
         if self.__embed_model == OllamaEmbeddings:
@@ -72,10 +80,11 @@ class RagChatConfig:
 
 def __openai_config(
     data_path=DATA_PATH,
-    vector_db_collection="openai",
+    vector_db_collection=DEFAULT_COLLECTION,
     defalut_question=DEFAULT_QUESTION,
 ):
     return RagChatConfig(
+        "openai",
         OpenAIEmbeddings,
         openai_embed_model,
         ChatOpenAI,
@@ -88,10 +97,11 @@ def __openai_config(
 
 def __gemini_config(
     data_path=DATA_PATH,
-    vector_db_collection="gemini",
+    vector_db_collection=DEFAULT_COLLECTION,
     defalut_question=DEFAULT_QUESTION,
 ):
     return RagChatConfig(
+        "gemini",
         GoogleGenerativeAIEmbeddings,
         google_embed_model,
         ChatGoogleGenerativeAI,
@@ -106,10 +116,11 @@ def __ollama_config(
     embed_model_name=ollama_embed_model,
     chat_model_name=ollama_chat_model,
     data_path=DATA_PATH,
-    vector_db_collection="ollama",
+    vector_db_collection=DEFAULT_COLLECTION,
     defalut_question=DEFAULT_QUESTION,
 ):
     return RagChatConfig(
+        "ollama",
         OllamaEmbeddings,
         embed_model_name,
         ChatOllama,
@@ -124,34 +135,34 @@ __config_dict = {
     "openai": __openai_config(),
     "openai_en": __openai_config(
         data_path=DATA_PATH_EN,
-        vector_db_collection="openai_en",
+        vector_db_collection="en_text",
         defalut_question=DEFAULT_QUESTION_EN,
     ),
     "openai_zh": __openai_config(
         data_path=DATA_PATH_ZH,
-        vector_db_collection="openai_zh",
+        vector_db_collection="zh_text",
         defalut_question=DEFAULT_QUESTION_ZH,
     ),
     "gemini": __gemini_config(),
     "gemini_en": __gemini_config(
         data_path=DATA_PATH_EN,
-        vector_db_collection="gemini_en",
+        vector_db_collection="en_text",
         defalut_question=DEFAULT_QUESTION_EN,
     ),
     "gemini_zh": __gemini_config(
         data_path=DATA_PATH_ZH,
-        vector_db_collection="gemini_zh",
+        vector_db_collection="zh_text",
         defalut_question=DEFAULT_QUESTION_ZH,
     ),
     "ollama": __ollama_config(),
     "ollama_en": __ollama_config(
         data_path=DATA_PATH_EN,
-        vector_db_collection="ollama_en",
+        vector_db_collection="en_text",
         defalut_question=DEFAULT_QUESTION_EN,
     ),
     "ollama_zh": __ollama_config(
         data_path=DATA_PATH_ZH,
-        vector_db_collection="ollama_zh",
+        vector_db_collection="zh_text",
         defalut_question=DEFAULT_QUESTION_ZH,
     ),
 }
