@@ -1,4 +1,4 @@
-import os, sys
+import sys
 from langchain_community.document_loaders import DirectoryLoader
 from langchain_text_splitters import CharacterTextSplitter
 from langchain_chroma import Chroma
