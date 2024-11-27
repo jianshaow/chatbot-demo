@@ -68,18 +68,22 @@ class RagChatConfig:
             return self.__embed_model(
                 base_url=ollama_base_url, model_name=self.embed_model_name
             )
+        if self.__embed_model == HuggingFaceEmbedding:
+            return self.__embed_model(
+                model_name=self.embed_model_name, trust_remote_code=True
+            )
         if self.__embed_model == OpenAIEmbedding:
             return self.__embed_model(model=self.embed_model_name)
 
         return self.__embed_model(model_name=self.embed_model_name)
 
     def chat_model(self):
-        if self.__chat_model == HuggingFaceLLM:
-            return self.__hf_chat_model()
         if self.__chat_model == Ollama:
             return self.__chat_model(
                 base_url=ollama_base_url, model=self.chat_model_name
             )
+        if self.__chat_model == HuggingFaceLLM:
+            return self.__hf_chat_model()
         if self.__chat_model == OpenAI:
             return self.__chat_model(model=self.chat_model_name)
 
