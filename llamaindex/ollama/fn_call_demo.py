@@ -13,7 +13,7 @@ messages = [
     *examples,
     ChatMessage(role="user", content="What is (121 * 3) + 42?"),
 ]
-response = llm.chat_with_tools(tools, messages[0])
+response = llm.chat_with_tools(tools, chat_history=messages)
 
 while response.message.additional_kwargs.get("tool_calls"):
     print("-" * 80)
