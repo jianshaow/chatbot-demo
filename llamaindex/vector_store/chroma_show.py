@@ -1,16 +1,22 @@
-import os, chromadb
+import os, sys, chromadb
 
-path = os.environ.get("CHROMA_DB_DIR", "chroma")
-db = chromadb.PersistentClient(path=path)
-collections = db.list_collections()
-print("collections size:", len(collections))
-print("=" * 80)
-for collection in collections:
-    print(collection.get_model())
-    count = collection.count()
-    print("record count:", count)
-    vectors = collection.peek(1)
-    for embeddings in vectors["embeddings"]:
-        print("embeddings dimension:", len(embeddings))
-        print(embeddings[:4])
-    print("-" * 80)
+base_dir = os.getenv("CHROMA_BASE_DIR", "chroma")
+
+db_dir = len(sys.argv) == 2 and sys.argv[1] or None
+if db_dir:
+    db = chromadb.PersistentClient(path=os.path.join(base_dir, db_dir))
+    collections = db.list_collections()
+    print("collections size:", len(collections))
+    print("=" * 80)
+    for collection in collections:
+        print(collection.get_model())
+        count = collection.count()
+        print("record count:", count)
+        vectors = collection.peek(1)
+        for embeddings in vectors["embeddings"]:
+            print("embeddings dimension:", len(embeddings))
+            print(embeddings[:4])
+        print("-" * 80)
+else:
+    for subpath in os.listdir(base_dir):
+        print(subpath)
