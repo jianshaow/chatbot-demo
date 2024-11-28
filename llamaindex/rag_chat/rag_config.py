@@ -3,7 +3,6 @@ from typing import Type
 from llama_index.core.embeddings import BaseEmbedding
 from llama_index.embeddings.openai import OpenAIEmbedding
 from llama_index.embeddings.gemini import GeminiEmbedding
-from llama_index.embeddings.ollama import OllamaEmbedding
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 from llama_index.core.llms import LLM
 from llama_index.llms.openai import OpenAI
@@ -11,6 +10,8 @@ from llama_index.llms.gemini import Gemini
 from llama_index.llms.ollama import Ollama
 from llama_index.llms.huggingface import HuggingFaceLLM
 from llama_index.core import PromptTemplate
+
+from common.ollama import NormOllamaEmbedding
 
 from common import (
     db_base_dir,
@@ -64,7 +65,7 @@ class RagChatConfig:
         return os.path.join(self.db_base_dir, self.name)
 
     def embed_model(self):
-        if self.__embed_model == OllamaEmbedding:
+        if self.__embed_model == NormOllamaEmbedding:
             return self.__embed_model(
                 base_url=ollama_base_url, model_name=self.embed_model_name
             )
@@ -157,7 +158,7 @@ def __ollama_config(
 ):
     return RagChatConfig(
         "ollama",
-        OllamaEmbedding,
+        NormOllamaEmbedding,
         embed_model_name,
         Ollama,
         chat_model_name,
