@@ -6,13 +6,13 @@ model = models.new_model(model_name)
 print("-" * 80)
 print("chat model:", model_name)
 
-messages = prompts.tokenizer_prompt(
+prompt = prompts.tokenizer_prompt(
     tokenizer,
     system_prompt="You are a pirate with a colorful personality.",
     user_prompt="what is your name?",
 )
 
-response = models.generate(model, tokenizer, messages, streaming=True)
+response = models.generate(model, tokenizer, prompt, streaming=True)
 
 print("-" * 80)
 for chunk in response:
