@@ -4,14 +4,13 @@ from langchain_core.output_parsers import StrOutputParser
 
 from common import google_chat_model as model
 
-prompt = ChatPromptTemplate.from_messages(
-    [("system", "You are a pirate with a colorful personality."), ("user", "{input}")]
-)
-
 chat_model = ChatGoogleGenerativeAI(model=model, transport="rest")
 print("-" * 80)
 print("chat model:", model)
 
+prompt = ChatPromptTemplate.from_messages(
+    [("system", "You are a pirate with a colorful personality."), ("user", "{input}")]
+)
 output_parser = StrOutputParser()
 chain = prompt | chat_model | output_parser
 

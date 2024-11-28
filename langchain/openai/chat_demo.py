@@ -4,14 +4,13 @@ from langchain_core.output_parsers import StrOutputParser
 
 from common import openai_chat_model as model
 
+chat_model = ChatOpenAI(model=model)
+print("-" * 80)
+print("chat model:", model)
+
 prompt = ChatPromptTemplate.from_messages(
     [("system", "You are a pirate with a colorful personality."), ("user", "{input}")]
 )
-
-chat_model = ChatOpenAI(model=model)
-print("-" * 80)
-print("chat model:", chat_model.model_name)
-
 output_parser = StrOutputParser()
 chain = prompt | chat_model | output_parser
 
