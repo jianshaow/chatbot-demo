@@ -6,7 +6,7 @@ from common.models import default_model_kwargs
 
 model_kwargs = default_model_kwargs()
 
-llm = HuggingFaceLLM(
+chat_model = HuggingFaceLLM(
     context_window=4096,
     max_new_tokens=2048,
     tokenizer_name=model_name,
@@ -20,8 +20,9 @@ messages = [
     ChatMessage(role="system", content="You are a pirate with a colorful personality."),
     ChatMessage(role="user", content="What is your name?"),
 ]
+
 print("-" * 80)
-resp = llm.stream_chat(messages)
-for r in resp:
-    print(r.delta, end="")
+response = chat_model.stream_chat(messages)
+for chunk in response:
+    print(chunk.delta, end="")
 print("\n", "-" * 80, sep="")

@@ -3,9 +3,9 @@ from llama_index.core.llms import ChatMessage
 
 from common import openai_chat_model as model
 
-llm = OpenAI(model=model)
+chat_model = OpenAI(model=model)
 print("-" * 80)
-print("chat model:", llm.model)
+print("chat model:", chat_model.model)
 
 messages = [
     ChatMessage(role="system", content="You are a pirate with a colorful personality"),
@@ -13,7 +13,7 @@ messages = [
 ]
 
 print("-" * 80)
-resp = llm.stream_chat(messages)
-for r in resp:
-    print(r.delta, end="")
+response = chat_model.stream_chat(messages)
+for chunk in response:
+    print(chunk.delta, end="")
 print("\n", "-" * 80, sep="")

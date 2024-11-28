@@ -8,15 +8,15 @@ prompt = ChatPromptTemplate.from_messages(
     [("system", "You are a pirate with a colorful personality."), ("user", "{input}")]
 )
 
-llm = ChatGoogleGenerativeAI(model=model, transport="rest")
+chat_model = ChatGoogleGenerativeAI(model=model, transport="rest")
 print("-" * 80)
 print("chat model:", model)
 
 output_parser = StrOutputParser()
-chain = prompt | llm | output_parser
+chain = prompt | chat_model | output_parser
 
 print("-" * 80)
-response = chain.invoke({"input": "What is your name?"})
+response = chain.stream({"input": "What is your name?"})
 for chunk in response:
     print(chunk, end="", flush=True)
 print("\n", "-" * 80, sep="")

@@ -13,7 +13,7 @@ llm = HuggingFacePipeline.from_model_id(
     model_kwargs=model_kwargs,
     pipeline_kwargs={"max_new_tokens": 512},
 )
-model = ChatHuggingFace(llm=llm)
+chat_model = ChatHuggingFace(llm=llm)
 print("-" * 80)
 print("chat model:", model_name)
 
@@ -21,7 +21,7 @@ prompt = ChatPromptTemplate.from_messages(
     [("system", "You are a pirate with a colorful personality."), ("user", "{input}")]
 )
 output_parser = StrOutputParser()
-chain = prompt | model | output_parser
+chain = prompt | chat_model | output_parser
 
 print("-" * 80)
 response = chain.stream({"input": "What is your name?"})

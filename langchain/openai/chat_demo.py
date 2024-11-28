@@ -8,12 +8,12 @@ prompt = ChatPromptTemplate.from_messages(
     [("system", "You are a pirate with a colorful personality."), ("user", "{input}")]
 )
 
-llm = ChatOpenAI(model=model)
+chat_model = ChatOpenAI(model=model)
 print("-" * 80)
-print("chat model:", llm.model_name)
+print("chat model:", chat_model.model_name)
 
 output_parser = StrOutputParser()
-chain = prompt | llm | output_parser
+chain = prompt | chat_model | output_parser
 
 print("-" * 80)
 response = chain.stream({"input": "What is your name?"})
