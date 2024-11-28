@@ -13,7 +13,12 @@ text_splitter = CharacterTextSplitter()
 documents = text_splitter.split_documents(data)
 
 vectorstore = Chroma.from_documents(
-    documents=documents, embedding=HuggingFaceEmbeddings(model_name=model_name)
+    documents=documents,
+    embedding=HuggingFaceEmbeddings(
+        model_name=model_name,
+        model_kwargs={"trust_remote_code": True},
+        encode_kwargs={"normalize_embeddings": True},
+    ),
 )
 print("-" * 80)
 print("embed model:", model_name)
