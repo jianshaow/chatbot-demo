@@ -1,15 +1,7 @@
-import sys
 from common.ollama import NormOllamaEmbedding
 
 from common import ollama_base_url as base_url, ollama_embed_model as model_name
+from common.models import demo_embed
 
 embed_model = NormOllamaEmbedding(base_url=base_url, model_name=model_name)
-print("-" * 80)
-print("embed model:", model_name)
-
-question = len(sys.argv) == 2 and sys.argv[1] or "What did the author do growing up?"
-embedding = embed_model.get_text_embedding(question)
-print("-" * 80)
-print("dimension:", len(embedding))
-print(embedding[:4])
-print("-" * 80)
+demo_embed(embed_model, model_name)

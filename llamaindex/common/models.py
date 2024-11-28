@@ -1,6 +1,11 @@
-import os
-from llama_index.core.llms.llm import LLM
-from llama_index.core.llms import ChatMessage
+import os, sys
+from llama_index.core.embeddings import BaseEmbedding
+from llama_index.core.llms import LLM, ChatMessage
+from llama_index.core.llms.function_calling import FunctionCallingLLM
+
+from common.fn_tools import tools
+from common.functions import fns
+from common.prompts import system_prompt, examples
 
 
 def default_model_kwargs() -> dict[str, str]:
@@ -14,6 +19,20 @@ def default_model_kwargs() -> dict[str, str]:
             load_in_4bit=True, bnb_4bit_compute_dtype=torch.float16
         )
     return model_kwargs
+
+
+def demo_embed(embed_model: BaseEmbedding, model_name: str):
+    print("-" * 80)
+    print("embed model:", model_name)
+
+    question = (
+        len(sys.argv) == 2 and sys.argv[1] or "What did the author do growing up?"
+    )
+    embedding = embed_model.get_text_embedding(question)
+    print("-" * 80)
+    print("dimension:", len(embedding))
+    print(embedding[:4])
+    print("-" * 80)
 
 
 def demo_chat(chat_model: LLM, model_name: str):
@@ -32,3 +51,43 @@ def demo_chat(chat_model: LLM, model_name: str):
     for chunk in response:
         print(chunk.delta, end="")
     print("\n", "-" * 80, sep="")
+
+
+def demo_fn_call(fn_call_model: FunctionCallingLLM, model_name: str):
+    print("-" * 80)
+    print("fn call model:", model_name)
+
+    messages = [
+        system_prompt,
+        *examples,
+        ChatMessage(role="user", content="What is (121 * 3) + 42?"),
+    ]
+    response = fn_call_model.chat_with_tools(tools, chat_history=messages)
+
+    while response.message.additional_kwargs.get("tool_calls"):
+        print("-" * 80)
+        messages.append(response.message)
+        for tool_call in response.message.additional_kwargs.get("tool_calls"):
+            fn_name = tool_call["function"]["name"]
+            fn = fns[fn_name]
+            fn_args = tool_call["function"]["arguments"]
+            print("=== Calling Function ===")
+            print(
+                "Calling function:",
+                fn_name,
+                "with args:",
+                fn_args,
+            )
+            fn_result = fn(**fn_args)
+            print("Got output:", fn_result)
+            print("========================\n")
+            tool_message = ChatMessage(
+                content=str(fn_result),
+                role="tool",
+                additional_kwargs={"name": fn_name},
+            )
+            messages.append(tool_message)
+        response = fn_call_model.chat_with_tools(tools, chat_history=messages)
+
+    print("-" * 80)
+    print(response.message.content)
