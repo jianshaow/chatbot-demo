@@ -21,16 +21,16 @@ if db_dir:
 
     vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
     query = VectorStoreQuery(
-        query_embedding=vectors["embeddings"][0],
+        query_embedding=vectors["embeddings"][0].tolist(),
         similarity_top_k=2,
         mode="default",
     )
-    # print("-" * 30, "vector store query", "-" * 30)
-    # result = vector_store.query(query)
-    # for i in range(len(result.ids)):
-    #     print(result.nodes[i])
-    #     print("similarity:", result.similarities[i])
-    #     print("-" * 80)
+    print("-" * 30, "vector store query", "-" * 30)
+    result = vector_store.query(query)
+    for i in range(len(result.ids)):
+        print(result.nodes[i])
+        print("similarity:", result.similarities[i])
+        print("-" * 80)
 
 else:
     for subpath in os.listdir(base_dir):
