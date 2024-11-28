@@ -1,15 +1,7 @@
-import sys
 from langchain_ollama import OllamaEmbeddings
 
-from common import ollama_base_url as base_url, ollama_embed_model as model
+from common import ollama_base_url as base_url, ollama_embed_model as model_name
+from common.models import demo_embed
 
-embed_model = OllamaEmbeddings(base_url=base_url, model=model)
-print("-" * 80)
-print("embed model:", model)
-
-question = len(sys.argv) == 2 and sys.argv[1] or "What did the author do growing up?"
-embedding = embed_model.embed_query(question)
-print("-" * 80)
-print("dimension:", len(embedding))
-print(embedding[:4])
-print("-" * 80, sep="")
+embed_model = OllamaEmbeddings(base_url=base_url, model=model_name)
+demo_embed(embed_model, model_name)

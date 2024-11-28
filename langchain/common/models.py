@@ -1,4 +1,5 @@
-import os
+import os, sys
+from langchain_core.embeddings import Embeddings
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.language_models.chat_models import BaseChatModel
@@ -15,6 +16,20 @@ def default_model_kwargs() -> dict[str, str]:
             load_in_4bit=True, bnb_4bit_compute_dtype=torch.float16
         )
     return model_kwargs
+
+
+def demo_embed(embed_model: Embeddings, model_name: str):
+    print("-" * 80)
+    print("embed model:", model_name)
+
+    question = (
+        len(sys.argv) == 2 and sys.argv[1] or "What did the author do growing up?"
+    )
+    embedding = embed_model.embed_query(question)
+    print("-" * 80)
+    print("dimension:", len(embedding))
+    print(embedding[:4])
+    print("-" * 80, sep="")
 
 
 def demo_chat(chat_model: BaseChatModel, model_name: str):
