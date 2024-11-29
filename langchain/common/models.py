@@ -5,6 +5,10 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_core.embeddings import Embeddings
 from langchain_core.language_models import BaseChatModel
 
+from langchain_community.document_loaders import DirectoryLoader
+from langchain_text_splitters import CharacterTextSplitter
+from langchain_chroma import Chroma
+
 from common.fn_tools import tools
 from common.functions import fns
 
@@ -87,3 +91,27 @@ def demo_fn_call(fn_call_model: BaseChatModel, model_name: str):
 
     print("-" * 80)
     print(response.content)
+
+
+def demo_recieve(embed_model: Embeddings, model_name: str):
+    loader = DirectoryLoader("data")
+    data = loader.load()
+
+    text_splitter = CharacterTextSplitter()
+    documents = text_splitter.split_documents(data)
+
+    vectorstore = Chroma.from_documents(
+        documents=documents,
+        embedding=embed_model,
+    )
+    print("-" * 80)
+    print("embed model:", model_name)
+
+    question = (
+        len(sys.argv) == 2 and sys.argv[1] or "What did the author do growing up?"
+    )
+    retriever = vectorstore.as_retriever()
+    docs = retriever.invoke(question)
+    for doc in docs:
+        print("-" * 80)
+        print(doc.page_content[:80])
