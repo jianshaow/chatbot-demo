@@ -1,18 +1,7 @@
-import sys
-from llama_index.core import Settings, VectorStoreIndex, SimpleDirectoryReader
 from llama_index.embeddings.openai import OpenAIEmbedding
 
-from common import openai_embed_model as model
+from common import openai_embed_model as model_name
+from common.models import demo_recieve
 
-Settings.embed_model = OpenAIEmbedding(model=model)
-documents = SimpleDirectoryReader("data").load_data(show_progress=True)
-index = VectorStoreIndex.from_documents(documents, show_progress=True)
-print("-" * 80)
-print("embed model:", Settings.embed_model.model_name)
-
-retriever = index.as_retriever()
-question = len(sys.argv) == 2 and sys.argv[1] or "What did the author do growing up?"
-nodes = retriever.retrieve(question)
-for node in nodes:
-    print("-" * 80)
-    print(node)
+embed_model = OpenAIEmbedding(model=model_name)
+demo_recieve(embed_model, model_name)

@@ -2,6 +2,7 @@ import os, sys
 from llama_index.core.embeddings import BaseEmbedding
 from llama_index.core.llms import LLM, ChatMessage
 from llama_index.core.llms.function_calling import FunctionCallingLLM
+from llama_index.core import Settings, VectorStoreIndex, SimpleDirectoryReader
 
 from common.fn_tools import tools
 from common.functions import fns
@@ -91,3 +92,31 @@ def demo_fn_call(fn_call_model: FunctionCallingLLM, model_name: str):
 
     print("-" * 80)
     print(response.message.content)
+
+
+def demo_recieve(
+    embed_model: BaseEmbedding,
+    model_name: str,
+    data_path: str = "data",
+    query="What did the author do growing up?",
+):
+    print("-" * 80)
+    Settings.embed_model = embed_model
+    print("-" * 80)
+    print("embed model:", model_name)
+
+    documents = SimpleDirectoryReader(data_path).load_data(show_progress=True)
+    index = VectorStoreIndex.from_documents(
+        documents,
+        embed_model=embed_model,
+        show_progress=True,
+    )
+
+    retriever = index.as_retriever(
+        similarity_top_k=4,
+    )
+    question = len(sys.argv) == 2 and sys.argv[1] or query
+    nodes = retriever.retrieve(question)
+    for node in nodes:
+        print("-" * 80)
+        print(node)
