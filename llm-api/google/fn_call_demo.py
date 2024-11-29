@@ -8,6 +8,8 @@ genai.configure(transport="rest")
 tools = [multiply, add]
 
 model = genai.GenerativeModel(model_name=model_name, tools=tools)
+print("-" * 80)
+print("fn call model:", model_name)
 
 chat = model.start_chat()
 response = chat.send_message("What is (121 * 3) + 42?")
