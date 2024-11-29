@@ -4,6 +4,7 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.embeddings import Embeddings
 from langchain_core.language_models import BaseChatModel
+from langchain.agents import AgentExecutor, create_tool_calling_agent
 
 from langchain_community.document_loaders import DirectoryLoader
 from langchain_text_splitters import CharacterTextSplitter
@@ -91,6 +92,27 @@ def demo_fn_call(fn_call_model: BaseChatModel, model_name: str):
 
     print("-" * 80)
     print(response.content)
+
+
+def demo_fn_call_agent(fn_call_model: BaseChatModel, model_name: str):
+    print("-" * 80)
+    print("fn call model:", model_name)
+
+    prompt = ChatPromptTemplate.from_messages(
+        [
+            ("system", "You are a helpful assistant"),
+            ("human", "{input}"),
+            # Placeholders fill up a **list** of messages
+            ("placeholder", "{agent_scratchpad}"),
+        ]
+    )
+
+    agent = create_tool_calling_agent(fn_call_model, tools, prompt)
+    agent_executor = AgentExecutor(agent=agent, tools=tools, verbose=True)
+
+    response = agent_executor.invoke({"input": "What is (121 * 3) + 42?"})
+    print("-" * 80)
+    print(response["output"])
 
 
 def demo_recieve(embed_model: Embeddings, model_name: str):
