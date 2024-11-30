@@ -12,7 +12,11 @@ examples = [
     ChatMessage(
         role="assistant",
         content="",
-        tool_calls=[{"function": {"name": "multiply", "arguments": {"a": 2, "b": 3}}}],
+        additional_kwargs={
+            "tool_calls": [
+                {"function": {"name": "multiply", "arguments": {"a": 2, "b": 3}}}
+            ]
+        },
     ),
     ChatMessage(
         role="tool",
@@ -21,7 +25,9 @@ examples = [
     ChatMessage(
         role="assistant",
         content="",
-        tool_calls=[{"function": {"name": "add", "arguments": {"a": 6, "b": 4}}}],
+        additional_kwargs={
+            "tool_calls": [{"function": {"name": "add", "arguments": {"a": 6, "b": 4}}}]
+        },
     ),
     ChatMessage(
         role="tool",
