@@ -57,24 +57,26 @@ def demo_chat(chat_model: LLM, model_name: str):
     print("\n", "-" * 80, sep="")
 
 
-def demo_fn_call(fn_call_model: FunctionCallingLLM, model_name: str):
+def demo_fn_call(
+    fn_call_model: FunctionCallingLLM, model_name: str, with_few_shot=False
+):
     print("-" * 80)
     print("fn call model:", model_name)
 
-    messages = [
-        system_prompt,
-        *examples,
-        ChatMessage(role="user", content="What is (121 * 3) + 42?"),
-    ]
+    question = "What is (121 * 3) + 42?"
+    messages = []
+    if with_few_shot:
+        messages.append(system_prompt)
+        messages.extend(examples)
+    messages.append(ChatMessage(role="user", content=question))
+
     response = fn_call_model.chat_with_tools(tools, chat_history=messages)
 
     while response.message.additional_kwargs.get("tool_calls"):
         print("-" * 80)
         messages.append(response.message)
         for tool_call in response.message.additional_kwargs.get("tool_calls"):
-            fn_name = tool_call["function"]["name"]
-            fn = fns[fn_name]
-            fn_args = tool_call["function"]["arguments"]
+            id, fn_name, fn_args = __get_tool_call_info(tool_call)
             print("=== Calling Function ===")
             print(
                 "Calling function:",
@@ -82,19 +84,34 @@ def demo_fn_call(fn_call_model: FunctionCallingLLM, model_name: str):
                 "with args:",
                 fn_args,
             )
+            fn = fns[fn_name]
             fn_result = fn(**fn_args)
             print("Got output:", fn_result)
             print("========================\n")
             tool_message = ChatMessage(
                 content=str(fn_result),
                 role="tool",
-                additional_kwargs={"name": fn_name},
+                additional_kwargs={"name": fn_name, "tool_call_id": id},
             )
             messages.append(tool_message)
         response = fn_call_model.chat_with_tools(tools, chat_history=messages)
 
     print("-" * 80)
     print(response.message.content)
+
+
+def __get_tool_call_info(tool_call):
+    id = getattr(tool_call, "id", None)
+    if hasattr(tool_call, "function"):
+        import json
+
+        fn_name = tool_call.function.name
+        fn_args = json.loads(tool_call.function.arguments)
+    else:
+        fn_name = tool_call["function"]["name"]
+        fn_args = tool_call["function"]["arguments"]
+
+    return id, fn_name, fn_args
 
 
 def demo_multi_modal(mm_model: MultiModalLLM, model_name: str):

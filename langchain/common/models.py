@@ -10,9 +10,10 @@ from langchain_community.document_loaders import DirectoryLoader
 from langchain_text_splitters import CharacterTextSplitter
 from langchain_chroma import Chroma
 
-from common import demo_image_url as image_url
 from common.fn_tools import tools
 from common.functions import fns
+from common.prompts import system_prompt, examples
+from common import demo_image_url as image_url
 
 
 def default_model_kwargs() -> dict[str, str]:
@@ -62,14 +63,19 @@ def demo_chat(chat_model: BaseChatModel, model_name: str):
     print("\n", "-" * 80, sep="")
 
 
-def demo_fn_call(fn_call_model: BaseChatModel, model_name: str):
+def demo_fn_call(fn_call_model: BaseChatModel, model_name: str, with_few_shot=False):
     print("-" * 80)
     print("fn call model:", model_name)
 
     llm_with_tools = fn_call_model.bind_tools(tools)
 
-    query = "What is (121 * 3) + 42?"
-    messages = [HumanMessage(query)]
+    question = "What is (121 * 3) + 42?"
+    messages = []
+    if with_few_shot:
+        messages.append(system_prompt)
+        messages.extend(examples)
+    messages.append(HumanMessage(question))
+
     response = llm_with_tools.invoke(messages)
 
     while response.tool_calls:
@@ -77,7 +83,6 @@ def demo_fn_call(fn_call_model: BaseChatModel, model_name: str):
         messages.append(response)
 
         for tool_call in response.tool_calls:
-            fn = fns[tool_call["name"]]
             print("=== Calling Function ===")
             print(
                 "Calling function:",
@@ -85,6 +90,7 @@ def demo_fn_call(fn_call_model: BaseChatModel, model_name: str):
                 "with args:",
                 tool_call["args"],
             )
+            fn = fns[tool_call["name"]]
             fn_result = fn.invoke(tool_call)
             print("Got output:", fn_result.content)
             print("========================\n")
