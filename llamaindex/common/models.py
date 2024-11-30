@@ -151,7 +151,6 @@ def demo_recieve(
     data_path: str = "data",
     query="What did the author do growing up?",
 ):
-    print("-" * 80)
     Settings.embed_model = embed_model
     print("-" * 80)
     print("embed model:", model_name)
