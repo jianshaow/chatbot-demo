@@ -10,6 +10,7 @@ from langchain_community.document_loaders import DirectoryLoader
 from langchain_text_splitters import CharacterTextSplitter
 from langchain_chroma import Chroma
 
+from common import demo_image_url as image_url
 from common.fn_tools import tools
 from common.functions import fns
 
@@ -128,8 +129,6 @@ def demo_multi_modal(mm_model: BaseChatModel, model_name: str):
     chain = prompt | mm_model | output_parser
 
     print("-" * 80)
-
-    image_url = "https://storage.googleapis.com/generativeai-downloads/data/scene.jpg"
     input = "Identify the city where this photo was taken."
     print("Question:", input)
     response = chain.invoke({"input": input, "image_url": image_url})

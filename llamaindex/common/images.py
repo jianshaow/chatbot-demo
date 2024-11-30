@@ -10,7 +10,6 @@ def show_demo_image():
     print("-" * 80)
     response = requests.get(demo_image_url)
     print("demo image URL:", demo_image_url)
-    print("-" * 80)
 
     img = Image.open(BytesIO(response.content))
     plt.imshow(img)

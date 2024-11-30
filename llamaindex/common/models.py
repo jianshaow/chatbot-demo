@@ -2,11 +2,14 @@ import os, sys
 from llama_index.core.embeddings import BaseEmbedding
 from llama_index.core.llms import LLM, ChatMessage
 from llama_index.core.llms.function_calling import FunctionCallingLLM
+from llama_index.core.multi_modal_llms import MultiModalLLM
+from llama_index.core.multi_modal_llms.generic_utils import load_image_urls
 from llama_index.core import Settings, VectorStoreIndex, SimpleDirectoryReader
 
 from common.fn_tools import tools
 from common.functions import fns
 from common.prompts import system_prompt, examples
+from common import demo_image_url as image_url
 
 
 def default_model_kwargs() -> dict[str, str]:
@@ -92,6 +95,37 @@ def demo_fn_call(fn_call_model: FunctionCallingLLM, model_name: str):
 
     print("-" * 80)
     print(response.message.content)
+
+
+def demo_multi_modal(mm_model: MultiModalLLM, model_name: str):
+    print("-" * 80)
+    print("multi-modal model:", model_name)
+
+    image_documents = load_image_urls([image_url])
+    print("-" * 80)
+
+    prompt = "Identify the city where this photo was taken."
+    # prompt = "这张照片是在哪个城市拍摄的."
+    print("Question:", prompt)
+    complete_response = mm_model.complete(
+        prompt=prompt,
+        image_documents=image_documents,
+    )
+    print("Answer:", complete_response)
+
+    print("-" * 80)
+
+    prompt = "Give me more context for this image"
+    # prompt = "给我更多这张照片的上下文"
+    print("Question:", prompt)
+    print("Answer:", end="")
+    stream_complete_response = mm_model.stream_complete(
+        prompt=prompt,
+        image_documents=image_documents,
+    )
+    for r in stream_complete_response:
+        print(r.delta, end="")
+    print("\n", "-" * 80, sep="")
 
 
 def demo_recieve(
