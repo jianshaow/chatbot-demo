@@ -1,6 +1,6 @@
 import os, sys
 from langchain_core.messages import HumanMessage
-from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.prompts import ChatPromptTemplate, HumanMessagePromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.embeddings import Embeddings
 from langchain_core.language_models import BaseChatModel
@@ -113,6 +113,36 @@ def demo_fn_call_agent(fn_call_model: BaseChatModel, model_name: str):
     response = agent_executor.invoke({"input": "What is (121 * 3) + 42?"})
     print("-" * 80)
     print(response["output"])
+
+
+def demo_multi_modal(mm_model: BaseChatModel, model_name: str):
+    print("-" * 80)
+    print("multi-modal model:", model_name)
+
+    template = HumanMessagePromptTemplate.from_template(
+        [{"text": "{input}"}, {"image_url": {"url": "{image_url}"}}]
+    )
+    prompt = ChatPromptTemplate.from_messages([template])
+
+    output_parser = StrOutputParser()
+    chain = prompt | mm_model | output_parser
+
+    print("-" * 80)
+
+    image_url = "https://storage.googleapis.com/generativeai-downloads/data/scene.jpg"
+    input = "Identify the city where this photo was taken."
+    print("Question:", input)
+    response = chain.invoke({"input": input, "image_url": image_url})
+    print("Answer:", response)
+    print("-" * 80)
+
+    input = "Give me more context for this image."
+    print("Question:", input)
+    print("Answer:", end="")
+    response = chain.stream({"input": input, "image_url": image_url})
+    for chunk in response:
+        print(chunk, end="", flush=True)
+    print("\n", "-" * 80, sep="")
 
 
 def demo_recieve(embed_model: Embeddings, model_name: str):
