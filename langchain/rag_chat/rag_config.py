@@ -18,8 +18,8 @@ from common import (
     ollama_chat_model,
     openai_embed_model,
     openai_chat_model,
-    google_embed_model,
-    google_chat_model,
+    gemini_embed_model,
+    gemini_chat_model,
     hf_embed_model,
     hf_chat_model,
 )
@@ -130,9 +130,9 @@ def __gemini_config(
     return RagChatConfig(
         "gemini",
         GoogleGenerativeAIEmbeddings,
-        google_embed_model,
+        gemini_embed_model,
         ChatGoogleGenerativeAI,
-        google_chat_model,
+        gemini_chat_model,
         data_path=data_path,
         vector_db_collection=vector_db_collection,
         defalut_question=defalut_question,
