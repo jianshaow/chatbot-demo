@@ -6,6 +6,8 @@ from langchain_openai import OpenAIEmbeddings
 from langchain_openai import ChatOpenAI
 from langchain_ollama import OllamaEmbeddings
 from langchain_ollama import ChatOllama
+from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_huggingface import HuggingFacePipeline, ChatHuggingFace
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_google_genai import ChatGoogleGenerativeAI
 
@@ -18,7 +20,10 @@ from common import (
     openai_chat_model,
     google_embed_model,
     google_chat_model,
+    hf_embed_model,
+    hf_chat_model,
 )
+from common.models import default_model_kwargs
 
 DATA_PATH = "data"
 DATA_PATH_EN = "data_en"
@@ -64,6 +69,12 @@ class RagChatConfig:
             )
         if self.__embed_model == GoogleGenerativeAIEmbeddings:
             return self.__embed_model(model=self.embed_model_name, transport="rest")
+        if self.__embed_model == HuggingFaceEmbeddings:
+            return self.__embed_model(
+                model_name=self.embed_model_name,
+                model_kwargs={"trust_remote_code": True},
+                encode_kwargs={"normalize_embeddings": True},
+            )
         return self.__embed_model(model=self.embed_model_name)
 
     def chat_model(self):
@@ -73,6 +84,8 @@ class RagChatConfig:
             )
         if self.__chat_model == ChatGoogleGenerativeAI:
             return self.__chat_model(model=self.chat_model_name, transport="rest")
+        if self.__chat_model == ChatHuggingFace:
+            return self.__hf_chat_model()
         return self.__chat_model(model=self.chat_model_name)
 
     def get_question(self):
@@ -80,6 +93,16 @@ class RagChatConfig:
             return sys.argv[2]
         else:
             return self.defalut_question
+
+    def __hf_chat_model(self):
+        model_kwargs = default_model_kwargs()
+        llm = HuggingFacePipeline.from_model_id(
+            model_id=self.chat_model_name,
+            task="text-generation",
+            model_kwargs=model_kwargs,
+            pipeline_kwargs={"max_new_tokens": 512},
+        )
+        return ChatHuggingFace(llm=llm)
 
 
 def __openai_config(
@@ -135,6 +158,25 @@ def __ollama_config(
     )
 
 
+def __hf_config(
+    embed_model_name=hf_embed_model,
+    chat_model_name=hf_chat_model,
+    data_path=DATA_PATH,
+    vector_db_collection=DEFAULT_COLLECTION,
+    defalut_question=DEFAULT_QUESTION,
+):
+    return RagChatConfig(
+        "hface",
+        HuggingFaceEmbeddings,
+        embed_model_name,
+        ChatHuggingFace,
+        chat_model_name,
+        data_path=data_path,
+        vector_db_collection=vector_db_collection,
+        defalut_question=defalut_question,
+    )
+
+
 __config_dict = {
     "openai": __openai_config(),
     "openai_en": __openai_config(
@@ -166,6 +208,18 @@ __config_dict = {
     ),
     "ollama_zh": __ollama_config(
         data_path=DATA_PATH_ZH,
+        vector_db_collection="zh_text",
+        defalut_question=DEFAULT_QUESTION_ZH,
+    ),
+    "hf": __hf_config(),
+    "hf_en": __hf_config(
+        data_path=DATA_PATH_EN,
+        vector_db_collection="en_text",
+        defalut_question=DEFAULT_QUESTION_EN,
+    ),
+    "hf_zh": __hf_config(
+        data_path=DATA_PATH_ZH,
+        embed_model_name="BAAI/bge-small-zh",
         vector_db_collection="zh_text",
         defalut_question=DEFAULT_QUESTION_ZH,
     ),

@@ -9,7 +9,7 @@ db = chromadb.PersistentClient(path=config.vector_db_path)
 chroma_collection = db.get_or_create_collection(config.vector_db_collection)
 embedding = config.embed_model()
 print("-" * 80)
-print("embed_model:", embedding.model)
+print("embed_model:", config.embed_model_name)
 
 if chroma_collection.count() == 0:
     data = DirectoryLoader(config.data_path).load()
