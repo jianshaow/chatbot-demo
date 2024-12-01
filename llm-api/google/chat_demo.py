@@ -1,6 +1,6 @@
 import google.generativeai as genai
 
-from common import google_chat_model as model_name
+from common import gemini_chat_model as model_name
 
 genai.configure(transport="rest")
 

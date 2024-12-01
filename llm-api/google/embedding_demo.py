@@ -1,7 +1,7 @@
 import sys
 import google.generativeai as genai
 
-from common import google_embed_model as model
+from common import gemini_embed_model as model
 
 genai.configure(transport="rest")
 

@@ -22,8 +22,8 @@ from common import (
     hf_chat_model,
     openai_embed_model,
     openai_chat_model,
-    google_embed_model,
-    google_chat_model,
+    gemini_embed_model,
+    gemini_chat_model,
 )
 from common.models import default_model_kwargs
 
@@ -140,9 +140,9 @@ def __gemini_config(
     return RagChatConfig(
         "gemini",
         GeminiEmbedding,
-        google_embed_model,
+        gemini_embed_model,
         Gemini,
-        google_chat_model,
+        gemini_chat_model,
         data_path=data_path,
         vector_db_collection=vector_db_collection,
         defalut_question=defalut_question,

@@ -1,6 +1,6 @@
 import google.generativeai as genai
 
-from common import google_fc_model as model_name
+from common import gemini_fc_model as model_name
 from common.functions import multiply, add
 
 genai.configure(transport="rest")
