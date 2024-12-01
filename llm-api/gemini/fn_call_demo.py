@@ -19,7 +19,6 @@ while going:
     has_function_call = False
     for part in response.parts:
         if fn := part.function_call:
-            has_function_call = True
             args = (
                 "{" + ", ".join(f'"{key}": {val}' for key, val in fn.args.items()) + "}"
             )
@@ -40,6 +39,7 @@ while going:
                     for fn, result in results.items()
                 ]
             )
+            has_function_call = True
 
     if has_function_call:
         response = chat.send_message(response_parts)
