@@ -3,7 +3,7 @@ import ollama, requests
 from common import ollama_mm_model as model
 
 print("-" * 80)
-print("chat model:", model)
+print("multi-modal model:", model)
 
 image = requests.get(
     "https://storage.googleapis.com/generativeai-downloads/data/scene.jpg"
