@@ -1,13 +1,11 @@
 import google.generativeai as genai
 
 from common import gemini_fc_model as model_name
-from common.functions import multiply, add, fns
+from common.functions import fns
 
 genai.configure(transport="rest")
 
-tools = [multiply, add]
-
-model = genai.GenerativeModel(model_name=model_name, tools=tools)
+model = genai.GenerativeModel(model_name=model_name, tools=fns.values())
 print("-" * 80)
 print("fn call model:", model_name)
 
@@ -18,8 +16,10 @@ results = {}
 going = True
 while going:
     print("-" * 80)
+    has_function_call = False
     for part in response.parts:
         if fn := part.function_call:
+            has_function_call = True
             args = (
                 "{" + ", ".join(f'"{key}": {val}' for key, val in fn.args.items()) + "}"
             )
@@ -41,7 +41,8 @@ while going:
                 ]
             )
 
-            response = chat.send_message(response_parts)
-        else:
-            going = False
-            print(response.text)
+    if has_function_call:
+        response = chat.send_message(response_parts)
+    else:
+        going = False
+        print(response.text)
