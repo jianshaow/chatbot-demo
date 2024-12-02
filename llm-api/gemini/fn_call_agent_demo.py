@@ -6,6 +6,8 @@ from common.functions import fns
 genai.configure(transport="rest")
 
 model = genai.GenerativeModel(model_name=model_name, tools=fns.values())
+print("-" * 80)
+print("fn call model:", model_name)
 
 chat = model.start_chat(enable_automatic_function_calling=True)
 response = chat.send_message("What is (121 * 3) + 42?")
