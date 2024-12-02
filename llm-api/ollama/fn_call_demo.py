@@ -2,7 +2,7 @@ import ollama
 
 from common.functions import fns
 from common.fn_tools import tools
-from common.prompts import examples, system_prompt
+from common.prompts import ollama_examples as examples, system_prompt
 from common import ollama_fc_model as model
 
 messages = [
