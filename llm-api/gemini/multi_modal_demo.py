@@ -20,7 +20,7 @@ image = Image.open(
 
 model = genai.GenerativeModel(model_name)
 response = model.generate_content(
-    ["Identify the city where this photo was taken.", image]
+    ["Identify the city where this photo was taken.", image], stream=True
 )
 
 print("-" * 80)

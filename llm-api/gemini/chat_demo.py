@@ -9,7 +9,7 @@ print("chat model:", model_name)
 model = genai.GenerativeModel(
     model_name, system_instruction="You are a pirate with a colorful personality."
 )
-response = model.generate_content("What is your name?")
+response = model.generate_content("What is your name?", stream=True)
 
 print("-" * 80)
 for chunk in response:
