@@ -7,6 +7,6 @@ from common.fn_tools import tools
 llm = OpenAI(model=model)
 agent = OpenAIAgent.from_tools(tools, llm=llm, verbose=True)
 
-response = agent.chat("What is (121 * 3) + 42?")
+response = agent.chat("What is (121 * 3) + (6 * 7)?")
 print("-" * 80)
 print(str(response))
