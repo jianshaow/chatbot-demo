@@ -16,7 +16,7 @@ print("-" * 80)
 print("fn call model:", model_name)
 
 chat = model.start_chat(history=examples)
-response = chat.send_message("What is (121 * 3) + 42?")
+response = chat.send_message("What is (121 * 3) + (6 * 7)?")
 
 going = True
 while going:

@@ -7,7 +7,7 @@ from common import openai_fc_model as model
 
 
 messages = [
-    {"role": "user", "content": "What is (121 * 3) + 42?"},
+    {"role": "user", "content": "What is (121 * 3) + (6 * 7)?"},
 ]
 
 response = openai.chat.completions.create(model=model, messages=messages, tools=tools)

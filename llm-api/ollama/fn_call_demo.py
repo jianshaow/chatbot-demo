@@ -8,7 +8,7 @@ from common import ollama_fc_model as model
 messages = [
     system_prompt,
     *examples,
-    {"role": "user", "content": "What is (121 * 3) + 42"},
+    {"role": "user", "content": "What is (121 * 3) + (6 * 7)"},
 ]
 
 response = ollama.chat(model=model, messages=messages, tools=tools)

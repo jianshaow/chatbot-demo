@@ -117,7 +117,7 @@ def demo_fn_call_agent(fn_call_model: BaseChatModel, model_name: str):
     agent = create_tool_calling_agent(fn_call_model, tools, prompt)
     agent_executor = AgentExecutor(agent=agent, tools=tools, verbose=True)
 
-    response = agent_executor.invoke({"input": "What is (121 * 3) + 42?"})
+    response = agent_executor.invoke({"input": "What is (121 * 3) + (6 * 7)?"})
     print("-" * 80)
     print(response["output"])
 

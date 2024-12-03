@@ -10,6 +10,6 @@ print("-" * 80)
 print("fn call model:", model_name)
 
 chat = model.start_chat(enable_automatic_function_calling=True)
-response = chat.send_message("What is (121 * 3) + 42?")
+response = chat.send_message("What is (121 * 3) + (6 * 7)?")
 print("-" * 80)
 print(response.text)

@@ -63,7 +63,7 @@ def demo_fn_call(
     print("-" * 80)
     print("fn call model:", model_name)
 
-    question = "What is (121 * 3) + 42?"
+    question = "What is (121 * 3) + (6 * 7)?"
     messages = []
     if with_few_shot:
         messages.append(system_prompt)
