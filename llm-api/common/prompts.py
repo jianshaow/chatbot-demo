@@ -1,11 +1,18 @@
+import sys
 import google.generativeai as genai
 
-system_prompt_str = "You are bad at math but are an expert at using a calculator"
+tool_call_system = "You are bad at math but are an expert at using a calculator"
 
-system_prompt = {
+tool_call_question = (
+    len(sys.argv) == 2 and sys.argv[1] or "What is (121 * 3) + (6 * 7)?"
+)
+
+system_message = {
     "role": "system",
-    "content": system_prompt_str,
+    "content": tool_call_system,
 }
+
+question_message = {"role": "user", "content": tool_call_question}
 
 ollama_examples = [
     {

@@ -12,7 +12,7 @@ from langchain_chroma import Chroma
 
 from common.fn_tools import tools
 from common.functions import fns
-from common.prompts import system_prompt, examples
+from common.prompts import system_message, examples, question_message
 from common import demo_image_url as image_url
 
 
@@ -69,12 +69,11 @@ def demo_fn_call(fn_call_model: BaseChatModel, model_name: str, with_few_shot=Fa
 
     llm_with_tools = fn_call_model.bind_tools(tools)
 
-    question = "What is (121 * 3) + (6 * 7)?"
     messages = []
     if with_few_shot:
-        messages.append(system_prompt)
+        messages.append(system_message)
         messages.extend(examples)
-    messages.append(HumanMessage(question))
+    messages.append(question_message)
 
     response = llm_with_tools.invoke(messages)
 

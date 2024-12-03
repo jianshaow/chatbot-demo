@@ -4,11 +4,10 @@ from common.functions import fns
 from common.fn_tools import tools
 
 from common import openai_fc_model as model
+from common.prompts import question_message
 
 
-messages = [
-    {"role": "user", "content": "What is (121 * 3) + (6 * 7)?"},
-]
+messages = [question_message]
 
 response = openai.chat.completions.create(model=model, messages=messages, tools=tools)
 

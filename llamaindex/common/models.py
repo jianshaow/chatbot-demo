@@ -8,7 +8,7 @@ from llama_index.core import Settings, VectorStoreIndex, SimpleDirectoryReader
 
 from common.fn_tools import tools
 from common.functions import fns
-from common.prompts import system_prompt, examples
+from common.prompts import system_message, examples, question_message
 from common import demo_image_url as image_url
 
 
@@ -63,12 +63,11 @@ def demo_fn_call(
     print("-" * 80)
     print("fn call model:", model_name)
 
-    question = "What is (121 * 3) + (6 * 7)?"
     messages = []
     if with_few_shot:
-        messages.append(system_prompt)
+        messages.append(system_message)
         messages.extend(examples)
-    messages.append(ChatMessage(role="user", content=question))
+    messages.append(question_message)
 
     response = fn_call_model.chat_with_tools(tools, chat_history=messages)
 

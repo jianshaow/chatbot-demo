@@ -1,8 +1,15 @@
+import sys
 from llama_index.core.llms import ChatMessage
 
-system_prompt = ChatMessage(
-    role="system", content="You are bad at math but are an expert at using a calculator"
+tool_call_system = "You are bad at math but are an expert at using a calculator"
+
+system_message = ChatMessage(role="system", content=tool_call_system)
+
+tool_call_question = (
+    len(sys.argv) == 2 and sys.argv[1] or "What is (121 * 3) + (6 * 7)?"
 )
+
+question_message = ChatMessage(role="user", content=tool_call_question)
 
 examples = [
     ChatMessage(

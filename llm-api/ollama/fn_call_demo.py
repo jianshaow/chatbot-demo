@@ -2,16 +2,20 @@ import ollama
 
 from common.functions import fns
 from common.fn_tools import tools
-from common.prompts import ollama_examples as examples, system_prompt
+from common.prompts import (
+    system_message,
+    ollama_examples as examples,
+    question_message,
+)
 from common import ollama_fc_model as model
 
 print("-" * 80)
 print("chat model:", model)
 
 messages = [
-    system_prompt,
+    system_message,
     *examples,
-    {"role": "user", "content": "What is (121 * 3) + (6 * 7)"},
+    question_message,
 ]
 
 response = ollama.chat(model=model, messages=messages, tools=tools)

@@ -3,7 +3,8 @@ import google.generativeai as genai
 from common import gemini_fc_model as model_name
 from common.functions import fns
 from common.prompts import (
-    system_prompt_str as system_prompt,
+    tool_call_question as question,
+    tool_call_system as system_prompt,
     gemini_examples as examples,
 )
 
@@ -16,7 +17,7 @@ print("-" * 80)
 print("fn call model:", model_name)
 
 chat = model.start_chat(history=examples)
-response = chat.send_message("What is (121 * 3) + (6 * 7)?")
+response = chat.send_message(question)
 
 going = True
 while going:
