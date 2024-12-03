@@ -1,18 +1,29 @@
 import sys
 import google.generativeai as genai
 
-tool_call_system = "You are bad at math but are an expert at using a calculator"
+chat_system = "You are a pirate with a colorful personality."
+fn_call_system = "You are bad at math but are an expert at using a calculator"
 
-tool_call_question = (
-    len(sys.argv) == 2 and sys.argv[1] or "What is (121 * 3) + (6 * 7)?"
+embed_question = (
+    len(sys.argv) == 2 and sys.argv[1] or "What did the author do growing up?"
 )
+chat_question = len(sys.argv) == 2 and sys.argv[1] or "What is your name?"
+fn_call_question = len(sys.argv) == 2 and sys.argv[1] or "What is (121 * 3) + (6 * 7)?"
+mm_question = (
+    len(sys.argv) == 2
+    and sys.argv[1]
+    or "Identify the city where this photo was taken."
+)
+mm_image_url = "https://storage.googleapis.com/generativeai-downloads/data/scene.jpg"
 
-system_message = {
+chat_system_message = {"role": "system", "content": chat_system}
+chat_question_message = {"role": "user", "content": chat_question}
+
+fn_call_system_message = {
     "role": "system",
-    "content": tool_call_system,
+    "content": fn_call_system,
 }
-
-question_message = {"role": "user", "content": tool_call_question}
+fn_call_question_message = {"role": "user", "content": fn_call_question}
 
 ollama_examples = [
     {

@@ -3,13 +3,12 @@ import google.generativeai as genai
 from common import gemini_fc_model as model_name
 from common.functions import fns
 from common.prompts import (
-    tool_call_question as question,
-    tool_call_system as system_prompt,
+    fn_call_question as question,
+    fn_call_system as system_prompt,
     gemini_examples as examples,
 )
 
 genai.configure(transport="rest")
-
 model = genai.GenerativeModel(
     model_name=model_name, tools=fns.values(), system_instruction=system_prompt
 )

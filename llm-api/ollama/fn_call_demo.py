@@ -3,20 +3,16 @@ import ollama
 from common.functions import fns
 from common.fn_tools import tools
 from common.prompts import (
-    system_message,
+    fn_call_system_message as system_prompt,
     ollama_examples as examples,
-    question_message,
+    fn_call_question_message as question,
 )
 from common import ollama_fc_model as model
 
 print("-" * 80)
-print("chat model:", model)
+print("fn call model:", model)
 
-messages = [
-    system_message,
-    *examples,
-    question_message,
-]
+messages = [system_prompt, *examples, question]
 
 response = ollama.chat(model=model, messages=messages, tools=tools)
 

@@ -1,17 +1,17 @@
 from openai import OpenAI
 
 from common import openai_chat_model as model
+from common.prompts import (
+    chat_system_message as system_prompt,
+    chat_question_message as question,
+)
 
 print("-" * 80)
 print("chat model:", model)
+
 client = OpenAI()
 response = client.chat.completions.create(
-    model=model,
-    messages=[
-        {"role": "system", "content": "You are a pirate with a colorful personality."},
-        {"role": "user", "content": "What is your name?"},
-    ],
-    stream=True,
+    model=model, messages=[system_prompt, question], stream=True
 )
 
 print("-" * 80)

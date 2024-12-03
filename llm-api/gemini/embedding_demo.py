@@ -2,16 +2,16 @@ import sys
 import google.generativeai as genai
 
 from common import gemini_embed_model as model
-
-genai.configure(transport="rest")
-
-question = len(sys.argv) == 2 and sys.argv[1] or "What did the author do growing up?"
+from common.prompts import embed_question as question
 
 print("-" * 80)
 print("embed model:", model)
+
+genai.configure(transport="rest")
 embeddings = genai.embed_content(
     model=model, content=question, task_type="retrieval_document"
 )["embedding"]
+
 print("-" * 80)
 print("dimension:", len(embeddings))
 print(embeddings[:4])

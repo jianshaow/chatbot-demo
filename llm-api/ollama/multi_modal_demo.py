@@ -1,23 +1,16 @@
 import ollama, requests
 
 from common import ollama_mm_model as model
+from common.prompts import mm_image_url, mm_question
 
 print("-" * 80)
 print("multi-modal model:", model)
 
-image = requests.get(
-    "https://storage.googleapis.com/generativeai-downloads/data/scene.jpg"
-).content
+image = requests.get(mm_image_url).content
 
 response = ollama.chat(
     model=model,
-    messages=[
-        {
-            "role": "user",
-            "content": "Identify the city where this photo was taken.",
-            "images": [image],
-        }
-    ],
+    messages=[{"role": "user", "content": mm_question, "images": [image]}],
     stream=True,
 )
 

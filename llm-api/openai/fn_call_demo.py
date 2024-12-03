@@ -4,11 +4,12 @@ from common.functions import fns
 from common.fn_tools import tools
 
 from common import openai_fc_model as model
-from common.prompts import question_message
+from common.prompts import fn_call_question_message as question
 
+print("-" * 80)
+print("fn call model:", model)
 
-messages = [question_message]
-
+messages = [question]
 response = openai.chat.completions.create(model=model, messages=messages, tools=tools)
 
 while response.choices[0].finish_reason == "tool_calls":

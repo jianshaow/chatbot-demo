@@ -2,13 +2,14 @@ import sys
 from openai import OpenAI
 
 from common import openai_embed_model as model
+from common.prompts import embed_question as question
 
-client = OpenAI()
-
-question = len(sys.argv) == 2 and sys.argv[1] or "What did the author do growing up?"
 print("-" * 80)
 print("embed model:", model)
+
+client = OpenAI()
 embeddings = client.embeddings.create(model=model, input=[question]).data[0].embedding
+
 print("-" * 80)
 print("dimension:", len(embeddings))
 print(embeddings[:4])

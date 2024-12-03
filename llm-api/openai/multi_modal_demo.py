@@ -1,9 +1,11 @@
 from openai import OpenAI
 
 from common import openai_chat_model as model
+from common.prompts import mm_image_url, mm_question
 
 print("-" * 80)
 print("multi-modal model:", model)
+
 client = OpenAI()
 response = client.chat.completions.create(
     model=model,
@@ -11,15 +13,10 @@ response = client.chat.completions.create(
         {
             "role": "user",
             "content": [
-                {
-                    "type": "text",
-                    "text": "Identify the city where this photo was taken.",
-                },
+                {"type": "text", "text": mm_question},
                 {
                     "type": "image_url",
-                    "image_url": {
-                        "url": "https://storage.googleapis.com/generativeai-downloads/data/scene.jpg",
-                    },
+                    "image_url": {"url": mm_image_url},
                 },
             ],
         },

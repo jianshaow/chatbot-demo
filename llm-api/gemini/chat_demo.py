@@ -1,15 +1,14 @@
 import google.generativeai as genai
 
 from common import gemini_chat_model as model_name
-
-genai.configure(transport="rest")
+from common.prompts import chat_system, chat_question
 
 print("-" * 80)
 print("chat model:", model_name)
-model = genai.GenerativeModel(
-    model_name, system_instruction="You are a pirate with a colorful personality."
-)
-response = model.generate_content("What is your name?", stream=True)
+
+genai.configure(transport="rest")
+model = genai.GenerativeModel(model_name, system_instruction=chat_system)
+response = model.generate_content(chat_question, stream=True)
 
 print("-" * 80)
 for chunk in response:
