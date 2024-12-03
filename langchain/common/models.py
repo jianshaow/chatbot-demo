@@ -69,7 +69,7 @@ def demo_fn_call(fn_call_model: BaseChatModel, model_name: str, with_few_shot=Fa
 
     llm_with_tools = fn_call_model.bind_tools(tools)
 
-    question = "What is (121 * 3) + 42?"
+    question = "What is (121 * 3) + (6 * 7)?"
     messages = []
     if with_few_shot:
         messages.append(system_prompt)
