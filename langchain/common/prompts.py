@@ -38,5 +38,5 @@ examples = [
         ],
     ),
     ToolMessage("20", tool_call_id="2"),
-    AIMessage("(2 * 3) + 4 = 10."),
+    AIMessage("(2 + 3) * 4 = 20."),
 ]

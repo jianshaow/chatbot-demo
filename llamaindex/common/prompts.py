@@ -7,34 +7,34 @@ system_prompt = ChatMessage(
 examples = [
     ChatMessage(
         role="user",
-        content="What is (2 * 3) + 4",
+        content="What is (2 + 3) * 4",
+    ),
+    ChatMessage(
+        role="assistant",
+        content="",
+        additional_kwargs={
+            "tool_calls": [{"function": {"name": "add", "arguments": {"a": 2, "b": 3}}}]
+        },
+    ),
+    ChatMessage(
+        role="tool",
+        content="5",
     ),
     ChatMessage(
         role="assistant",
         content="",
         additional_kwargs={
             "tool_calls": [
-                {"function": {"name": "multiply", "arguments": {"a": 2, "b": 3}}}
+                {"function": {"name": "multiply", "arguments": {"a": 5, "b": 4}}}
             ]
         },
     ),
     ChatMessage(
         role="tool",
-        content="6",
+        content="20",
     ),
     ChatMessage(
         role="assistant",
-        content="",
-        additional_kwargs={
-            "tool_calls": [{"function": {"name": "add", "arguments": {"a": 6, "b": 4}}}]
-        },
-    ),
-    ChatMessage(
-        role="tool",
-        content="10",
-    ),
-    ChatMessage(
-        role="assistant",
-        content="(2 * 3) + 4 = 10.",
+        content="(2 + 3) * 4 = 20.",
     ),
 ]
