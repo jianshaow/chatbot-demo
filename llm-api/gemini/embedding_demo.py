@@ -1,4 +1,3 @@
-import sys
 import google.generativeai as genai
 
 from common import gemini_embed_model as model

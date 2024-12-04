@@ -1,4 +1,4 @@
-import sys, ollama
+import ollama
 
 from common import ollama_embed_model as model_name
 from common.prompts import embed_question

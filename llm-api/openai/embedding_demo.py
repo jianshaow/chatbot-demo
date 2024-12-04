@@ -1,4 +1,3 @@
-import sys
 from openai import OpenAI
 
 from common import openai_embed_model as model
