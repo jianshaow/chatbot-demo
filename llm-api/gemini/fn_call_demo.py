@@ -23,7 +23,7 @@ while going:
     print("-" * 80)
 
     results = {}
-    has_function_call = False
+    has_fn_call = False
     for part in response.parts:
         if fn := part.function_call:
             args = (
@@ -36,9 +36,9 @@ while going:
             print("========================\n")
             results[fn.name] = fn_result
 
-            has_function_call = True
+            has_fn_call = True
 
-    if has_function_call:
+    if has_fn_call:
         response_parts = genai.protos.Content(
             parts=[
                 genai.protos.Part(
