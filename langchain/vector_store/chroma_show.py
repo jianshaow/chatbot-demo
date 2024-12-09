@@ -4,12 +4,12 @@ base_dir = os.getenv("CHROMA_BASE_DIR", "chroma")
 
 db_dir = len(sys.argv) == 2 and sys.argv[1] or None
 if db_dir:
-    db = chromadb.PersistentClient(path=os.path.join(base_dir, db_dir))
-    collections = db.list_collections()
+    client = chromadb.PersistentClient(path=os.path.join(base_dir, db_dir))
+    collections = client.list_collections()
     print("collections size:", len(collections))
     print("=" * 80)
     for collection in collections:
-        print(collection.get_model())
+        print("name:", collection.name)
         count = collection.count()
         print("record count:", count)
         vectors = collection.peek(1)

@@ -5,24 +5,24 @@ from langchain_text_splitters import CharacterTextSplitter
 
 config = rag_config.get_config()
 
-db = chromadb.PersistentClient(path=config.vector_db_path)
-chroma_collection = db.get_or_create_collection(config.vector_db_collection)
+client = chromadb.PersistentClient(path=config.vector_db_path)
+chroma_collection = client.get_or_create_collection(config.vector_db_collection)
 embedding = config.embed_model()
 print("-" * 80)
 print("embed_model:", config.embed_model_name)
 
 if chroma_collection.count() == 0:
-    data = DirectoryLoader(config.data_path).load()
+    data = DirectoryLoader(config.data_dir).load()
     documents = CharacterTextSplitter().split_documents(data)
     vectorstore = Chroma.from_documents(
-        client=db,
+        client=client,
         collection_name=config.vector_db_collection,
         documents=documents,
         embedding=embedding,
     )
 else:
     vectorstore = Chroma(
-        client=db,
+        client=client,
         collection_name=config.vector_db_collection,
         embedding_function=embedding,
     )

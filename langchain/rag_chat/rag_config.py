@@ -13,6 +13,7 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 
 from common import (
     db_base_dir,
+    data_base_dir,
     ollama_base_url,
     ollama_embed_model,
     ollama_chat_model,
@@ -25,9 +26,9 @@ from common import (
 )
 from common.models import default_model_kwargs
 
-DATA_PATH = "data"
-DATA_PATH_EN = "data_en"
-DATA_PATH_ZH = "data_zh"
+DEFAULT_DATA = "default"
+DATA_EN = "en-text"
+DATA_ZH = "zh-text"
 
 DEFAULT_COLLECTION = "default"
 
@@ -44,8 +45,7 @@ class RagChatConfig:
         embed_model_name: str,
         chat_model: Type[BaseChatModel],
         chat_model_name: str,
-        data_path: str = DATA_PATH,
-        vector_db_collection: str = "hface",
+        data_dir: str = DEFAULT_DATA,
         defalut_question: str = DEFAULT_QUESTION,
     ):
         self.name = name
@@ -53,14 +53,23 @@ class RagChatConfig:
         self.embed_model_name = embed_model_name
         self.__chat_model = chat_model
         self.chat_model_name = chat_model_name
-        self.data_path = data_path
+        self.__data_dir = data_dir
         self.db_base_dir = db_base_dir
-        self.vector_db_collection = vector_db_collection
+        self.data_base_dir = data_base_dir
         self.defalut_question = defalut_question
 
     @property
     def vector_db_path(self):
         return os.path.join(self.db_base_dir, self.name)
+
+    @property
+    def data_dir(self):
+        return os.path.join(self.data_base_dir, self.__data_dir)
+
+    @property
+    def vector_db_collection(self):
+        escaped = self.embed_model_name.replace(":", "-")
+        return self.__data_dir + "__" + escaped
 
     def embed_model(self):
         if self.__embed_model == OllamaEmbeddings:
@@ -106,8 +115,7 @@ class RagChatConfig:
 
 
 def __openai_config(
-    data_path=DATA_PATH,
-    vector_db_collection=DEFAULT_COLLECTION,
+    data_path=DEFAULT_DATA,
     defalut_question=DEFAULT_QUESTION,
 ):
     return RagChatConfig(
@@ -116,15 +124,13 @@ def __openai_config(
         openai_embed_model,
         ChatOpenAI,
         openai_chat_model,
-        data_path=data_path,
-        vector_db_collection=vector_db_collection,
+        data_dir=data_path,
         defalut_question=defalut_question,
     )
 
 
 def __gemini_config(
-    data_path=DATA_PATH,
-    vector_db_collection=DEFAULT_COLLECTION,
+    data_path=DEFAULT_DATA,
     defalut_question=DEFAULT_QUESTION,
 ):
     return RagChatConfig(
@@ -133,8 +139,7 @@ def __gemini_config(
         gemini_embed_model,
         ChatGoogleGenerativeAI,
         gemini_chat_model,
-        data_path=data_path,
-        vector_db_collection=vector_db_collection,
+        data_dir=data_path,
         defalut_question=defalut_question,
     )
 
@@ -142,8 +147,7 @@ def __gemini_config(
 def __ollama_config(
     embed_model_name=ollama_embed_model,
     chat_model_name=ollama_chat_model,
-    data_path=DATA_PATH,
-    vector_db_collection=DEFAULT_COLLECTION,
+    data_path=DEFAULT_DATA,
     defalut_question=DEFAULT_QUESTION,
 ):
     return RagChatConfig(
@@ -152,8 +156,7 @@ def __ollama_config(
         embed_model_name,
         ChatOllama,
         chat_model_name,
-        data_path=data_path,
-        vector_db_collection=vector_db_collection,
+        data_dir=data_path,
         defalut_question=defalut_question,
     )
 
@@ -161,8 +164,7 @@ def __ollama_config(
 def __hf_config(
     embed_model_name=hf_embed_model,
     chat_model_name=hf_chat_model,
-    data_path=DATA_PATH,
-    vector_db_collection=DEFAULT_COLLECTION,
+    data_path=DEFAULT_DATA,
     defalut_question=DEFAULT_QUESTION,
 ):
     return RagChatConfig(
@@ -171,8 +173,7 @@ def __hf_config(
         embed_model_name,
         ChatHuggingFace,
         chat_model_name,
-        data_path=data_path,
-        vector_db_collection=vector_db_collection,
+        data_dir=data_path,
         defalut_question=defalut_question,
     )
 
@@ -180,47 +181,39 @@ def __hf_config(
 __config_dict = {
     "openai": __openai_config(),
     "openai_en": __openai_config(
-        data_path=DATA_PATH_EN,
-        vector_db_collection="en_text",
+        data_path=DATA_EN,
         defalut_question=DEFAULT_QUESTION_EN,
     ),
     "openai_zh": __openai_config(
-        data_path=DATA_PATH_ZH,
-        vector_db_collection="zh_text",
+        data_path=DATA_ZH,
         defalut_question=DEFAULT_QUESTION_ZH,
     ),
     "gemini": __gemini_config(),
     "gemini_en": __gemini_config(
-        data_path=DATA_PATH_EN,
-        vector_db_collection="en_text",
+        data_path=DATA_EN,
         defalut_question=DEFAULT_QUESTION_EN,
     ),
     "gemini_zh": __gemini_config(
-        data_path=DATA_PATH_ZH,
-        vector_db_collection="zh_text",
+        data_path=DATA_ZH,
         defalut_question=DEFAULT_QUESTION_ZH,
     ),
     "ollama": __ollama_config(),
     "ollama_en": __ollama_config(
-        data_path=DATA_PATH_EN,
-        vector_db_collection="en_text",
+        data_path=DATA_EN,
         defalut_question=DEFAULT_QUESTION_EN,
     ),
     "ollama_zh": __ollama_config(
-        data_path=DATA_PATH_ZH,
-        vector_db_collection="zh_text",
+        data_path=DATA_ZH,
         defalut_question=DEFAULT_QUESTION_ZH,
     ),
     "hf": __hf_config(),
     "hf_en": __hf_config(
-        data_path=DATA_PATH_EN,
-        vector_db_collection="en_text",
+        data_path=DATA_EN,
         defalut_question=DEFAULT_QUESTION_EN,
     ),
     "hf_zh": __hf_config(
-        data_path=DATA_PATH_ZH,
+        data_path=DATA_ZH,
         embed_model_name="BAAI/bge-small-zh",
-        vector_db_collection="zh_text",
         defalut_question=DEFAULT_QUESTION_ZH,
     ),
 }
