@@ -9,7 +9,7 @@ if db_dir:
     print("collections size:", len(collections))
     print("=" * 80)
     for collection in collections:
-        print(collection.get_model())
+        print("name:", collection.name)
         count = collection.count()
         print("record count:", count)
         vectors = collection.peek(1)

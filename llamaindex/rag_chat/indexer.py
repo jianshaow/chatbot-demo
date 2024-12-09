@@ -17,7 +17,7 @@ print("-" * 80)
 print("embed model:", Settings.embed_model.model_name)
 
 if chroma_collection.count() == 0:
-    documents = SimpleDirectoryReader(config.data_path).load_data(show_progress=True)
+    documents = SimpleDirectoryReader(config.data_dir).load_data(show_progress=True)
     storage_context = StorageContext.from_defaults(vector_store=vector_store)
     index = VectorStoreIndex.from_documents(
         documents,

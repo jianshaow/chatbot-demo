@@ -30,8 +30,6 @@ DEFAULT_DATA = "default"
 DATA_EN = "en-text"
 DATA_ZH = "zh-text"
 
-DEFAULT_COLLECTION = "default"
-
 DEFAULT_QUESTION = "What did the author do growing up?"
 DEFAULT_QUESTION_EN = "Why the old man go fishing?"
 DEFAULT_QUESTION_ZH = "地球发动机都安装在哪里？"
@@ -115,7 +113,7 @@ class RagChatConfig:
 
 
 def __openai_config(
-    data_path=DEFAULT_DATA,
+    data_dir=DEFAULT_DATA,
     defalut_question=DEFAULT_QUESTION,
 ):
     return RagChatConfig(
@@ -124,13 +122,13 @@ def __openai_config(
         openai_embed_model,
         ChatOpenAI,
         openai_chat_model,
-        data_dir=data_path,
+        data_dir=data_dir,
         defalut_question=defalut_question,
     )
 
 
 def __gemini_config(
-    data_path=DEFAULT_DATA,
+    data_dir=DEFAULT_DATA,
     defalut_question=DEFAULT_QUESTION,
 ):
     return RagChatConfig(
@@ -139,7 +137,7 @@ def __gemini_config(
         gemini_embed_model,
         ChatGoogleGenerativeAI,
         gemini_chat_model,
-        data_dir=data_path,
+        data_dir=data_dir,
         defalut_question=defalut_question,
     )
 
@@ -147,7 +145,7 @@ def __gemini_config(
 def __ollama_config(
     embed_model_name=ollama_embed_model,
     chat_model_name=ollama_chat_model,
-    data_path=DEFAULT_DATA,
+    data_dir=DEFAULT_DATA,
     defalut_question=DEFAULT_QUESTION,
 ):
     return RagChatConfig(
@@ -156,7 +154,7 @@ def __ollama_config(
         embed_model_name,
         ChatOllama,
         chat_model_name,
-        data_dir=data_path,
+        data_dir=data_dir,
         defalut_question=defalut_question,
     )
 
@@ -164,7 +162,7 @@ def __ollama_config(
 def __hf_config(
     embed_model_name=hf_embed_model,
     chat_model_name=hf_chat_model,
-    data_path=DEFAULT_DATA,
+    data_dir=DEFAULT_DATA,
     defalut_question=DEFAULT_QUESTION,
 ):
     return RagChatConfig(
@@ -173,7 +171,7 @@ def __hf_config(
         embed_model_name,
         ChatHuggingFace,
         chat_model_name,
-        data_dir=data_path,
+        data_dir=data_dir,
         defalut_question=defalut_question,
     )
 
@@ -181,38 +179,38 @@ def __hf_config(
 __config_dict = {
     "openai": __openai_config(),
     "openai_en": __openai_config(
-        data_path=DATA_EN,
+        data_dir=DATA_EN,
         defalut_question=DEFAULT_QUESTION_EN,
     ),
     "openai_zh": __openai_config(
-        data_path=DATA_ZH,
+        data_dir=DATA_ZH,
         defalut_question=DEFAULT_QUESTION_ZH,
     ),
     "gemini": __gemini_config(),
     "gemini_en": __gemini_config(
-        data_path=DATA_EN,
+        data_dir=DATA_EN,
         defalut_question=DEFAULT_QUESTION_EN,
     ),
     "gemini_zh": __gemini_config(
-        data_path=DATA_ZH,
+        data_dir=DATA_ZH,
         defalut_question=DEFAULT_QUESTION_ZH,
     ),
     "ollama": __ollama_config(),
     "ollama_en": __ollama_config(
-        data_path=DATA_EN,
+        data_dir=DATA_EN,
         defalut_question=DEFAULT_QUESTION_EN,
     ),
     "ollama_zh": __ollama_config(
-        data_path=DATA_ZH,
+        data_dir=DATA_ZH,
         defalut_question=DEFAULT_QUESTION_ZH,
     ),
     "hf": __hf_config(),
     "hf_en": __hf_config(
-        data_path=DATA_EN,
+        data_dir=DATA_EN,
         defalut_question=DEFAULT_QUESTION_EN,
     ),
     "hf_zh": __hf_config(
-        data_path=DATA_ZH,
+        data_dir=DATA_ZH,
         embed_model_name="BAAI/bge-small-zh",
         defalut_question=DEFAULT_QUESTION_ZH,
     ),
