@@ -68,7 +68,7 @@ class RagChatConfig:
 
     @property
     def vector_db_collection(self):
-        escaped = self.embed_model_name.replace(":", "_")
+        escaped = self.embed_model_name.replace(":", "_").replace("/", "_")
         return self.__data_dir + "__" + escaped
 
     def embed_model(self):
