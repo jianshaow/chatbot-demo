@@ -30,7 +30,7 @@ examples = [
         },
         tool_calls=[ToolCall({"id": "1", "name": "add", "args": {"a": 2, "b": 3}})],
     ),
-    ToolMessage("5", tool_call_id="1"),
+    ToolMessage("5", name="add", tool_call_id="1"),
     AIMessage(
         "",
         additional_kwargs={
@@ -44,6 +44,6 @@ examples = [
             ToolCall({"id": "2", "name": "multiply", "args": {"a": 5, "b": 4}})
         ],
     ),
-    ToolMessage("20", tool_call_id="2"),
+    ToolMessage("20", name="multiply", tool_call_id="2"),
     AIMessage("(2 + 3) * 4 = 20."),
 ]
