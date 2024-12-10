@@ -8,7 +8,7 @@ embed_question = (
     len(sys.argv) == 2 and sys.argv[1] or "What did the author do growing up?"
 )
 chat_question = len(sys.argv) == 2 and sys.argv[1] or "What is your name?"
-fn_call_question = len(sys.argv) == 2 and sys.argv[1] or "What is (121 * 3) + (6 * 7)?"
+fn_call_question = len(sys.argv) == 2 and sys.argv[1] or "What is (121 * 3) + 42?"
 mm_question = (
     len(sys.argv) == 2
     and sys.argv[1]
