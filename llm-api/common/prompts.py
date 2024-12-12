@@ -1,19 +1,17 @@
 import sys
 import google.generativeai as genai
 
+from common import get_args
+
 chat_system = "You are a pirate with a colorful personality."
 fn_call_system = "You are bad at math but are an expert at using a calculator"
 
-embed_question = (
-    len(sys.argv) == 2 and sys.argv[1] or "What did the author do growing up?"
-)
-chat_question = len(sys.argv) == 2 and sys.argv[1] or "What is your name?"
-fn_call_question = len(sys.argv) == 2 and sys.argv[1] or "What is (121 * 3) + 42?"
-mm_question = (
-    len(sys.argv) == 2
-    and sys.argv[1]
-    or "Identify the city where this photo was taken."
-)
+embed_question = get_args(1, "What did the author do growing up?")
+chat_question = get_args(1, "What is your name?")
+fn_call_question = get_args(1, "What is (121 * 3) + 42?")
+fn_call_adv_question = get_args(1, "What is (121 * 3) + (6 * 7)?")
+mm_question = get_args(1, "Identify the city where this photo was taken.")
+
 mm_image_url = "https://storage.googleapis.com/generativeai-downloads/data/scene.jpg"
 
 chat_system_message = {"role": "system", "content": chat_system}
