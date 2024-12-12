@@ -28,9 +28,7 @@ def demo_embed(embed_model: BaseEmbedding, model_name: str):
     print("-" * 80)
     print("embed model:", model_name)
 
-    question = (
-        len(sys.argv) == 2 and sys.argv[1] or "What did the author do growing up?"
-    )
+    question = get_args(1, "What did the author do growing up?")
     embedding = embed_model.get_text_embedding(question)
     print("-" * 80)
     print("dimension:", len(embedding))
