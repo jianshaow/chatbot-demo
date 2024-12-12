@@ -1,4 +1,3 @@
-import os, sys
 from langchain_core.prompts import ChatPromptTemplate, HumanMessagePromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.embeddings import Embeddings
@@ -12,12 +11,12 @@ from langchain_chroma import Chroma
 from common.fn_tools import tools
 from common.functions import fns
 from common.prompts import system_message, examples, question_message
-from common import demo_image_url as image_url
+from common import demo_image_url as image_url, get_args, get_env_bool
 
 
 def default_model_kwargs() -> dict[str, str]:
     model_kwargs = {}
-    bnb_enabled = os.environ.get("BNB_ENABLED", "false") == "true"
+    bnb_enabled = get_env_bool("BNB_ENABLED")
     if bnb_enabled:
         import torch
         from transformers import BitsAndBytesConfig
@@ -32,9 +31,7 @@ def demo_embed(embed_model: Embeddings, model_name: str):
     print("-" * 80)
     print("embed model:", model_name)
 
-    question = (
-        len(sys.argv) == 2 and sys.argv[1] or "What did the author do growing up?"
-    )
+    question = get_args(1, "What did the author do growing up?")
     embedding = embed_model.embed_query(question)
     print("-" * 80)
     print("dimension:", len(embedding))
@@ -148,8 +145,13 @@ def demo_multi_modal(mm_model: BaseChatModel, model_name: str):
     print("\n", "-" * 80, sep="")
 
 
-def demo_recieve(embed_model: Embeddings, model_name: str):
-    loader = DirectoryLoader("data")
+def demo_recieve(
+    embed_model: Embeddings,
+    model_name: str,
+    data_path: str = "data",
+    query="What did the author do growing up?",
+):
+    loader = DirectoryLoader(data_path)
     data = loader.load()
 
     text_splitter = CharacterTextSplitter()
@@ -162,9 +164,7 @@ def demo_recieve(embed_model: Embeddings, model_name: str):
     print("-" * 80)
     print("embed model:", model_name)
 
-    question = (
-        len(sys.argv) == 2 and sys.argv[1] or "What did the author do growing up?"
-    )
+    question = get_args(1, query)
     retriever = vectorstore.as_retriever()
     docs = retriever.invoke(question)
     for doc in docs:

@@ -1,4 +1,4 @@
-import os
+import os, sys
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -29,3 +29,12 @@ gemini_llm_model = os.getenv("GEMINI_LLM_MODEL", "models/gemini-1.5-flash")
 gemini_chat_model = os.getenv("GEMINI_CHAT_MODEL", gemini_llm_model)
 gemini_mm_model = os.getenv("GEMINI_MM_MODEL", gemini_llm_model)
 gemini_fc_model = os.getenv("GEMINI_FC_MODEL", gemini_llm_model)
+gemini_few_shoted = os.getenv("GEMINI_FEW_SHOTED", "false") == "true"
+
+
+def get_env_bool(key: str, default: str = "false", target: str = "true"):
+    return os.getenv(key, default) == target
+
+
+def get_args(order: int, default: str):
+    return len(sys.argv) > order and sys.argv[order] or default

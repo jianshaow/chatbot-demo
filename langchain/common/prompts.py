@@ -1,4 +1,3 @@
-import sys
 from langchain_core.messages import (
     HumanMessage,
     SystemMessage,
@@ -7,13 +6,13 @@ from langchain_core.messages import (
     ToolCall,
 )
 
+from common import get_args
+
 tool_call_system = "You are bad at math but are an expert at using a calculator"
 
 system_message = SystemMessage(tool_call_system)
 
-tool_call_question = (
-    len(sys.argv) == 2 and sys.argv[1] or "What is (121 * 3) + 42?"
-)
+tool_call_question = get_args(1, "What is (121 * 3) + (6 * 7)?")
 
 question_message = HumanMessage(tool_call_question)
 

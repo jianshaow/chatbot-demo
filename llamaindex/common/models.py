@@ -1,4 +1,3 @@
-import os, sys
 from llama_index.core.embeddings import BaseEmbedding
 from llama_index.core.llms import LLM, ChatMessage
 from llama_index.core.llms.function_calling import FunctionCallingLLM
@@ -9,12 +8,12 @@ from llama_index.core import Settings, VectorStoreIndex, SimpleDirectoryReader
 from common.fn_tools import tools
 from common.functions import fns
 from common.prompts import system_message, examples, question_message
-from common import demo_image_url as image_url
+from common import demo_image_url as image_url, get_args, get_env_bool
 
 
 def default_model_kwargs() -> dict[str, str]:
     model_kwargs = {}
-    bnb_enabled = os.environ.get("BNB_ENABLED", "false") == "true"
+    bnb_enabled = get_env_bool("BNB_ENABLED")
     if bnb_enabled:
         import torch
         from transformers import BitsAndBytesConfig
@@ -164,7 +163,7 @@ def demo_recieve(
     retriever = index.as_retriever(
         similarity_top_k=4,
     )
-    question = len(sys.argv) == 2 and sys.argv[1] or query
+    question = get_args(1, query)
     nodes = retriever.retrieve(question)
     for node in nodes:
         print("-" * 80)

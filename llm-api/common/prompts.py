@@ -17,10 +17,7 @@ mm_image_url = "https://storage.googleapis.com/generativeai-downloads/data/scene
 chat_system_message = {"role": "system", "content": chat_system}
 chat_question_message = {"role": "user", "content": chat_question}
 
-fn_call_system_message = {
-    "role": "system",
-    "content": fn_call_system,
-}
+fn_call_system_message = {"role": "system", "content": fn_call_system}
 fn_call_question_message = {"role": "user", "content": fn_call_question}
 
 ollama_examples = [
