@@ -19,4 +19,4 @@ response = model.generate_content([mm_question, image], stream=True)
 print("-" * 80)
 for chunk in response:
     print(chunk.text, end="")
-print("_" * 80)
+print("\n", "_" * 80)
