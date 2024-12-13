@@ -1,7 +1,7 @@
 from openai import OpenAI
 
 from common import openai_chat_model as model
-from common.prompts import mm_image_url, mm_question
+from common.prompts import mm_question_message
 
 print("-" * 80)
 print("multi-modal model:", model)
@@ -9,18 +9,7 @@ print("multi-modal model:", model)
 client = OpenAI()
 response = client.chat.completions.create(
     model=model,
-    messages=[
-        {
-            "role": "user",
-            "content": [
-                {"type": "text", "text": mm_question},
-                {
-                    "type": "image_url",
-                    "image_url": {"url": mm_image_url},
-                },
-            ],
-        },
-    ],
+    messages=[mm_question_message],
     stream=True,
 )
 
