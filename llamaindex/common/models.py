@@ -1,5 +1,6 @@
 from llama_index.core.embeddings import BaseEmbedding
 from llama_index.core.llms import LLM, ChatMessage
+from llama_index.core.agent import AgentRunner
 from llama_index.core.llms.function_calling import FunctionCallingLLM
 from llama_index.core.multi_modal_llms import MultiModalLLM
 from llama_index.core.multi_modal_llms.generic_utils import load_image_urls
@@ -108,6 +109,23 @@ def __get_tool_call_info(tool_call):
         fn_args = tool_call["function"]["arguments"]
 
     return id, fn_name, fn_args
+
+
+def demo_fn_call_agent(fn_call_model: LLM, model_name: str, with_few_shot=False):
+    print("-" * 80)
+    print("fn call model:", model_name)
+
+    messages: list[ChatMessage] = []
+    if with_few_shot:
+        messages.append(system_message)
+        messages.extend(examples)
+    messages.append(question_message)
+
+    agent = AgentRunner.from_llm(tools, fn_call_model, verbose=True)
+    response = agent.chat(message=messages[-1].content, chat_history=messages[:-1])
+
+    print("-" * 80)
+    print(response)
 
 
 def demo_multi_modal(mm_model: MultiModalLLM, model_name: str):
