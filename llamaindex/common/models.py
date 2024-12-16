@@ -166,7 +166,7 @@ def demo_multi_modal(mm_model: MultiModalLLM, model_name: str):
 def demo_recieve(
     embed_model: BaseEmbedding,
     model_name: str,
-    data_path: str = "data",
+    data_path: str = "data/default",
     query="What did the author do growing up?",
 ):
     Settings.embed_model = embed_model

@@ -27,11 +27,13 @@ def default_model_kwargs() -> dict[str, str]:
     return model_kwargs
 
 
-def demo_embed(embed_model: Embeddings, model_name: str):
+def demo_embed(
+    embed_model: Embeddings, model_name: str, query="What did the author do growing up?"
+):
     print("-" * 80)
     print("embed model:", model_name)
 
-    question = get_args(1, "What did the author do growing up?")
+    question = get_args(1, query)
     embedding = embed_model.embed_query(question)
     print("-" * 80)
     print("dimension:", len(embedding))
@@ -148,7 +150,7 @@ def demo_multi_modal(mm_model: BaseChatModel, model_name: str):
 def demo_recieve(
     embed_model: Embeddings,
     model_name: str,
-    data_path: str = "data",
+    data_path: str = "data/default",
     query="What did the author do growing up?",
 ):
     loader = DirectoryLoader(data_path)
