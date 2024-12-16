@@ -1,6 +1,7 @@
 import torch, torch.nn.functional as F
 from transformers import AutoTokenizer, AutoModel
 
+from common import hf_embed_zh_model as model_name
 
 def cls_pooling(model_output, *args):
     return model_output[0][:, 0]
@@ -27,7 +28,6 @@ def pooling_func(model_name: str):
 
 sentences = ["地球发动机都安装在哪里？"]
 
-model_name = "BAAI/bge-small-zh-v1.5"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 model = AutoModel.from_pretrained(model_name, trust_remote_code=True)
 model.eval()
