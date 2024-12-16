@@ -3,6 +3,7 @@ from transformers import AutoTokenizer, AutoModel
 
 from common import hf_embed_zh_model as model_name
 
+
 def cls_pooling(model_output, *args):
     return model_output[0][:, 0]
 
@@ -20,7 +21,7 @@ def mean_pooling(model_output, attention_mask: torch.Tensor):
 def pooling_func(model_name: str):
     if "bge" in model_name:
         return cls_pooling
-    elif "nomic" in model_name:
+    elif "nomic" in model_name or "paraphrase" in model_name:
         return mean_pooling
     else:
         raise ValueError(f"Unsupported model name: {model_name}")
