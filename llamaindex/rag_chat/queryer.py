@@ -1,4 +1,6 @@
 import chromadb, rag_config
+
+from llama_index.core.base.response.schema import StreamingResponse
 from llama_index.core import Settings, VectorStoreIndex
 from llama_index.vector_stores.chroma import ChromaVectorStore
 
@@ -19,7 +21,7 @@ query_engine = index.as_query_engine(streaming=True)
 question = config.get_question()
 print("-" * 80)
 print("Question:", question, sep="\n")
-response = query_engine.query(question)
+response: StreamingResponse = query_engine.query(question)
 print("Answer:")
 response.print_response_stream()
 print("\n", "-" * 80, sep="")
