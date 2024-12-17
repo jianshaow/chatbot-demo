@@ -12,8 +12,11 @@ print("-" * 80)
 print("embed_model:", config.embed_model_name)
 
 if chroma_collection.count() == 0:
-    data = DirectoryLoader(config.data_dir).load()
-    documents = CharacterTextSplitter().split_documents(data)
+    loader = DirectoryLoader(config.data_dir, show_progress=True)
+    splitter = CharacterTextSplitter.from_tiktoken_encoder(
+        chunk_size=1000, chunk_overlap=200
+    )
+    documents = splitter.split_documents(loader.load())
     vectorstore = Chroma.from_documents(
         client=client,
         collection_name=config.vector_db_collection,
