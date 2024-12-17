@@ -222,7 +222,7 @@ __config_dict = {
     ),
     "hf_zh": __hf_config(
         data_dir=DATA_ZH,
-        embed_model_name="BAAI/bge-small-zh-1.5",
+        embed_model_name="BAAI/bge-small-zh-v1.5",
         defalut_question=DEFAULT_QUESTION_ZH,
     ),
 }
