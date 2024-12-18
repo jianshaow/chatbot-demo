@@ -3,7 +3,7 @@ import os, sys, chromadb
 base_dir = os.getenv("CHROMA_BASE_DIR", "chroma")
 
 db_dir = len(sys.argv) == 2 and sys.argv[1] or None
-if db_dir:
+if db_dir and os.path.exists(db_dir):
     client = chromadb.PersistentClient(path=os.path.join(base_dir, db_dir))
     collections = client.list_collections()
     print("collections size:", len(collections))
