@@ -1,4 +1,4 @@
-import chromadb, rag_config
+import chromadb, textwrap, rag_config
 from langchain_chroma import Chroma
 from langchain_community.document_loaders import DirectoryLoader
 from langchain_text_splitters import CharacterTextSplitter
@@ -37,5 +37,5 @@ question = config.get_question()
 docs = retriever.invoke(question)
 for doc in docs:
     print("-" * 80)
-    print(doc.page_content[:80])
+    print(textwrap.fill(doc.page_content[:350]))
 print("-" * 80, sep="")
