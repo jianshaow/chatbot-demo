@@ -15,7 +15,7 @@ ollama_chat_model = os.getenv("OLLAMA_CHAT_MODEL", "gemma2:9b")
 ollama_mm_model = os.getenv("OLLAMA_MM_MODEL", "llama3.2-vision:11b")
 ollama_fc_model = os.getenv("OLLAMA_FC_MODEL", "nemotron-mini:4b")
 
-hf_embed_model = os.getenv("HF_EMBED_MODEL", "BAAI/bge-small-en-v1.5")
+hf_embed_model = os.getenv("HF_EMBED_MODEL", "BAAI/bge-base-en-v1.5")
 hf_chat_model = os.getenv("HF_CHAT_MODEL", "meta-llama/Llama-3.2-3B-Instruct")
 
 openai_embed_model = os.getenv("OPENAI_EMBED_MODEL", "text-embedding-ada-002")
