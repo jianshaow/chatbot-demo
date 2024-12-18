@@ -1,15 +1,14 @@
-import os, sys, chromadb
+import os, chromadb
+from common import db_base_dir, get_args
 
-base_dir = os.getenv("CHROMA_BASE_DIR", "chroma")
-db_dir = len(sys.argv) >= 2 and sys.argv[1] or None
-
+db_dir = get_args(1, None)
 if db_dir and os.path.exists(db_dir):
-    db = chromadb.PersistentClient(path=os.path.join(base_dir, db_dir))
-    collection = len(sys.argv) == 3 and sys.argv[2] or None
+    client = chromadb.PersistentClient(path=os.path.join(db_base_dir, db_dir))
+    collection = get_args(2, None)
     if collection is None:
         print("provide the collection name")
     else:
-        db.delete_collection(collection)
+        client.delete_collection(collection)
 else:
-    for subpath in os.listdir(base_dir):
+    for subpath in os.listdir(db_base_dir):
         print(subpath)

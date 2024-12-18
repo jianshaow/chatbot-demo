@@ -1,10 +1,9 @@
-import os, sys, chromadb
+import os, chromadb
+from common import db_base_dir, get_args
 
-base_dir = os.getenv("CHROMA_BASE_DIR", "chroma")
-
-db_dir = len(sys.argv) == 2 and sys.argv[1] or None
+db_dir = get_args(1, None)
 if db_dir and os.path.exists(db_dir):
-    client = chromadb.PersistentClient(path=os.path.join(base_dir, db_dir))
+    client = chromadb.PersistentClient(path=os.path.join(db_base_dir, db_dir))
     collections = client.list_collections()
     print("collections size:", len(collections))
     print("=" * 80)
@@ -18,5 +17,5 @@ if db_dir and os.path.exists(db_dir):
             print(embeddings[:4])
         print("-" * 80)
 else:
-    for subpath in os.listdir(base_dir):
+    for subpath in os.listdir(db_base_dir):
         print(subpath)
