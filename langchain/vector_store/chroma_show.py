@@ -2,8 +2,8 @@ import os, chromadb
 from common import db_base_dir, get_args
 
 db_dir = get_args(1, None)
-if db_dir and os.path.exists(db_dir):
-    client = chromadb.PersistentClient(path=os.path.join(db_base_dir, db_dir))
+if db_dir and os.path.exists((path := os.path.join(db_base_dir, db_dir))):
+    client = chromadb.PersistentClient(path)
     collections = client.list_collections()
     print("collections size:", len(collections))
     print("=" * 80)

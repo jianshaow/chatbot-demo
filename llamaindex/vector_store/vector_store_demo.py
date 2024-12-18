@@ -5,14 +5,11 @@ from llama_index.vector_stores.chroma import ChromaVectorStore
 from common import db_base_dir, get_args
 
 db_dir = get_args(1, None)
-if db_dir and os.path.exists(db_dir):
-    client = chromadb.PersistentClient(path=os.path.join(db_base_dir, db_dir))
-    collection = get_args(2, None)
-    if collection:
+if db_dir and os.path.exists((path := os.path.join(db_base_dir, db_dir))):
+    client = chromadb.PersistentClient(path)
+    if collection := get_args(2, None):
         chroma_collection = client.get_collection(collection)
-
         vectors = chroma_collection.peek(1)
-
         result = chroma_collection.query(vectors["embeddings"][0], n_results=2)
         print("-" * 33, "chroma query", "-" * 33)
         for i in range(len(result["ids"][0])):

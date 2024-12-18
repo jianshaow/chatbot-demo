@@ -2,10 +2,9 @@ import os, chromadb
 from common import db_base_dir, get_args
 
 db_dir = get_args(1, None)
-if db_dir and os.path.exists(os.path.join(db_base_dir, db_dir)):
-    client = chromadb.PersistentClient(path=os.path.join(db_base_dir, db_dir))
-    collection = get_args(2, None)
-    if collection:
+if db_dir and os.path.exists((path := os.path.join(db_base_dir, db_dir))):
+    client = chromadb.PersistentClient(path)
+    if collection := get_args(2, None):
         chroma_collection = client.get_collection(collection)
         count = int(get_args(3, "4"))
         result = chroma_collection.peek(count)
