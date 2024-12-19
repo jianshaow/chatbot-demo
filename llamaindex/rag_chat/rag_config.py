@@ -1,4 +1,4 @@
-import os, sys, prompts
+import os
 from typing import Type
 from llama_index.core.embeddings import BaseEmbedding
 from llama_index.embeddings.openai import OpenAIEmbedding
@@ -9,7 +9,6 @@ from llama_index.llms.openai import OpenAI
 from llama_index.llms.gemini import Gemini
 from llama_index.llms.ollama import Ollama
 from llama_index.llms.huggingface import HuggingFaceLLM
-from llama_index.core import PromptTemplate
 
 from common.ollama import NormOllamaEmbedding
 
@@ -25,6 +24,7 @@ from common import (
     openai_chat_model,
     gemini_embed_model,
     gemini_chat_model,
+    get_args,
 )
 from common.models import default_model_kwargs
 
@@ -104,18 +104,13 @@ class RagChatConfig:
         return self.__chat_model(model_name=self.chat_model_name)
 
     def get_question(self):
-        if len(sys.argv) >= 3:
-            return sys.argv[2]
-        else:
-            return self.defalut_question
+        return get_args(2, self.defalut_question)
 
     def __hf_chat_model(self):
         model_kwargs = default_model_kwargs()
         return HuggingFaceLLM(
             context_window=4096,
             max_new_tokens=2048,
-            generate_kwargs={"temperature": 0.0, "do_sample": False},
-            query_wrapper_prompt=PromptTemplate(prompts.rag_template()),
             tokenizer_name=self.chat_model_name,
             model_name=self.chat_model_name,
             model_kwargs=model_kwargs,
@@ -229,15 +224,15 @@ __config_dict = {
 
 
 def get_config(name="ollama"):
-    if len(sys.argv) >= 2:
-        return __config_dict[sys.argv[1]]
+    if config_key := get_args(1, None):
+        return __config_dict[config_key]
     else:
         return __config_dict[name]
 
 
 if __name__ == "__main__":
-    if len(sys.argv) >= 2:
-        print(vars(__config_dict[sys.argv[1]]))
+    if config_key := get_args(1, None):
+        print(vars(__config_dict[config_key]))
     else:
         for config in __config_dict:
             print(config)

@@ -1,4 +1,4 @@
-import os, sys
+import os
 from typing import Type
 from langchain_core.embeddings import Embeddings
 from langchain_core.language_models import BaseChatModel
@@ -23,6 +23,7 @@ from common import (
     gemini_chat_model,
     hf_embed_model,
     hf_chat_model,
+    get_args,
 )
 from common.models import default_model_kwargs
 
@@ -96,10 +97,7 @@ class RagChatConfig:
         return self.__chat_model(model=self.chat_model_name)
 
     def get_question(self):
-        if len(sys.argv) >= 3:
-            return sys.argv[2]
-        else:
-            return self.defalut_question
+        return get_args(2, self.defalut_question)
 
     def __hf_chat_model(self):
         model_kwargs = default_model_kwargs()
@@ -219,15 +217,15 @@ __config_dict = {
 
 
 def get_config(name="ollama"):
-    if len(sys.argv) >= 2:
-        return __config_dict[sys.argv[1]]
+    if config_key := get_args(1, None):
+        return __config_dict[config_key]
     else:
         return __config_dict[name]
 
 
 if __name__ == "__main__":
-    if len(sys.argv) >= 2:
-        print(vars(__config_dict[sys.argv[1]]))
+    if config_key := get_args(1, None):
+        print(vars(__config_dict[config_key]))
     else:
         for config in __config_dict:
             print(config)
