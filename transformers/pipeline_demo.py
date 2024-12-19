@@ -9,6 +9,8 @@ generate = pipeline(
     torch_dtype="auto",
     model_kwargs=default_model_kwargs(),
 )
+print("-" * 80)
+print("chat model:", model)
 
 messages = [
     {
