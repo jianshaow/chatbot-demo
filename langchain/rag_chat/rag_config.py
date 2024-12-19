@@ -23,6 +23,7 @@ from common import (
     gemini_chat_model,
     hf_embed_model,
     hf_chat_model,
+    add_kwargs,
     get_args,
 )
 from common.models import default_model_kwargs
@@ -107,7 +108,9 @@ class RagChatConfig:
             model_kwargs=model_kwargs,
             pipeline_kwargs={"max_new_tokens": 512},
         )
-        return ChatHuggingFace(llm=llm)
+        chat_model = ChatHuggingFace(llm=llm)
+        chat_model._generate = add_kwargs(chat_model._generate, skip_prompt=True)
+        return chat_model
 
 
 def __openai_config(

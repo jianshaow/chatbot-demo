@@ -12,8 +12,5 @@ llm = HuggingFacePipeline.from_model_id(
     pipeline_kwargs={"max_new_tokens": 512},
 )
 chat_model = ChatHuggingFace(llm=llm)
-chat_model._generate = add_kwargs(
-    chat_model._generate,
-    skip_prompt=True,
-)
+chat_model._generate = add_kwargs(chat_model._generate, skip_prompt=True)
 demo_chat(chat_model, model_name)
