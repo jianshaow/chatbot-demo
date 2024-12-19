@@ -146,7 +146,7 @@ def demo_multi_modal(mm_model: BaseChatModel, model_name: str):
     print("\n", "-" * 80, sep="")
 
 
-def demo_recieve(
+def demo_retrieve(
     embed_model: Embeddings,
     model_name: str,
     data_path: str = "data/default",
