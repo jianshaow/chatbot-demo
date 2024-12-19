@@ -9,8 +9,8 @@ from llama_index.vector_stores.chroma import ChromaVectorStore
 
 config = rag_config.get_config()
 
-db = chromadb.PersistentClient(path=config.vector_db_path)
-chroma_collection = db.get_or_create_collection(config.vector_db_collection)
+client = chromadb.PersistentClient(path=config.vector_db_path)
+chroma_collection = client.get_or_create_collection(config.vector_db_collection)
 vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
 Settings.embed_model = config.embed_model()
 print("-" * 80)
