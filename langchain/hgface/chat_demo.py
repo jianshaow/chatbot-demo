@@ -15,6 +15,5 @@ chat_model = ChatHuggingFace(llm=llm)
 chat_model._generate = add_kwargs(
     chat_model._generate,
     skip_prompt=True,
-    pipeline_kwargs={"pad_token_id": llm.pipeline.tokenizer.eos_token_id},
 )
 demo_chat(chat_model, model_name)

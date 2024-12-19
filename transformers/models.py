@@ -43,12 +43,12 @@ def new_tokenizer(model_name: str) -> PreTrainedTokenizer:
 def generate(
     model: PreTrainedModel, tokenizer: PreTrainedTokenizer, prompt: str, streaming=False
 ):
+    model.generation_config.pad_token_id = tokenizer.eos_token_id
     inputs = tokenizer(prompt, return_tensors="pt").to(model.device)
 
     generation_kwargs = {
         **inputs,
         "max_new_tokens": 512,
-        "pad_token_id": tokenizer.eos_token_id,
     }
 
     if streaming:
