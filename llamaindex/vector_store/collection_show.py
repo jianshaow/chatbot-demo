@@ -1,4 +1,4 @@
-import os, chromadb
+import os, chromadb, textwrap
 from common import db_base_dir, get_args
 
 db_dir = get_args(1, None)
@@ -7,14 +7,12 @@ if db_dir and os.path.exists((path := os.path.join(db_base_dir, db_dir))):
     if collection := get_args(2, None):
         chroma_collection = client.get_collection(collection)
         count = int(get_args(3, "4"))
+        print("total count:", chroma_collection.count())
+        print("show top", count)
         result = chroma_collection.peek(count)
-        print(result["metadatas"][0].keys())
         for doc in result["documents"]:
-            width = 0x00 <= doc[0].encode("utf-8")[0] <= 0x7F and 80 or 40
             print("-" * 80)
-            print(doc[:width])
-            print("......")
-            print(doc[-width:])
+            print(textwrap.fill(doc[:347] + "..."))
         print("-" * 80)
     else:
         collections = client.list_collections()

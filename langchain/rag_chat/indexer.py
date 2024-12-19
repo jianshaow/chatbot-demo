@@ -37,5 +37,5 @@ question = config.get_question()
 docs = retriever.invoke(question)
 for doc in docs:
     print("-" * 80)
-    print(textwrap.fill(doc.page_content[:350]))
+    print(textwrap.fill(doc.page_content[:347] + "..."))
 print("-" * 80, sep="")
