@@ -1,4 +1,4 @@
-import os, sys
+import os, sys, types
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -38,3 +38,10 @@ def get_env_bool(key: str, default: str = "false", target: str = "true"):
 
 def get_args(order: int, default: str):
     return len(sys.argv) > order and sys.argv[order] or default
+
+
+def add_kwargs(func: types.FunctionType, **extra_args):
+    def wrapper(self, **kwargs):
+        return func(self, **{**kwargs, **extra_args})
+
+    return wrapper
