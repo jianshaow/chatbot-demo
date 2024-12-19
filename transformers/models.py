@@ -45,7 +45,11 @@ def generate(
 ):
     inputs = tokenizer(prompt, return_tensors="pt").to(model.device)
 
-    generation_kwargs = {**inputs, "max_new_tokens": 512}
+    generation_kwargs = {
+        **inputs,
+        "max_new_tokens": 512,
+        "pad_token_id": tokenizer.eos_token_id,
+    }
 
     if streaming:
         streamer = TextIteratorStreamer(
