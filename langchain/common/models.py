@@ -15,9 +15,8 @@ from common import demo_image_url as image_url, get_args, get_env_bool
 
 
 def default_model_kwargs() -> dict[str, str]:
-    model_kwargs = {}
-    bnb_enabled = get_env_bool("BNB_ENABLED")
-    if bnb_enabled:
+    model_kwargs = {"device_map": "auto"}
+    if get_env_bool("BNB_ENABLED"):
         import torch
         from transformers import BitsAndBytesConfig
 
