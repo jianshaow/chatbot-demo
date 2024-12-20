@@ -153,11 +153,10 @@ def demo_retrieve(
     query="What did the author do growing up?",
 ):
     loader = DirectoryLoader(data_path)
-    data = loader.load()
-
-    text_splitter = CharacterTextSplitter()
-    documents = text_splitter.split_documents(data)
-
+    text_splitter = CharacterTextSplitter.from_tiktoken_encoder(
+        chunk_size=1000, chunk_overlap=200
+    )
+    documents = text_splitter.split_documents(loader.load())
     vectorstore = Chroma.from_documents(
         documents=documents,
         embedding=embed_model,
