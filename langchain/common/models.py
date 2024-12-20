@@ -1,3 +1,4 @@
+import textwrap
 from langchain_core.prompts import ChatPromptTemplate, HumanMessagePromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.embeddings import Embeddings
@@ -169,4 +170,5 @@ def demo_retrieve(
     docs = retriever.invoke(question)
     for doc in docs:
         print("-" * 80)
-        print(doc.page_content[:80])
+        print(textwrap.fill(doc.page_content[:347] + "..."))
+    print("-" * 80)
