@@ -40,7 +40,16 @@ def get_args(order: int, default: str):
     return len(sys.argv) > order and sys.argv[order] or default
 
 
-def add_kwargs(func: types.FunctionType, **extra_args):
+def add_method_kwargs(obj: object, method_name: str, **extra_kwargs):
+    if hasattr(obj, method_name) and callable(getattr(obj, method_name)):
+        method = getattr(obj, method_name)
+        wrapper = add_func_kwargs(method, **extra_kwargs)
+        setattr(obj, method_name, wrapper)
+    else:
+        raise ValueError(f"objet '{obj}' do not has such a method '{method_name}'")
+
+
+def add_func_kwargs(func: types.FunctionType, **extra_args) -> types.FunctionType:
     def wrapper(self, **kwargs):
         return func(self, **{**kwargs, **extra_args})
 
