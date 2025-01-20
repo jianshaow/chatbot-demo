@@ -33,6 +33,7 @@
 				"ms-python.black-formatter",
 				"ms-python.pylint",
 				"ms-toolsai.jupyter"
+				"ms-python.isort"
 			]
 		}
 	}
