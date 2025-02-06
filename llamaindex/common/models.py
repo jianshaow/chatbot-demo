@@ -76,25 +76,26 @@ def demo_fn_call(
     while response.message.additional_kwargs.get("tool_calls"):
         print("-" * 80)
         messages.append(response.message)
-        for tool_call in response.message.additional_kwargs.get("tool_calls"):
-            id, fn_name, fn_args = __get_tool_call_info(tool_call)
-            print("=== Calling Function ===")
-            print(
-                "Calling function:",
-                fn_name,
-                "with args:",
-                fn_args,
-            )
-            fn = fns[fn_name]
-            fn_result = fn(**fn_args)
-            print("Got output:", fn_result)
-            print("========================\n")
-            tool_message = ChatMessage(
-                content=str(fn_result),
-                role="tool",
-                additional_kwargs={"name": fn_name, "tool_call_id": id},
-            )
-            messages.append(tool_message)
+        if tool_calls := response.message.additional_kwargs.get("tool_calls"):
+            for tool_call in tool_calls:
+                tool_call_id, fn_name, fn_args = __get_tool_call_info(tool_call)
+                print("=== Calling Function ===")
+                print(
+                    "Calling function:",
+                    fn_name,
+                    "with args:",
+                    fn_args,
+                )
+                fn = fns[fn_name]
+                fn_result = fn(**fn_args)
+                print("Got output:", fn_result)
+                print("========================\n")
+                tool_message = ChatMessage(
+                    content=str(fn_result),
+                    role="tool",
+                    additional_kwargs={"name": fn_name, "tool_call_id": tool_call_id},
+                )
+                messages.append(tool_message)
         response = fn_call_model.chat_with_tools(tools, chat_history=messages)
 
     print("-" * 80)
@@ -102,7 +103,7 @@ def demo_fn_call(
 
 
 def __get_tool_call_info(tool_call):
-    id = getattr(tool_call, "id", None)
+    tool_call_id = getattr(tool_call, "id", None)
     if hasattr(tool_call, "function"):
         import json
 
@@ -112,7 +113,7 @@ def __get_tool_call_info(tool_call):
         fn_name = tool_call["function"]["name"]
         fn_args = tool_call["function"]["arguments"]
 
-    return id, fn_name, fn_args
+    return tool_call_id, fn_name, fn_args
 
 
 def demo_fn_call_agent(fn_call_model: LLM, model_name: str, with_few_shot=False):
