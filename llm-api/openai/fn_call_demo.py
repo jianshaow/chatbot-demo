@@ -1,10 +1,10 @@
-import json, openai
+import json
 
-from common.functions import fns
-from common.fn_tools import tools
-
+import openai
 from common import openai_fc_model as model
-from common.prompts import fn_call_question_message as question
+from common.fn_tools import tools
+from common.functions import fns
+from common.prompts import fn_call_adv_question_message as question
 
 print("-" * 80)
 print("fn call model:", model)

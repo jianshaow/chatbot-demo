@@ -17,6 +17,7 @@ chat_system_message = {"role": "system", "content": chat_system}
 chat_question_message = {"role": "user", "content": chat_question}
 fn_call_system_message = {"role": "system", "content": fn_call_system}
 fn_call_question_message = {"role": "user", "content": fn_call_question}
+fn_call_adv_question_message = {"role": "user", "content": fn_call_adv_question}
 mm_question_message = {
     "role": "user",
     "content": [
