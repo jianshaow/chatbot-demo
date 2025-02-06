@@ -1,18 +1,19 @@
 import textwrap
-from langchain_core.prompts import ChatPromptTemplate, HumanMessagePromptTemplate
-from langchain_core.output_parsers import StrOutputParser
+
+from langchain.agents import AgentExecutor, create_tool_calling_agent
+from langchain_chroma import Chroma
+from langchain_community.document_loaders import DirectoryLoader
 from langchain_core.embeddings import Embeddings
 from langchain_core.language_models import BaseChatModel
-from langchain.agents import AgentExecutor, create_tool_calling_agent
-
-from langchain_community.document_loaders import DirectoryLoader
+from langchain_core.output_parsers import StrOutputParser
+from langchain_core.prompts import ChatPromptTemplate, HumanMessagePromptTemplate
 from langchain_text_splitters import CharacterTextSplitter
-from langchain_chroma import Chroma
 
+from common import demo_image_url as image_url
+from common import get_args, get_env_bool
 from common.fn_tools import tools
 from common.functions import fns
-from common.prompts import system_message, examples, question_message
-from common import demo_image_url as image_url, get_args, get_env_bool
+from common.prompts import examples, question_message, system_message
 
 
 def default_model_kwargs() -> dict[str, str]:
@@ -132,16 +133,16 @@ def demo_multi_modal(mm_model: BaseChatModel, model_name: str):
     chain = prompt | mm_model | output_parser
 
     print("-" * 80)
-    input = "Identify the city where this photo was taken."
-    print("Question:", input)
-    response = chain.invoke({"input": input, "image_url": image_url})
+    query = "Identify the city where this photo was taken."
+    print("Question:", query)
+    response = chain.invoke({"input": query, "image_url": image_url})
     print("Answer:", response)
     print("-" * 80)
 
-    input = "Give me more context for this image."
-    print("Question:", input)
+    query = "Give me more context for this image."
+    print("Question:", query)
     print("Answer:", end="")
-    response = chain.stream({"input": input, "image_url": image_url})
+    response = chain.stream({"input": query, "image_url": image_url})
     for chunk in response:
         print(chunk, end="", flush=True)
     print("\n", "-" * 80, sep="")
