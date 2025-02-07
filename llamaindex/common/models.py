@@ -1,15 +1,16 @@
+from llama_index.core import Settings, SimpleDirectoryReader, VectorStoreIndex
+from llama_index.core.agent import AgentRunner
 from llama_index.core.embeddings import BaseEmbedding
 from llama_index.core.llms import LLM, ChatMessage
-from llama_index.core.agent import AgentRunner
 from llama_index.core.llms.function_calling import FunctionCallingLLM
 from llama_index.core.multi_modal_llms import MultiModalLLM
-from llama_index.core.multi_modal_llms.generic_utils import load_image_urls
-from llama_index.core import Settings, VectorStoreIndex, SimpleDirectoryReader
+from llama_index.core.schema import ImageNode
 
+from common import demo_image_url as image_url
+from common import get_args, get_env_bool
 from common.fn_tools import tools
 from common.functions import fns
-from common.prompts import system_message, examples, question_message
-from common import demo_image_url as image_url, get_args, get_env_bool
+from common.prompts import examples, question_message, system_message
 
 
 def default_model_kwargs() -> dict[str, str]:
@@ -137,7 +138,7 @@ def demo_multi_modal(mm_model: MultiModalLLM, model: str):
     print("-" * 80)
     print("multi-modal model:", model)
 
-    image_documents = load_image_urls([image_url])
+    image_documents = [ImageNode(image_url=image_url)]
     print("-" * 80)
 
     prompt = "Identify the city where this photo was taken."
