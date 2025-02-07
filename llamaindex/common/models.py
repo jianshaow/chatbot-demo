@@ -41,9 +41,9 @@ def demo_embed(
     print("-" * 80)
 
 
-def demo_chat(chat_model: LLM, model_name: str):
+def demo_chat(chat_model: LLM, model: str):
     print("-" * 80)
-    print("chat model:", model_name)
+    print("chat model:", model)
 
     messages = [
         ChatMessage(
@@ -116,9 +116,9 @@ def __get_tool_call_info(tool_call):
     return tool_call_id, fn_name, fn_args
 
 
-def demo_fn_call_agent(fn_call_model: LLM, model_name: str, with_few_shot=False):
+def demo_fn_call_agent(fn_call_model: LLM, model: str, with_few_shot=False):
     print("-" * 80)
-    print("fn call model:", model_name)
+    print("fn call model:", model)
 
     messages: list[ChatMessage] = []
     if with_few_shot:
@@ -133,9 +133,9 @@ def demo_fn_call_agent(fn_call_model: LLM, model_name: str, with_few_shot=False)
     print(response)
 
 
-def demo_multi_modal(mm_model: MultiModalLLM, model_name: str):
+def demo_multi_modal(mm_model: MultiModalLLM, model: str):
     print("-" * 80)
-    print("multi-modal model:", model_name)
+    print("multi-modal model:", model)
 
     image_documents = load_image_urls([image_url])
     print("-" * 80)
