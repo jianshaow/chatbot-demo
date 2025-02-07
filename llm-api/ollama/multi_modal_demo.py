@@ -1,12 +1,13 @@
-import ollama, requests
+import requests
 
+import ollama
 from common import ollama_mm_model as model
 from common.prompts import mm_image_url, mm_question
 
 print("-" * 80)
 print("multi-modal model:", model)
 
-image = requests.get(mm_image_url).content
+image = requests.get(mm_image_url, timeout=10).content
 
 response = ollama.chat(
     model=model,

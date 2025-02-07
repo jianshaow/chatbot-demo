@@ -1,4 +1,4 @@
-from common import openai_chat_model as model
+from common import openai_mm_model as model
 from common.prompts import mm_question_message
 from openai import OpenAI, Stream
 from openai.types.chat import ChatCompletionChunk
