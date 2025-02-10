@@ -5,7 +5,7 @@ from common.fn_tools import tools
 from common.prompts import (
     fn_call_system_message as system_prompt,
     ollama_examples as examples,
-    fn_call_question_message as question,
+    fn_call_adv_question_message as question,
 )
 from common import ollama_fc_model as model
 
