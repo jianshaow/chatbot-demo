@@ -109,10 +109,14 @@ def __get_tool_call_info(tool_call):
         import json
 
         fn_name = tool_call.function.name
-        fn_args = json.loads(tool_call.function.arguments)
+        fn_args = (
+            json.loads(tool_call.function.arguments)
+            if isinstance(tool_call.function.arguments, str)
+            else tool_call.function.arguments
+        )
     else:
-        fn_name = tool_call["function"]["name"]
-        fn_args = tool_call["function"]["arguments"]
+        fn_name = tool_call.name
+        fn_args = tool_call.args
 
     return tool_call_id, fn_name, fn_args
 
