@@ -1,6 +1,6 @@
 {
 	"name": "TRFS-GPU",
-	"image": "jianshao/transformers-demo:4.47.1",
+	"image": "jianshao/transformers-demo:4.48.3",
 	"remoteEnv": {
 		"PYTHONPATH": ".",
 		"BNB_ENABLED": "true"
