@@ -10,14 +10,16 @@ chat_question = get_args(1, "What is your name?")
 fn_call_question = get_args(1, "What is (121 * 3) + 42?")
 fn_call_adv_question = get_args(1, "What is (121 * 3) + (6 * 7)?")
 mm_question = get_args(1, "Identify the city where this photo was taken.")
-
 mm_image_url = "https://storage.googleapis.com/generativeai-downloads/data/scene.jpg"
+
 
 chat_system_message = {"role": "system", "content": chat_system}
 chat_question_message = {"role": "user", "content": chat_question}
+
 fn_call_system_message = {"role": "system", "content": fn_call_system}
 fn_call_question_message = {"role": "user", "content": fn_call_question}
 fn_call_adv_question_message = {"role": "user", "content": fn_call_adv_question}
+
 mm_question_message = {
     "role": "user",
     "content": [

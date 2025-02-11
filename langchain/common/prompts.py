@@ -8,15 +8,20 @@ from langchain_core.messages import (
 
 from common import get_args
 
-TOOL_CALL_SYSTEM = "You are bad at math but are an expert at using a calculator"
+CHAT_SYSTEM = "You are a pirate with a colorful personality."
+FN_CALL_SYSTEM = "You are bad at math but are an expert at using a calculator"
 
-tool_call_system_message = SystemMessage(TOOL_CALL_SYSTEM)
+embed_question = get_args(1, "What did the author do growing up?")
+chat_question = get_args(1, "What is your name?")
+fn_call_question = get_args(1, "What is (121 * 3) + 42?")
+fn_call_adv_question = get_args(1, "What is (121 * 3) + (6 * 7)?")
+mm_question1 = get_args(1, "Identify the city where this photo was taken.")
+mm_question2 = get_args(1, "Give me more context for this image.")
+mm_image_url = "https://storage.googleapis.com/generativeai-downloads/data/scene.jpg"
 
-tool_call_question = get_args(1, "What is (121 * 3) + 42?")
-tool_call_adv_question = get_args(1, "What is (121 * 3) + (6 * 7)?")
-
-question_message = HumanMessage(tool_call_question)
-adv_question_message = HumanMessage(tool_call_adv_question)
+fn_call_system_message = SystemMessage(FN_CALL_SYSTEM)
+fn_question_message = HumanMessage(fn_call_question)
+fn_adv_question_message = HumanMessage(fn_call_adv_question)
 
 examples = [
     HumanMessage("What is (2 + 3) * 4"),

@@ -9,12 +9,24 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate, HumanMessagePromptTemplate
 from langchain_text_splitters import CharacterTextSplitter
 
-from common import demo_image_url as image_url
 from common import get_args, get_env_bool
 from common.fn_tools import tools
 from common.functions import fns
-from common.prompts import adv_question_message as question_message
-from common.prompts import examples, tool_call_system_message
+from common.prompts import (
+    CHAT_SYSTEM,
+    FN_CALL_SYSTEM,
+    chat_question,
+    embed_question,
+    examples,
+)
+from common.prompts import fn_adv_question_message as question_message
+from common.prompts import fn_call_adv_question as fn_call_question
+from common.prompts import (
+    fn_call_system_message,
+    mm_image_url,
+    mm_question1,
+    mm_question2,
+)
 
 
 def default_model_kwargs() -> dict[str, str]:
@@ -29,9 +41,7 @@ def default_model_kwargs() -> dict[str, str]:
     return model_kwargs
 
 
-def demo_embed(
-    embed_model: Embeddings, model_name: str, query="What did the author do growing up?"
-):
+def demo_embed(embed_model: Embeddings, model_name: str, query=embed_question):
     print("-" * 80)
     print("embed model:", model_name)
 
@@ -49,7 +59,7 @@ def demo_chat(chat_model: BaseChatModel, model_name: str):
 
     prompt = ChatPromptTemplate.from_messages(
         [
-            ("system", "You are a pirate with a colorful personality."),
+            ("system", CHAT_SYSTEM),
             ("user", "{input}"),
         ]
     )
@@ -57,7 +67,7 @@ def demo_chat(chat_model: BaseChatModel, model_name: str):
     chain = prompt | chat_model | output_parser
 
     print("-" * 80)
-    response = chain.stream({"input": "What is your name?"})
+    response = chain.stream({"input": chat_question})
     for chunk in response:
         print(chunk, end="", flush=True)
     print("\n", "-" * 80, sep="")
@@ -71,7 +81,7 @@ def demo_fn_call(fn_call_model: BaseChatModel, model: str, with_few_shot=False):
 
     messages = []
     if with_few_shot:
-        messages.append(tool_call_system_message)
+        messages.append(fn_call_system_message)
         messages.extend(examples)
     messages.append(question_message)
 
@@ -106,9 +116,8 @@ def demo_fn_call_agent(fn_call_model: BaseChatModel, model_name: str):
 
     prompt = ChatPromptTemplate.from_messages(
         [
-            ("system", "You are a helpful assistant"),
+            ("system", FN_CALL_SYSTEM),
             ("human", "{input}"),
-            # Placeholders fill up a **list** of messages
             ("placeholder", "{agent_scratchpad}"),
         ]
     )
@@ -116,7 +125,7 @@ def demo_fn_call_agent(fn_call_model: BaseChatModel, model_name: str):
     agent = create_tool_calling_agent(fn_call_model, tools, prompt)
     agent_executor = AgentExecutor(agent=agent, tools=tools, verbose=True)
 
-    response = agent_executor.invoke({"input": "What is (121 * 3) + (6 * 7)?"})
+    response = agent_executor.invoke({"input": fn_call_question})
     print("-" * 80)
     print(response["output"])
 
@@ -130,7 +139,7 @@ def demo_multi_modal(mm_model: BaseChatModel, model: str, image_data=None):
         query_args = {"image_data": image_data}
     else:
         image_placeholder = "{image_url}"
-        query_args = {"image_url": image_url}
+        query_args = {"image_url": mm_image_url}
 
     template = HumanMessagePromptTemplate.from_template(
         [{"text": "{input}"}, {"image_url": {"url": image_placeholder}}]
@@ -141,17 +150,15 @@ def demo_multi_modal(mm_model: BaseChatModel, model: str, image_data=None):
     chain = prompt | mm_model | output_parser
 
     print("-" * 80)
-    query = "Identify the city where this photo was taken."
-    print("Question:", query)
-    query_args.update({"input": query})
+    print("Question:", mm_question1)
+    query_args.update({"input": mm_question1})
     response = chain.invoke(query_args)
     print("Answer:", response)
     print("-" * 80)
 
-    query = "Give me more context for this image."
-    print("Question:", query)
+    print("Question:", mm_question2)
     print("Answer:", end="")
-    query_args.update({"input": query})
+    query_args.update({"input": mm_question2})
     response = chain.stream(query_args)
     for chunk in response:
         print(chunk, end="", flush=True)
@@ -162,7 +169,7 @@ def demo_retrieve(
     embed_model: Embeddings,
     model_name: str,
     data_path: str = "data/default",
-    query="What did the author do growing up?",
+    query=embed_question,
 ):
     loader = DirectoryLoader(data_path)
     text_splitter = CharacterTextSplitter.from_tiktoken_encoder(

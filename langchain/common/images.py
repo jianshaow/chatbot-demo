@@ -5,13 +5,13 @@ import matplotlib.pyplot as plt
 import requests
 from PIL import Image
 
-from common import demo_image_url
+from common.prompts import mm_image_url
 
 
 def show_demo_image():
     print("-" * 80)
-    response = requests.get(demo_image_url, timeout=2)
-    print("demo image URL:", demo_image_url)
+    response = requests.get(mm_image_url, timeout=2)
+    print("demo image URL:", mm_image_url)
 
     img = Image.open(BytesIO(response.content))
     plt.imshow(img)

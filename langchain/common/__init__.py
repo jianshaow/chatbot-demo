@@ -6,8 +6,6 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-demo_image_url = "https://storage.googleapis.com/generativeai-downloads/data/scene.jpg"
-
 db_base_dir = os.environ.get("CHROMA_BASE_DIR", "chroma")
 data_base_dir = os.environ.get("DATA_BASE_DIR", "data")
 
