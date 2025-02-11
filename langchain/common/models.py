@@ -121,12 +121,19 @@ def demo_fn_call_agent(fn_call_model: BaseChatModel, model_name: str):
     print(response["output"])
 
 
-def demo_multi_modal(mm_model: BaseChatModel, model_name: str):
+def demo_multi_modal(mm_model: BaseChatModel, model: str, image_data=None):
     print("-" * 80)
-    print("multi-modal model:", model_name)
+    print("multi-modal model:", model)
+
+    if image_data:
+        image_placeholder = "data:image/jpeg;base64,{image_data}"
+        query_args = {"image_data": image_data}
+    else:
+        image_placeholder = "{image_url}"
+        query_args = {"image_url": image_url}
 
     template = HumanMessagePromptTemplate.from_template(
-        [{"text": "{input}"}, {"image_url": {"url": "{image_url}"}}]
+        [{"text": "{input}"}, {"image_url": {"url": image_placeholder}}]
     )
     prompt = ChatPromptTemplate.from_messages([template])
 
@@ -136,14 +143,16 @@ def demo_multi_modal(mm_model: BaseChatModel, model_name: str):
     print("-" * 80)
     query = "Identify the city where this photo was taken."
     print("Question:", query)
-    response = chain.invoke({"input": query, "image_url": image_url})
+    query_args.update({"input": query})
+    response = chain.invoke(query_args)
     print("Answer:", response)
     print("-" * 80)
 
     query = "Give me more context for this image."
     print("Question:", query)
     print("Answer:", end="")
-    response = chain.stream({"input": query, "image_url": image_url})
+    query_args.update({"input": query})
+    response = chain.stream(query_args)
     for chunk in response:
         print(chunk, end="", flush=True)
     print("\n", "-" * 80, sep="")
