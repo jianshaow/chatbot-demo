@@ -115,8 +115,8 @@ def __get_tool_call_info(tool_call):
             else tool_call.function.arguments
         )
     else:
-        fn_name = tool_call.name
-        fn_args = tool_call.args
+        fn_name = str(tool_call.name)
+        fn_args = dict(tool_call.args)
 
     return tool_call_id, fn_name, fn_args
 
