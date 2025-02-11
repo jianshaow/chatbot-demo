@@ -41,9 +41,9 @@ def default_model_kwargs() -> dict[str, str]:
     return model_kwargs
 
 
-def demo_embed(embed_model: Embeddings, model_name: str, query=embed_question):
+def demo_embed(embed_model: Embeddings, model: str, query=embed_question):
     print("-" * 80)
-    print("embed model:", model_name)
+    print("embed model:", model)
 
     question = get_args(1, query)
     embedding = embed_model.embed_query(question)
@@ -53,9 +53,9 @@ def demo_embed(embed_model: Embeddings, model_name: str, query=embed_question):
     print("-" * 80, sep="")
 
 
-def demo_chat(chat_model: BaseChatModel, model_name: str):
+def demo_chat(chat_model: BaseChatModel, model: str):
     print("-" * 80)
-    print("chat model:", model_name)
+    print("chat model:", model)
 
     prompt = ChatPromptTemplate.from_messages(
         [
@@ -110,9 +110,9 @@ def demo_fn_call(fn_call_model: BaseChatModel, model: str, with_few_shot=False):
     print(response.content)
 
 
-def demo_fn_call_agent(fn_call_model: BaseChatModel, model_name: str):
+def demo_fn_call_agent(fn_call_model: BaseChatModel, model: str, with_few_shot=False):
     print("-" * 80)
-    print("fn call model:", model_name)
+    print("fn call model:", model)
 
     prompt = ChatPromptTemplate.from_messages(
         [
@@ -125,7 +125,13 @@ def demo_fn_call_agent(fn_call_model: BaseChatModel, model_name: str):
     agent = create_tool_calling_agent(fn_call_model, tools, prompt)
     agent_executor = AgentExecutor(agent=agent, tools=tools, verbose=True)
 
-    response = agent_executor.invoke({"input": fn_call_question})
+    query_args = {
+        "input": fn_call_question,
+    }
+    if with_few_shot:
+        query_args.update({"chat_history": examples})
+
+    response = agent_executor.invoke(query_args)
     print("-" * 80)
     print(response["output"])
 
@@ -167,7 +173,7 @@ def demo_multi_modal(mm_model: BaseChatModel, model: str, image_data=None):
 
 def demo_retrieve(
     embed_model: Embeddings,
-    model_name: str,
+    model: str,
     data_path: str = "data/default",
     query=embed_question,
 ):
@@ -181,7 +187,7 @@ def demo_retrieve(
         embedding=embed_model,
     )
     print("-" * 80)
-    print("embed model:", model_name)
+    print("embed model:", model)
 
     question = get_args(1, query)
     retriever = vectorstore.as_retriever()
