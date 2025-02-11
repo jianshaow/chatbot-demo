@@ -13,7 +13,8 @@ from common import demo_image_url as image_url
 from common import get_args, get_env_bool
 from common.fn_tools import tools
 from common.functions import fns
-from common.prompts import examples, question_message, tool_call_system_message
+from common.prompts import adv_question_message as question_message
+from common.prompts import examples, tool_call_system_message
 
 
 def default_model_kwargs() -> dict[str, str]:
@@ -62,9 +63,9 @@ def demo_chat(chat_model: BaseChatModel, model_name: str):
     print("\n", "-" * 80, sep="")
 
 
-def demo_fn_call(fn_call_model: BaseChatModel, model_name: str, with_few_shot=False):
+def demo_fn_call(fn_call_model: BaseChatModel, model: str, with_few_shot=False):
     print("-" * 80)
-    print("fn call model:", model_name)
+    print("fn call model:", model)
 
     llm_with_tools = fn_call_model.bind_tools(tools)
 
