@@ -13,7 +13,7 @@ from common import demo_image_url as image_url
 from common import get_args, get_env_bool
 from common.fn_tools import tools
 from common.functions import fns
-from common.prompts import examples, question_message, system_message
+from common.prompts import examples, question_message, tool_call_system_message
 
 
 def default_model_kwargs() -> dict[str, str]:
@@ -70,7 +70,7 @@ def demo_fn_call(fn_call_model: BaseChatModel, model_name: str, with_few_shot=Fa
 
     messages = []
     if with_few_shot:
-        messages.append(system_message)
+        messages.append(tool_call_system_message)
         messages.extend(examples)
     messages.append(question_message)
 
