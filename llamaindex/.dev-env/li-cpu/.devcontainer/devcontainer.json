@@ -1,6 +1,6 @@
 {
 	"name": "LI-CPU",
-	"image": "jianshao/llamaindex-demo:0.12.16.post1",
+	"image": "jianshao/llamaindex-demo:0.12.17",
 	"remoteEnv": {
 		"PYTHONPATH": ".",
 		"OLLAMA_HOST": "host.docker.internal",
