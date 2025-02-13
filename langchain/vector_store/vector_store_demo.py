@@ -1,4 +1,6 @@
-import os, sys, chromadb
+import os
+
+import chromadb
 from langchain_chroma import Chroma
 
 from common import db_base_dir, get_args
@@ -31,8 +33,8 @@ if db_dir and os.path.exists(path := os.path.join(db_base_dir, db_dir)):
             print("-" * 80)
     else:
         collections = client.list_collections()
-        for col in collections:
-            print(col.name)
+        for collection in collections:
+            print(collection)
 else:
     for subpath in os.listdir(base_dir):
         print(subpath)

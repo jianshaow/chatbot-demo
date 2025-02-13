@@ -1,4 +1,7 @@
-import os, chromadb
+import os
+
+import chromadb
+
 from common import db_base_dir, get_args
 
 db_dir = get_args(1, None)

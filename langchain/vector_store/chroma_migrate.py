@@ -1,4 +1,8 @@
-import os, sys, chromadb
+import os
+import sys
+
+import chromadb
+
 from common import db_base_dir
 
 if len(sys.argv) != 3:

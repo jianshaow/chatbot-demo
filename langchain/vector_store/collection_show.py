@@ -1,4 +1,8 @@
-import os, chromadb, textwrap
+import os
+import textwrap
+
+import chromadb
+
 from common import db_base_dir, get_args
 
 db_dir = get_args(1, None)
@@ -16,8 +20,8 @@ if db_dir and os.path.exists((path := os.path.join(db_base_dir, db_dir))):
         print("-" * 80)
     else:
         collections = client.list_collections()
-        for col in collections:
-            print(col.name)
+        for collection in collections:
+            print(collection)
 else:
     for subpath in os.listdir(db_base_dir):
         print(subpath)
