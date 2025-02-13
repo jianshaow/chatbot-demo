@@ -1,6 +1,6 @@
 {
 	"name": "LC-CPU",
-	"image": "jianshao/langchain-demo:0.3.34",
+	"image": "jianshao/langchain-demo:0.3.35",
 	"remoteEnv": {
 		"PYTHONPATH": ".",
 		"OLLAMA_HOST": "host.docker.internal"
