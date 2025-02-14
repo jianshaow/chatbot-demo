@@ -1,30 +1,31 @@
 import os
 from typing import Type
+
 from langchain_core.embeddings import Embeddings
 from langchain_core.language_models import BaseChatModel
-from langchain_openai import OpenAIEmbeddings
-from langchain_openai import ChatOpenAI
-from langchain_ollama import OllamaEmbeddings
-from langchain_ollama import ChatOllama
-from langchain_huggingface import HuggingFaceEmbeddings
-from langchain_huggingface import HuggingFacePipeline, ChatHuggingFace
-from langchain_google_genai import GoogleGenerativeAIEmbeddings
-from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_google_genai import ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings
+from langchain_huggingface import (
+    ChatHuggingFace,
+    HuggingFaceEmbeddings,
+    HuggingFacePipeline,
+)
+from langchain_ollama import ChatOllama, OllamaEmbeddings
+from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 
 from common import (
-    db_base_dir,
-    data_base_dir,
-    ollama_base_url,
-    ollama_embed_model,
-    ollama_chat_model,
-    openai_embed_model,
-    openai_chat_model,
-    gemini_embed_model,
-    gemini_chat_model,
-    hf_embed_model,
-    hf_chat_model,
     add_method_kwargs,
+    data_base_dir,
+    db_base_dir,
+    gemini_chat_model,
+    gemini_embed_model,
     get_args,
+    hf_chat_model,
+    hf_embed_model,
+    ollama_base_url,
+    ollama_chat_model,
+    ollama_embed_model,
+    openai_chat_model,
+    openai_embed_model,
 )
 from common.models import default_model_kwargs
 
@@ -219,11 +220,8 @@ __config_dict = {
 }
 
 
-def get_config(name="ollama"):
-    if config_key := get_args(1, None):
-        return __config_dict[config_key]
-    else:
-        return __config_dict[name]
+def get_config():
+    return __config_dict[get_args(1, "ollama")]
 
 
 if __name__ == "__main__":
