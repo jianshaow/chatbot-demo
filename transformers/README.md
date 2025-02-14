@@ -16,7 +16,6 @@ pip install -r requirements.txt
 
 ### Build
 ~~~ shell
-export torch_ver=2.5.1
 ./build-image.sh
 ~~~
 ### Test
