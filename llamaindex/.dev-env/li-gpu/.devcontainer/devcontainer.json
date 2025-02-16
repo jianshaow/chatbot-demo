@@ -4,8 +4,7 @@
 	"remoteEnv": {
 		"PYTHONPATH": ".",
 		"OLLAMA_HOST": "host.docker.internal",
-		"LLAMA_INDEX_CACHE_DIR": "/home/devel/.cache/huggingface/hub",
-		"BNB_ENABLED": "true"
+		"LLAMA_INDEX_CACHE_DIR": "/home/devel/.cache/huggingface/hub"
 	},
 	"runArgs": [
 		"--gpus=all",
