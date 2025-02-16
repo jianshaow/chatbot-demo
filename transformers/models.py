@@ -1,13 +1,20 @@
 from threading import Thread
-from transformers import (
-    AutoModelForCausalLM,
-    AutoTokenizer,
-    TextIteratorStreamer,
-    PreTrainedModel,
-    PreTrainedTokenizer,
-)
+from typing import Any, Tuple
 
 from common import bnb_enabled, hf_chat_model
+from transformers import (
+    AutoConfig,
+    AutoProcessor,
+    AutoTokenizer,
+    AutoModelForCausalLM,
+    MllamaForConditionalGeneration,
+    PaliGemmaForConditionalGeneration,
+    Qwen2VLForConditionalGeneration,
+    PreTrainedModel,
+    PreTrainedTokenizer,
+    PreTrainedTokenizerFast,
+    TextIteratorStreamer,
+)
 
 
 def default_model_kwargs() -> dict[str, str]:
@@ -15,6 +22,7 @@ def default_model_kwargs() -> dict[str, str]:
 
     if bnb_enabled:
         import torch
+
         from transformers import BitsAndBytesConfig
 
         model_kwargs["quantization_config"] = BitsAndBytesConfig(
@@ -23,7 +31,7 @@ def default_model_kwargs() -> dict[str, str]:
     return model_kwargs
 
 
-def new_model(model_name: str, model_kwargs=None) -> PreTrainedModel:
+def new_model(model_name: str, model_kwargs=None):
     if model_kwargs is None:
         model_kwargs = default_model_kwargs()
 
@@ -33,27 +41,55 @@ def new_model(model_name: str, model_kwargs=None) -> PreTrainedModel:
         device_map="auto",
         **model_kwargs,
     )
-    return model
+    tokenizer = AutoTokenizer.from_pretrained(model_name)
+
+    return model, tokenizer
 
 
-def new_tokenizer(model_name: str) -> PreTrainedTokenizer:
-    return AutoTokenizer.from_pretrained(model_name)
+def new_multi_modal_model(model_name: str, model_kwargs=default_model_kwargs()):
+    config = AutoConfig.from_pretrained(model_name, trust_remote_code=True)
+    architecture = config.architectures[0]
+    AutoModelClass = AutoModelForCausalLM
+
+    if "Qwen2VLForConditionalGeneration" in architecture:
+        AutoModelClass = Qwen2VLForConditionalGeneration
+    if "PaliGemmaForConditionalGeneration" in architecture:
+        AutoModelClass = PaliGemmaForConditionalGeneration
+    if "MllamaForConditionalGeneration" in architecture:
+        AutoModelClass = MllamaForConditionalGeneration
+
+    model = AutoModelClass.from_pretrained(
+        model_name,
+        device_map="auto",
+        torch_dtype="auto",
+        trust_remote_code=True,
+        **model_kwargs,
+    )
+
+    processor = AutoProcessor.from_pretrained(
+        model_name, trust_remote_code=True, **model_kwargs
+    )
+
+    return model, processor, config
 
 
 def generate(
-    model: PreTrainedModel, tokenizer: PreTrainedTokenizer, prompt: str, streaming=False
+    model: PreTrainedModel,
+    tokenizer: PreTrainedTokenizer | PreTrainedTokenizerFast,
+    prompt: str,
+    streaming=False,
 ):
-    model.generation_config.pad_token_id = tokenizer.eos_token_id
     inputs = tokenizer(prompt, return_tensors="pt").to(model.device)
 
     generation_kwargs = {
         **inputs,
+        "pad_token_id": tokenizer.eos_token_id,
         "max_new_tokens": 512,
     }
 
     if streaming:
         streamer = TextIteratorStreamer(
-            tokenizer,
+            tokenizer,  # type: ignore
             skip_prompt=True,
             skip_special_tokens=True,
             clean_up_tokenization_spaces=True,
@@ -75,9 +111,25 @@ def generate(
         )[0]
 
 
+def image_text_to_text(model: PreTrainedModel, processor, images, text):
+    inputs = processor(text=text, images=images, padding=True, return_tensors="pt").to(
+        model.device
+    )
+    generated_ids = model.generate(**inputs, max_new_tokens=256)
+    generated_ids = [
+        out_ids[len(in_ids) :]
+        for in_ids, out_ids in zip(inputs.input_ids, generated_ids)
+    ]
+    output_text = processor.batch_decode(
+        generated_ids,
+        skip_special_tokens=True,
+        clean_up_tokenization_spaces=False,
+    )
+    return output_text[0]
+
+
 if __name__ == "__main__":
-    model = new_model(hf_chat_model)
-    tokenizer = new_tokenizer(hf_chat_model)
+    model, tokenizer = new_model(hf_chat_model)
     response = generate(model, tokenizer, "who are you?", streaming=True)
     print("-" * 80)
     for chunk in response:

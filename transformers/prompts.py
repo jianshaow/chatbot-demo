@@ -1,4 +1,9 @@
-from transformers import AutoTokenizer, PreTrainedTokenizer
+from io import BytesIO
+
+import requests
+from PIL import Image
+
+from transformers import AutoTokenizer, PreTrainedTokenizer, PreTrainedTokenizerFast
 
 SYSTEM_PROMPT = "A chat between a curious user and an artificial intelligence assistant. The assistant gives helpful, detailed, and polite answers to the user's questions."
 
@@ -19,7 +24,9 @@ def chat_prompt(user_prompt, system_prompt=SYSTEM_PROMPT, model_type="vicuna"):
 
 
 def tokenizer_prompt(
-    tokenizer: PreTrainedTokenizer, user_prompt: str, system_prompt=SYSTEM_PROMPT
+    tokenizer: PreTrainedTokenizer | PreTrainedTokenizerFast,
+    user_prompt: str,
+    system_prompt=SYSTEM_PROMPT,
 ):
     messages = [
         {"role": "system", "content": system_prompt},
@@ -30,8 +37,69 @@ def tokenizer_prompt(
     )
 
 
+def to_rgb(pil_image: Image.Image) -> Image.Image:
+    if pil_image.mode == "RGBA":
+        white_background = Image.new("RGB", pil_image.size, (255, 255, 255))
+        white_background.paste(
+            pil_image, mask=pil_image.split()[3]
+        )  # Use alpha channel as mask
+        return white_background
+    else:
+        return pil_image.convert("RGB")
+
+
+def image_text_prompt(image_url: str, text: str, processor, config):
+    architecture = config.architectures[0]
+    if "Phi3VForCausalLM" in architecture:
+        images, text = phi3v_prompt(image_url, text, processor)
+    # elif "Florence2ForConditionalGeneration" in architecture:
+    #     pass
+    elif "Qwen2VLForConditionalGeneration" in architecture:
+        images, text = qwen2vl_prompt(image_url, text, processor)
+    # elif "PaliGemmaForConditionalGeneration" in architecture:
+    #     pass
+    # elif "MllamaForConditionalGeneration" in architecture:
+    #     pass
+    else:
+        raise ValueError(f"architecture {architecture} not supported")
+    return images, text
+
+
+def phi3v_prompt(image_url: str, text: str, processor):
+    image = Image.open(BytesIO(requests.get(image_url, stream=True).content))
+    messages = [{"role": "user", "content": f"<|image_1|>\n{text}"}]
+    text = processor.tokenizer.apply_chat_template(
+        messages, tokenize=False, add_generation_prompt=True
+    )
+    return [image], text
+
+
+def qwen2vl_prompt(image_url: str, text: str, processor):
+    from qwen_vl_utils import process_vision_info
+
+    messages = [
+        {
+            "role": "user",
+            "content": [
+                {
+                    "type": "image",
+                    "image": image_url,
+                },
+                {"type": "text", "text": text},
+            ],
+        }
+    ]
+    images, _ = process_vision_info(messages) # type: ignore
+
+    text = processor.tokenizer.apply_chat_template(
+        messages, tokenize=False, add_generation_prompt=True
+    )
+    return images, text
+
+
 if __name__ == "__main__":
     import sys
+
     from common import hf_chat_model as model_name
 
     if len(sys.argv) == 2:

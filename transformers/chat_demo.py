@@ -2,8 +2,7 @@ import models
 import prompts
 from common import hf_chat_model as model_name
 
-tokenizer = models.new_tokenizer(model_name)
-model = models.new_model(model_name)
+model, tokenizer = models.new_model(model_name)
 print("-" * 80)
 print("chat model:", model_name)
 
