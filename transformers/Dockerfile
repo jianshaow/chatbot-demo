@@ -15,4 +15,4 @@ COPY --from=build /home/devel/.local/lib/python3.12/site-packages/flash_attn-*.d
 COPY --from=build /home/devel/.local/lib/python3.12/site-packages/flash_attn*.so /home/devel/.local/lib/python3.12/site-packages/
 RUN --mount=type=bind,source=requirements.txt,target=requirements.txt \
     pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir -r ${REQUIREMENTS}
+    pip install --no-cache-dir -r requirements.txt
