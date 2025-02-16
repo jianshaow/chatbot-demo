@@ -10,7 +10,7 @@ model_kwargs = default_model_kwargs()
 
 show_demo_image()
 mm_model = HuggingFaceMultiModal.from_model_name(
-    model_name, trust_remote_code=True, **model_kwargs
+    model_name, trust_remote_code=True, additional_kwargs=model_kwargs
 )
 demo_multi_modal(
     mm_model, model_name, [ImageNode(image_path=image_url)], streaming=False
