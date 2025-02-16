@@ -138,12 +138,14 @@ def demo_fn_call_agent(fn_call_model: LLM, model: str, with_few_shot=False):
     print(response)
 
 
-def demo_multi_modal(mm_model: MultiModalLLM, model: str):
+def demo_multi_modal(
+    mm_model: MultiModalLLM, model: str, image_nodes=None, streaming=True
+):
     print("-" * 80)
     print("multi-modal model:", model)
-
-    image_documents = [ImageNode(image_url=image_url)]
     print("-" * 80)
+
+    image_documents = image_nodes if image_nodes else [ImageNode(image_url=image_url)]
 
     prompt = "Identify the city where this photo was taken."
     # prompt = "这张照片是在哪个城市拍摄的."
@@ -153,8 +155,10 @@ def demo_multi_modal(mm_model: MultiModalLLM, model: str):
         image_documents=image_documents,
     )
     print("Answer:", complete_response)
-
     print("-" * 80)
+
+    if not streaming:
+        return
 
     prompt = "Give me more context for this image"
     # prompt = "给我更多这张照片的上下文"
