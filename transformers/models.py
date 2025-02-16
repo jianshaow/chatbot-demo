@@ -1,18 +1,17 @@
 from threading import Thread
-from typing import Any, Tuple
 
 from common import bnb_enabled, hf_chat_model
 from transformers import (
     AutoConfig,
+    AutoModelForCausalLM,
     AutoProcessor,
     AutoTokenizer,
-    AutoModelForCausalLM,
     MllamaForConditionalGeneration,
     PaliGemmaForConditionalGeneration,
-    Qwen2VLForConditionalGeneration,
     PreTrainedModel,
     PreTrainedTokenizer,
     PreTrainedTokenizerFast,
+    Qwen2VLForConditionalGeneration,
     TextIteratorStreamer,
 )
 
@@ -46,7 +45,7 @@ def new_model(model_name: str, model_kwargs=None):
     return model, tokenizer
 
 
-def new_multi_modal_model(model_name: str, model_kwargs=default_model_kwargs()):
+def new_multi_modal_model(model_name: str, model_kwargs=None):
     config = AutoConfig.from_pretrained(model_name, trust_remote_code=True)
     architecture = config.architectures[0]
     AutoModelClass = AutoModelForCausalLM
@@ -58,6 +57,8 @@ def new_multi_modal_model(model_name: str, model_kwargs=default_model_kwargs()):
     if "MllamaForConditionalGeneration" in architecture:
         AutoModelClass = MllamaForConditionalGeneration
 
+    if model_kwargs is None:
+        model_kwargs = default_model_kwargs()
     model = AutoModelClass.from_pretrained(
         model_name,
         device_map="auto",
@@ -128,10 +129,14 @@ def image_text_to_text(model: PreTrainedModel, processor, images, text):
     return output_text[0]
 
 
-if __name__ == "__main__":
+def main():
     model, tokenizer = new_model(hf_chat_model)
     response = generate(model, tokenizer, "who are you?", streaming=True)
     print("-" * 80)
     for chunk in response:
         print(chunk, end="", flush=True)
     print("\n", "-" * 80, sep="")
+
+
+if __name__ == "__main__":
+    main()
