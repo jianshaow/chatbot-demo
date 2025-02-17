@@ -1,7 +1,8 @@
-import torch, torch.nn.functional as F
-from transformers import AutoTokenizer, AutoModel
+import torch
+import torch.nn.functional as F
 
-from common import hf_embed_model as model_name
+from common import hf_embed_model as embed_model
+from transformers import AutoModel, AutoTokenizer
 
 
 def cls_pooling(model_output, *args):
@@ -27,26 +28,33 @@ def pooling_func(model_name: str):
         raise ValueError(f"Unsupported model name: {model_name}")
 
 
-sentences = ["What did the author do growing up?"]
+def main():
+    sentences = ["What did the author do growing up?"]
 
-tokenizer = AutoTokenizer.from_pretrained(model_name)
-model = AutoModel.from_pretrained(model_name, trust_remote_code=True)
-model.eval()
-print("-" * 80)
-print("embed model:", model_name)
+    tokenizer = AutoTokenizer.from_pretrained(embed_model)
+    model = AutoModel.from_pretrained(embed_model, trust_remote_code=True)
+    model.eval()
+    print("-" * 80)
+    print("embed model:", embed_model)
 
-encoded_input = tokenizer(sentences, padding=True, truncation=True, return_tensors="pt")
+    encoded_input = tokenizer(
+        sentences, padding=True, truncation=True, return_tensors="pt"
+    )
 
-with torch.no_grad():
-    model_output = model(**encoded_input)
+    with torch.no_grad():
+        model_output = model(**encoded_input)
 
-pooling = pooling_func(model_name)
-embeddings = pooling(model_output, encoded_input["attention_mask"])
-embeddings = F.normalize(embeddings, p=2, dim=1)
+    pooling = pooling_func(embed_model)
+    embeddings = pooling(model_output, encoded_input["attention_mask"])
+    embeddings = F.normalize(embeddings, p=2, dim=1)
 
-embedding = embeddings[0].tolist()
+    embedding = embeddings[0].tolist()
 
-print("-" * 80)
-print("dimension:", len(embedding))
-print(embedding[:4])
-print("-" * 80)
+    print("-" * 80)
+    print("dimension:", len(embedding))
+    print(embedding[:4])
+    print("-" * 80)
+
+
+if __name__ == "__main__":
+    main()
