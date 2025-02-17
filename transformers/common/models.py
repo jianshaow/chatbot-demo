@@ -12,6 +12,7 @@ from transformers import (
     PreTrainedTokenizer,
     PreTrainedTokenizerFast,
     Qwen2VLForConditionalGeneration,
+    Qwen2_5_VLForConditionalGeneration,
     TextIteratorStreamer,
 )
 
@@ -31,14 +32,9 @@ def default_model_kwargs() -> dict[str, str]:
 
 
 def new_model(model_name: str, model_kwargs=None):
-    if model_kwargs is None:
-        model_kwargs = default_model_kwargs()
-
+    model_kwargs = default_model_kwargs() if model_kwargs is None else model_kwargs
     model = AutoModelForCausalLM.from_pretrained(
-        model_name,
-        torch_dtype="auto",
-        device_map="auto",
-        **model_kwargs,
+        model_name, torch_dtype="auto", device_map="auto", **model_kwargs
     )
     tokenizer = AutoTokenizer.from_pretrained(model_name)
 
@@ -52,6 +48,8 @@ def new_multi_modal_model(model_name: str, model_kwargs=None):
 
     if "Qwen2VLForConditionalGeneration" in architecture:
         AutoModelClass = Qwen2VLForConditionalGeneration
+    if "Qwen2_5_VLForConditionalGeneration" in architecture:
+        AutoModelClass = Qwen2_5_VLForConditionalGeneration
     if "PaliGemmaForConditionalGeneration" in architecture:
         AutoModelClass = PaliGemmaForConditionalGeneration
     if "MllamaForConditionalGeneration" in architecture:
@@ -67,9 +65,7 @@ def new_multi_modal_model(model_name: str, model_kwargs=None):
         **model_kwargs,
     )
 
-    processor = AutoProcessor.from_pretrained(
-        model_name, trust_remote_code=True, **model_kwargs
-    )
+    processor = AutoProcessor.from_pretrained(model_name, trust_remote_code=True)
 
     return model, processor, config
 

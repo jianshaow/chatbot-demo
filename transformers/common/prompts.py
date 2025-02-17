@@ -37,24 +37,16 @@ def tokenizer_prompt(
     )
 
 
-def to_rgb(pil_image: Image.Image) -> Image.Image:
-    if pil_image.mode == "RGBA":
-        white_background = Image.new("RGB", pil_image.size, (255, 255, 255))
-        white_background.paste(
-            pil_image, mask=pil_image.split()[3]
-        )  # Use alpha channel as mask
-        return white_background
-    else:
-        return pil_image.convert("RGB")
-
-
 def image_text_prompt(image_url: str, text: str, processor, config):
     architecture = config.architectures[0]
     if "Phi3VForCausalLM" in architecture:
         images, text = phi3v_prompt(image_url, text, processor)
     # elif "Florence2ForConditionalGeneration" in architecture:
     #     pass
-    elif "Qwen2VLForConditionalGeneration" in architecture:
+    elif (
+        "Qwen2_5_VLForConditionalGeneration" in architecture
+        or "Qwen2VLForConditionalGeneration" in architecture
+    ):
         images, text = qwen2vl_prompt(image_url, text, processor)
     # elif "PaliGemmaForConditionalGeneration" in architecture:
     #     pass
@@ -66,7 +58,7 @@ def image_text_prompt(image_url: str, text: str, processor, config):
 
 
 def phi3v_prompt(image_url: str, text: str, processor):
-    image = Image.open(BytesIO(requests.get(image_url, stream=True).content))
+    image = Image.open(BytesIO(requests.get(image_url, timeout=10).content))
     messages = [{"role": "user", "content": f"<|image_1|>\n{text}"}]
     text = processor.tokenizer.apply_chat_template(
         messages, tokenize=False, add_generation_prompt=True
@@ -89,15 +81,15 @@ def qwen2vl_prompt(image_url: str, text: str, processor):
             ],
         }
     ]
-    images, _ = process_vision_info(messages) # type: ignore
+    images, *_ = process_vision_info(messages)
 
-    text = processor.tokenizer.apply_chat_template(
+    text = processor.apply_chat_template(
         messages, tokenize=False, add_generation_prompt=True
     )
     return images, text
 
 
-if __name__ == "__main__":
+def main():
     import sys
 
     from common import hf_chat_model as model_name
@@ -111,3 +103,7 @@ if __name__ == "__main__":
         print("-" * 80)
         print(tokenizer_prompt(tokenizer, "who are you?"))
         print("-" * 80)
+
+
+if __name__ == "__main__":
+    main()
