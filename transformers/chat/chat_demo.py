@@ -1,5 +1,5 @@
-import models
-import prompts
+import common.models as models
+import common.prompts as prompts
 from common import hf_chat_model as model_name
 
 model, tokenizer = models.new_model(model_name)
@@ -17,4 +17,4 @@ response = models.generate(model, tokenizer, prompt, streaming=True)
 print("-" * 80)
 for chunk in response:
     print(chunk, end="", flush=True)
-print("\n", "-" * 80)
+print("\n", "-" * 80, sep="")

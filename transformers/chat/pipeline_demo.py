@@ -1,6 +1,6 @@
 from transformers import pipeline, TextStreamer
 from common import hf_chat_model as model
-from models import default_model_kwargs
+from common.models import default_model_kwargs
 
 generate = pipeline(
     "text-generation",

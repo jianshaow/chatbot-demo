@@ -1,6 +1,6 @@
 from common import hf_mm_model as model_name
-from models import image_text_to_text, new_multi_modal_model
-from prompts import image_text_prompt
+from common.models import image_text_to_text, new_multi_modal_model
+from common.prompts import image_text_prompt
 
 print("-" * 80)
 print("chat model:", model_name)
