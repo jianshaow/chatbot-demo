@@ -12,9 +12,9 @@ ADD https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/cud
 RUN dpkg -i cuda-keyring_all.deb && apt update && \
     apt install -y --no-install-recommends cuda-nvcc-12-4
 USER devel
-RUN pip install --no-cache-dir flash-attn
+RUN pip install --no-cache-dir flash-attn==2.7.4.post1
 
 FROM base
 COPY --from=build /home/devel/.local/lib/python3.12/site-packages/flash_attn/ /home/devel/.local/lib/python3.12/site-packages/flash_attn
-COPY --from=build /home/devel/.local/lib/python3.12/site-packages/flash_attn-*.dist-info/ /home/devel/.local/lib/python3.12/site-packages/flash_attn-*.dist-info/
+COPY --from=build /home/devel/.local/lib/python3.12/site-packages/flash_attn-2.7.4.post1.dist-info/ /home/devel/.local/lib/python3.12/site-packages/flash_attn-2.7.4.post1.dist-info/
 COPY --from=build /home/devel/.local/lib/python3.12/site-packages/flash_attn*.so /home/devel/.local/lib/python3.12/site-packages/
