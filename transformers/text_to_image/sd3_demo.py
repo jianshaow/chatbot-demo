@@ -35,4 +35,4 @@ image = pipeline(
 ).images[0]
 plt.imshow(image)
 plt.show()
-image.save("output/whimsical.png")
+# image.save("output/whimsical.png")

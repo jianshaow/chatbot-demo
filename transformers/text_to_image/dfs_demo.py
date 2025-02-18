@@ -14,3 +14,4 @@ prompt = "An astronaut riding a green horse"
 image = pipe(prompt=prompt).images[0]
 plt.imshow(image)
 plt.show()
+# image.save("output/astronaut_rides_green_horse.png")

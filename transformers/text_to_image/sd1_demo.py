@@ -12,4 +12,4 @@ image = pipe(prompt).images[0]
 
 plt.imshow(image)
 plt.show()
-image.save("output/astronaut_rides_horse.png")
+# image.save("output/astronaut_rides_horse.png")
