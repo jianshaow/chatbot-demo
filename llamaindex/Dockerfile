@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=transformers-demo
+ARG BASE_IMAGE=jianshao/transformers-demo
 ARG TAG=latest
 
 FROM ${BASE_IMAGE}:${TAG}
