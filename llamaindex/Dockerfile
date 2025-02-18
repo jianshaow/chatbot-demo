@@ -1,9 +1,8 @@
-ARG BASE_IMAGE=jianshao/torch-dev-base
-ARG TAG=2.4.1
+ARG BASE_IMAGE=transformers-demo
+ARG TAG=latest
 
 FROM ${BASE_IMAGE}:${TAG}
 
-COPY requirements*.txt ./
-ARG REQUIREMENTS=requirements.txt
-RUN pip install --no-cache-dir --upgrade pip && \
+RUN --mount=type=bind,source=requirements.txt,target=requirements.txt \
+    pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir -r ${REQUIREMENTS}

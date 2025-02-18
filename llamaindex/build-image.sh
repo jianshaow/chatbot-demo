@@ -1,15 +1,15 @@
 #!/bin/bash
 
-if [ "$torch_ver" == "" ]; then
-    torch_ver=2.4.1
+if [ "$transformers_ver" == "" ]; then
+    transformers_ver=latest
 fi
-echo "Using torch version: ${torch_ver}"
+echo "Using transformers version: ${transformers_ver}"
 
-base_image=jianshao/torch-dev-base
-docker pull ${base_image}:${torch_ver}
+base_image=jianshao/transformers-demo
+docker pull ${base_image}:${transformers_ver}
 
 image=jianshao/llamaindex-demo
-docker build -t ${image}:latest . --build-arg TAG=${torch_ver} $*
+docker build -t ${image}:latest . --build-arg TAG=${transformers_ver} $*
 
 llamaindex_ver=$(docker run --rm ${image}:latest pip list | grep llama-index-core | awk '{print $2}')
 echo "Using llama-index version ${llamaindex_ver}"
