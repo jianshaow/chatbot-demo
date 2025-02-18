@@ -1,3 +1,4 @@
+import matplotlib.pyplot as plt
 import torch
 from diffusers import (
     BitsAndBytesConfig,
@@ -5,9 +6,7 @@ from diffusers import (
     StableDiffusion3Pipeline,
 )
 
-import matplotlib.pyplot as plt
-
-from common import hf_sd_model as model
+from common import hf_sd3_model as model
 
 torch_dtype = torch.float16
 
