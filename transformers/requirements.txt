@@ -6,4 +6,4 @@ accelerate
 sentencepiece
 transformers
 qwen-vl-utils[decord]
-diffusers
+diffusers[torch]
