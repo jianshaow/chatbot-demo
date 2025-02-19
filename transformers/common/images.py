@@ -12,7 +12,8 @@ def show_image(image: Image):
     fig_width = width / dpi[0]
     fig_height = height / dpi[1]
 
-    _, ax = plt.subplots(figsize=(fig_width, fig_height), dpi=dpi[0])
-    ax.imshow(image)
+    fig, ax = plt.subplots(figsize=(fig_width, fig_height), dpi=dpi[0])
+    fig.gca().set_position([0, 0, 1, 1])
     ax.axis("off")
+    ax.imshow(image)
     plt.show()
