@@ -1,4 +1,3 @@
-import matplotlib.pyplot as plt
 import torch
 from diffusers import (
     BitsAndBytesConfig,
@@ -7,6 +6,7 @@ from diffusers import (
 )
 
 from common import hf_sd3_model as model
+from common.images import show_image
 
 torch_dtype = torch.float16
 
@@ -33,6 +33,5 @@ image = pipeline(
     guidance_scale=4.5,
     max_sequence_length=512,
 ).images[0]
-plt.imshow(image)
-plt.show()
+show_image(image)
 # image.save("output/whimsical.png")

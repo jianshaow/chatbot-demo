@@ -1,9 +1,9 @@
-import matplotlib.pyplot as plt
 import torch
 from diffusers import DiffusionPipeline
 
 from common import hf_dfs_model as base_model
 from common import hf_dfs_rf_model as refiner_model
+from common.images import show_image
 
 base = DiffusionPipeline.from_pretrained(
     base_model, torch_dtype=torch.float16, use_safetensors=True, variant="fp16"
@@ -29,15 +29,13 @@ image = base(
     num_inference_steps=n_steps,
     denoising_end=high_noise_frac,
     output_type="latent",
-).images
-
+).images[0]
+print(image.shape)
 image = refiner(
     prompt=prompt,
     num_inference_steps=n_steps,
     denoising_start=high_noise_frac,
     image=image,
 ).images[0]
-
-plt.imshow(image)
-plt.show()
+show_image(image)
 # image.save("output/astronaut_rides_green_horse.png")
