@@ -1,9 +1,10 @@
 {
-	"name": "LC-CPU",
-	"image": "jianshao/langchain-demo:0.3.36",
+	"name": "LLAMAINDEX",
+	"image": "jianshao/llamaindex-demo:0.12.19",
 	"remoteEnv": {
 		"PYTHONPATH": ".",
-		"OLLAMA_HOST": "host.docker.internal"
+		"OLLAMA_HOST": "host.docker.internal",
+		"LLAMA_INDEX_CACHE_DIR": "/home/devel/.cache/huggingface/hub"
 	},
 	"runArgs": [
 		"--add-host=host.docker.internal:host-gateway"
@@ -22,11 +23,6 @@
 		{
 			"source": "${localEnv:HOME}/.ssh",
 			"target": "/home/devel/.ssh",
-			"type": "bind"
-		},
-		{
-			"source": "${localEnv:HOME}/nltk_data",
-			"target": "/home/devel/nltk_data",
 			"type": "bind"
 		}
 	],
