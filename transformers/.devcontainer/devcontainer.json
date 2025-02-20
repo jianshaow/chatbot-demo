@@ -1,5 +1,5 @@
 {
-	"name": "TRFS-CPU",
+	"name": "TRANSFORMERS",
 	"image": "jianshao/transformers-demo:4.49.0",
 	"remoteEnv": {
 		"PYTHONPATH": "."
