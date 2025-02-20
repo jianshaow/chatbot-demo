@@ -1,23 +1,16 @@
 #!/bin/bash
 
-if [ "$torch_ver" == "" ]; then
-    torch_ver=2.4.1
+base_image=jianshao/trfs-dev-base
+if [ "$trfs_ver" == "" ]; then
+    trfs_ver=$(docker run --rm ${base_image}:latest pip list | grep transformers | awk '{print $2}')
+else
+    docker pull ${base_image}:${trfs_ver}
 fi
-echo "Using torch version: ${torch_ver}"
-
-if [ "$cuda_tag" == "" ]; then
-    cuda_tag=cu124
-fi
-echo "Using cuda tag: ${cuda_tag}"
+echo "Using transformers version ${trfs_ver}"
 
 image=jianshao/transformers-demo
-docker build -t ${image}:latest . --build-arg TAG=${torch_ver}-${cuda_tag}
+docker build -t ${image}:${trfs_ver} . --build-arg TAG=${trfs_ver}
 
-transformers_ver=$(docker run --rm ${image}:latest pip list | grep transformers | awk '{print $2}')
-echo "Using transformers version ${transformers_ver}"
-
-docker tag ${image}:latest ${image}:${transformers_ver}
-docker push ${image}:latest
-docker push ${image}:${transformers_ver}
+docker push ${image}:${trfs_ver}
 
 echo "Done"
