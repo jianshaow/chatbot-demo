@@ -1,9 +1,2 @@
-python-dotenv
-protobuf
-einops
-bitsandbytes
-accelerate
-sentencepiece
-transformers
 qwen-vl-utils[decord]
 diffusers[torch]
