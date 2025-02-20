@@ -9,8 +9,10 @@ fi
 echo "Using transformers version ${trfs_ver}"
 
 image=jianshao/transformers-demo
-docker build -t ${image}:${trfs_ver} . --build-arg TAG=${trfs_ver}
+docker build -t ${image}:latest . --build-arg TAG=${trfs_ver}
 
+docker tag ${image}:latest ${image}:${trfs_ver}
+docker push ${image}:latest
 docker push ${image}:${trfs_ver}
 
 echo "Done"
