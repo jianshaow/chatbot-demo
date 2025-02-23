@@ -1,2 +1,3 @@
+protobuf
 qwen-vl-utils[decord]
 diffusers[torch]
