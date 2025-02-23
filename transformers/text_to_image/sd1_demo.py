@@ -4,7 +4,9 @@ from diffusers import StableDiffusionPipeline
 from common import hf_sd1_model as model
 from common.images import show_image
 
-pipe = StableDiffusionPipeline.from_pretrained(model, torch_dtype=torch.float16)
+pipe = StableDiffusionPipeline.from_pretrained(
+    model, torch_dtype=torch.float16, use_safetensors=True, variant="fp16"
+)
 pipe = pipe.to("cuda")
 
 prompt = "a photo of an astronaut riding a horse on mars"
