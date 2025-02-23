@@ -7,6 +7,8 @@ from PIL import Image
 
 from common.prompts import mm_image_url
 
+DPI = (72, 72)
+
 
 def show_demo_image():
     print("-" * 80)
@@ -16,11 +18,25 @@ def show_demo_image():
     bytes_content = response.content
 
     img = Image.open(BytesIO(bytes_content))
-    plt.imshow(img)
-    plt.show()
+    show_image(img)
 
     base64_content = base64.b64encode(bytes_content).decode("utf-8")
     return bytes_content, base64_content
+
+
+def show_image(image: Image):
+    print("image size:", image.size)
+    dpi = image.info.get("dpi", DPI)
+    width, height = image.size
+
+    fig_width = width / dpi[0]
+    fig_height = height / dpi[1]
+
+    fig, ax = plt.subplots(figsize=(fig_width, fig_height), dpi=dpi[0])
+    fig.gca().set_position([0, 0, 1, 1])
+    ax.axis("off")
+    ax.imshow(image)
+    plt.show()
 
 
 if __name__ == "__main__":
