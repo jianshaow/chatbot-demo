@@ -1,14 +1,13 @@
 import torch
 from diffusers import DiffusionPipeline
 
-from common import hf_dfs_model as base_model
-from common import hf_dfs_rf_model as refiner_model
+from common import hf_sdxl_base_model as base_model
+from common import hf_sdxl_refiner_model as refiner_model
 from common.images import show_image
 
 base = DiffusionPipeline.from_pretrained(
     base_model, torch_dtype=torch.float16, use_safetensors=True, variant="fp16"
-)
-base.to("cuda")
+).to("cuda")
 refiner = DiffusionPipeline.from_pretrained(
     refiner_model,
     text_encoder_2=base.text_encoder_2,
@@ -16,8 +15,7 @@ refiner = DiffusionPipeline.from_pretrained(
     torch_dtype=torch.float16,
     use_safetensors=True,
     variant="fp16",
-)
-refiner.to("cuda")
+).to("cuda")
 
 n_steps = 40
 high_noise_frac = 0.8
