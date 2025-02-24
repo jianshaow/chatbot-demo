@@ -1,7 +1,7 @@
 import torch
 from diffusers import AutoPipelineForText2Image
 
-from common import hf_t2i_model as model
+from common import hf_sdxl_turbo_model as model
 from common.images import show_image
 
 pipeline = AutoPipelineForText2Image.from_pretrained(
