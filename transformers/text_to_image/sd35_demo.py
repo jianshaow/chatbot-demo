@@ -5,7 +5,7 @@ from diffusers import (
     StableDiffusion3Pipeline,
 )
 
-from common import hf_sd3_model as model
+from common import hf_sd35_model as model
 from common.images import show_image
 
 torch_dtype = torch.float16

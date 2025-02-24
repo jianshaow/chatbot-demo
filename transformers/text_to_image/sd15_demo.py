@@ -1,7 +1,7 @@
 import torch
 from diffusers import StableDiffusionPipeline
 
-from common import hf_sd1_model as model
+from common import hf_sd15_model as model
 from common.images import show_image
 
 pipe = StableDiffusionPipeline.from_pretrained(
