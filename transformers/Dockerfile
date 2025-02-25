@@ -1,11 +1,7 @@
 ARG BASE_IMAGE=jianshao/trfs-dev-base
 ARG TAG=4.49.0
-ARG FLASH_ATTN_VER=2.7.4.post1
 
 FROM ${BASE_IMAGE}:${TAG} as base
-RUN --mount=type=bind,source=requirements.txt,target=requirements.txt \
-    pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt
 
 FROM base as build
 USER root
@@ -14,13 +10,12 @@ ADD ${CUDA_KEYRING_URL} cuda-keyring_all.deb
 RUN dpkg -i cuda-keyring_all.deb && apt update && \
     apt install -y --no-install-recommends cuda-nvcc-12-4
 USER devel
-ARG FLASH_ATTN_VER
-RUN pip install --no-cache-dir flash-attn==${FLASH_ATTN_VER}
+RUN pip wheel --no-deps flash-attn
 
 FROM base
-ARG LOCAL_PY_PKG_PATH=/home/devel/.local/lib/python3.12/site-packages
-ARG FLASH_ATTN_VER
-COPY --from=build ${LOCAL_PY_PKG_PATH}/flash_attn ${LOCAL_PY_PKG_PATH}/flash_attn
-COPY --from=build ${LOCAL_PY_PKG_PATH}/flash_attn-${FLASH_ATTN_VER}.dist-info \
-                  ${LOCAL_PY_PKG_PATH}/flash_attn-${FLASH_ATTN_VER}.dist-info
-COPY --from=build ${LOCAL_PY_PKG_PATH}/flash_attn*.so ${LOCAL_PY_PKG_PATH}/
+COPY COPY --from=build $HOME/*.whl /tmp/
+RUN --mount=type=bind,source=requirements.txt,target=requirements.txt \
+    pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt && \
+    pip install --no-cache-dir /tmp/*.whl && \
+    rm -f /tmp/*
