@@ -121,15 +121,11 @@ def __get_tool_call_info(tool_call):
     return tool_call_id, fn_name, fn_args
 
 
-def demo_fn_call_agent(fn_call_model: LLM, model: str, with_few_shot=False):
+def demo_fn_call_agent(fn_call_model: LLM, model: str):
     print("-" * 80)
     print("fn call model:", model)
 
     messages: list[ChatMessage] = []
-    if with_few_shot:
-        messages.append(system_message)
-        messages.extend(examples)
-    messages.append(question_message)
 
     agent = AgentRunner.from_llm(tools, fn_call_model, verbose=True)
     response = agent.chat(message=messages[-1].content, chat_history=messages[:-1])
