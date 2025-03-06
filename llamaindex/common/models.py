@@ -10,7 +10,12 @@ from common import demo_image_url as image_url
 from common import get_args, get_env_bool
 from common.fn_tools import tools
 from common.functions import fns
-from common.prompts import examples, question_message, system_message
+from common.prompts import (
+    examples,
+    question_message,
+    system_message,
+    tool_call_question,
+)
 
 
 def default_model_kwargs() -> dict[str, str]:
@@ -125,10 +130,8 @@ def demo_fn_call_agent(fn_call_model: LLM, model: str):
     print("-" * 80)
     print("fn call model:", model)
 
-    messages: list[ChatMessage] = []
-
     agent = AgentRunner.from_llm(tools, fn_call_model, verbose=True)
-    response = agent.chat(message=messages[-1].content, chat_history=messages[:-1])
+    response = agent.chat(message=tool_call_question)
 
     print("-" * 80)
     print(response)
