@@ -1,5 +1,12 @@
-from typing import List
+from typing import List, Dict, Any, Tuple
 from llama_index.embeddings.ollama import OllamaEmbedding
+from pydantic import BaseModel
+
+
+def get_additional_kwargs_from_model(
+    response: BaseModel, exclude: Tuple[str, ...]
+) -> Dict[str, Any]:
+    return {k: v for k, v in response.model_dump().items() if k not in exclude}
 
 
 class NormOllamaEmbedding(OllamaEmbedding):
