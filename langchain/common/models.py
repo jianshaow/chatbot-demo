@@ -10,8 +10,7 @@ from langchain_core.prompts import ChatPromptTemplate, HumanMessagePromptTemplat
 from langchain_text_splitters import CharacterTextSplitter
 
 from common import get_args, get_env_bool
-from common.fn_tools import tools
-from common.functions import fns
+from common.calc_func import fns
 from common.prompts import (
     CHAT_SYSTEM,
     FN_CALL_SYSTEM,
@@ -27,6 +26,7 @@ from common.prompts import (
     mm_question1,
     mm_question2,
 )
+from common.tools import calc_tools
 
 
 def default_model_kwargs() -> dict[str, str]:
@@ -77,7 +77,7 @@ def demo_fn_call(fn_call_model: BaseChatModel, model: str, with_few_shot=False):
     print("-" * 80)
     print("fn call model:", model)
 
-    llm_with_tools = fn_call_model.bind_tools(tools)
+    llm_with_tools = fn_call_model.bind_tools(calc_tools)
 
     messages = []
     if with_few_shot:
@@ -122,8 +122,8 @@ def demo_fn_call_agent(fn_call_model: BaseChatModel, model: str, with_few_shot=F
         ]
     )
 
-    agent = create_tool_calling_agent(fn_call_model, tools, prompt)
-    agent_executor = AgentExecutor(agent=agent, tools=tools, verbose=True)
+    agent = create_tool_calling_agent(fn_call_model, calc_tools, prompt)
+    agent_executor = AgentExecutor(agent=agent, tools=calc_tools, verbose=True)
 
     query_args = {
         "input": fn_call_question,
