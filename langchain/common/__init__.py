@@ -33,6 +33,9 @@ gemini_fc_model = os.getenv("GEMINI_FC_MODEL", gemini_llm_model)
 gemini_few_shoted = os.getenv("GEMINI_FEW_SHOTED", "false") == "true"
 
 
+searxng_host = os.getenv("SEARXNG_HOST", "localhost")
+
+
 def get_env_bool(key: str, default: str = "false", target: str = "true"):
     return os.getenv(key, default) == target
 
