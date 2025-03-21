@@ -1,3 +1,4 @@
+import base64
 import os
 import sys
 import types
@@ -34,6 +35,8 @@ gemini_few_shoted = os.getenv("GEMINI_FEW_SHOTED", "false") == "true"
 
 
 searxng_host = os.getenv("SEARXNG_HOST", "localhost")
+searxng_username = os.getenv("SEARXNG_USERNAME", "test")
+searxng_password = os.getenv("SEARXNG_PASSWORD", "test")
 
 
 def get_env_bool(key: str, default: str = "false", target: str = "true"):
@@ -58,3 +61,12 @@ def add_func_kwargs(func: types.FunctionType, **extra_args) -> types.FunctionTyp
         return func(self, **{**kwargs, **extra_args})
 
     return wrapper
+
+
+def get_basic_auth_headers(username: str, password: str):
+    auth_str = f"{username}:{password}"
+    auth_bytes = base64.b64encode(auth_str.encode("utf-8"))
+    auth_header = f"Basic {auth_bytes.decode('utf-8')}"
+    return {
+        "Authorization": auth_header,
+    }
