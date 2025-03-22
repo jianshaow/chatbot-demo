@@ -26,5 +26,6 @@ arxiv_tool = SearxSearchResults(
 )
 
 if __name__ == "__main__":
-    result = arxiv_tool.run("what is chain-of-thought?")
-    print(result)
+    print(github_tool.run("stable diffusion"))
+    print("-" * 80)
+    print(arxiv_tool.run("2201.11903"))
