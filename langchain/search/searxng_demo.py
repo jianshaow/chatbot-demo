@@ -1,3 +1,5 @@
+import json
+
 from langchain_community.utilities import SearxSearchWrapper
 
 from common import (
@@ -12,5 +14,5 @@ searxng = SearxSearchWrapper(
     k=1,
     headers=get_basic_auth_headers(searxng_username, searxng_password),
 )
-response = searxng.run("what is a large language model?")
-print(response)
+results = searxng.results("what is a large language model?", num_results=1)
+print(json.dumps(results, indent=2))
