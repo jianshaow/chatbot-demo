@@ -9,3 +9,4 @@ langchain-openai
 langchain-ollama
 langchain-huggingface
 langchain-google-genai
+langchain-mcp-adapters
