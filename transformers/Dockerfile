@@ -13,7 +13,7 @@ USER devel
 RUN pip wheel --no-deps flash-attn
 
 FROM base
-COPY COPY --from=build $HOME/*.whl /tmp/
+COPY --from=build $HOME/*.whl /tmp/
 RUN --mount=type=bind,source=requirements.txt,target=requirements.txt \
     pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt && \
