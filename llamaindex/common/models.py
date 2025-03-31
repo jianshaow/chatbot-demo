@@ -8,14 +8,14 @@ from llama_index.core.schema import ImageNode
 
 from common import demo_image_url as image_url
 from common import get_args, get_env_bool
-from common.fn_tools import tools
-from common.functions import fns
+from common.calc_func import fns
 from common.prompts import (
     examples,
     question_message,
     system_message,
     tool_call_question,
 )
+from common.tools import calc_tools
 
 
 def default_model_kwargs() -> dict[str, str]:
@@ -77,7 +77,7 @@ def demo_fn_call(
         messages.extend(examples)
     messages.append(question_message)
 
-    response = fn_call_model.chat_with_tools(tools, chat_history=messages)
+    response = fn_call_model.chat_with_tools(calc_tools, chat_history=messages)
 
     while response.message.additional_kwargs.get("tool_calls"):
         print("-" * 80)
@@ -102,7 +102,7 @@ def demo_fn_call(
                     additional_kwargs={"name": fn_name, "tool_call_id": tool_call_id},
                 )
                 messages.append(tool_message)
-        response = fn_call_model.chat_with_tools(tools, chat_history=messages)
+        response = fn_call_model.chat_with_tools(calc_tools, chat_history=messages)
 
     print("-" * 80)
     print(response.message.content)
@@ -130,7 +130,7 @@ def demo_fn_call_agent(fn_call_model: LLM, model: str):
     print("-" * 80)
     print("fn call model:", model)
 
-    agent = AgentRunner.from_llm(tools, fn_call_model, verbose=True)
+    agent = AgentRunner.from_llm(calc_tools, fn_call_model, verbose=True)
     response = agent.chat(message=tool_call_question)
 
     print("-" * 80)
