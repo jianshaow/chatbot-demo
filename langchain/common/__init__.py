@@ -26,13 +26,12 @@ openai_chat_model = os.getenv("OPENAI_CHAT_MODEL", openai_llm_model)
 openai_mm_model = os.getenv("OPENAI_MM_MODEL", openai_llm_model)
 openai_fc_model = os.getenv("OPENAI_FC_MODEL", openai_llm_model)
 
-gemini_embed_model = os.getenv("GEMINI_EMBED_MODEL", "models/embedding-001")
-gemini_llm_model = os.getenv("GEMINI_LLM_MODEL", "models/gemini-2.0-flash")
-gemini_chat_model = os.getenv("GEMINI_CHAT_MODEL", gemini_llm_model)
-gemini_mm_model = os.getenv("GEMINI_MM_MODEL", gemini_llm_model)
-gemini_fc_model = os.getenv("GEMINI_FC_MODEL", gemini_llm_model)
-gemini_few_shoted = os.getenv("GEMINI_FEW_SHOTED", "false") == "true"
-
+google_embed_model = os.getenv("GOOGLE_EMBED_MODEL", "models/embedding-001")
+google_llm_model = os.getenv("GOOGLE_LLM_MODEL", "models/gemini-2.0-flash")
+google_chat_model = os.getenv("GOOGLE_CHAT_MODEL", google_llm_model)
+google_mm_model = os.getenv("GOOGLE_MM_MODEL", google_llm_model)
+google_fc_model = os.getenv("GOOGLE_FC_MODEL", google_llm_model)
+google_few_shoted = os.getenv("GOOGLE_FEW_SHOTED", "false") == "true"
 
 searxng_host = os.getenv("SEARXNG_HOST", "localhost")
 searxng_username = os.getenv("SEARXNG_USERNAME", "test")

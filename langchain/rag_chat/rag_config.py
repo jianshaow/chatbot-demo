@@ -16,9 +16,9 @@ from common import (
     add_method_kwargs,
     data_base_dir,
     db_base_dir,
-    gemini_chat_model,
-    gemini_embed_model,
     get_args,
+    google_chat_model,
+    google_embed_model,
     hf_chat_model,
     hf_embed_model,
     ollama_base_url,
@@ -136,9 +136,9 @@ def __gemini_config(
     return RagChatConfig(
         "gemini",
         GoogleGenerativeAIEmbeddings,
-        gemini_embed_model,
+        google_embed_model,
         ChatGoogleGenerativeAI,
-        gemini_chat_model,
+        google_chat_model,
         data_dir=data_dir,
         defalut_question=defalut_question,
     )
