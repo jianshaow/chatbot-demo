@@ -62,7 +62,7 @@ ollama_examples = [
     },
 ]
 
-gemini_examples = [
+google_examples = [
     genai.protos.Content(
         role="user",
         parts=[

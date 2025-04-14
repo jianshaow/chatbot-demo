@@ -4,7 +4,7 @@ import google.generativeai as genai
 import requests
 from PIL import Image
 
-from common import gemini_chat_model as model_name
+from common import google_chat_model as model_name
 from common.prompts import mm_image_url, mm_question
 
 genai.configure(transport="rest")

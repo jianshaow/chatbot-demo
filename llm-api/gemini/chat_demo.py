@@ -1,6 +1,6 @@
 import google.generativeai as genai
 
-from common import gemini_chat_model as model_name
+from common import google_chat_model as model_name
 from common.prompts import chat_system, chat_question
 
 print("-" * 80)

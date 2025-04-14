@@ -1,6 +1,6 @@
 import google.generativeai as genai
 
-from common import gemini_embed_model as model
+from common import google_embed_model as model
 from common.prompts import embed_question as question
 
 print("-" * 80)

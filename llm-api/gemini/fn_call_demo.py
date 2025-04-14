@@ -1,11 +1,11 @@
 import google.generativeai as genai
 
-from common import gemini_fc_model as model_name
-from common import gemini_few_shoted as few_shoted
+from common import google_fc_model as model_name
+from common import google_few_shoted as few_shoted
 from common.functions import fns
 from common.prompts import fn_call_adv_question as question
 from common.prompts import fn_call_system as system_prompt
-from common.prompts import gemini_examples as examples
+from common.prompts import google_examples as examples
 
 genai.configure(transport="rest")
 
