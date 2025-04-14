@@ -4,15 +4,14 @@ llama-index-cli
 llama-index-readers-file
 llama-index-vector-stores-chroma
 llama-index-embeddings-openai
-llama-index-embeddings-gemini
+llama-index-embeddings-google-genai
 llama-index-embeddings-ollama
 llama-index-embeddings-huggingface
 llama-index-llms-openai
-llama-index-llms-gemini
+llama-index-llms-google-genai
 llama-index-llms-ollama
 llama-index-llms-huggingface
 llama-index-multi-modal-llms-openai
-llama-index-multi-modal-llms-gemini
 llama-index-multi-modal-llms-ollama
 llama-index-multi-modal-llms-huggingface
 llama-index-agent-openai
