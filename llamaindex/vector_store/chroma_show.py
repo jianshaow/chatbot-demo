@@ -10,9 +10,8 @@ if db_dir and os.path.exists((path := os.path.join(db_base_dir, db_dir))):
     collections = client.list_collections()
     print("collections size:", len(collections))
     print("=" * 80)
-    for collection_name in collections:
-        print("name:", collection_name)
-        collection = client.get_collection(collection_name)
+    for collection in collections:
+        print("name:", collection.name)
         count = collection.count()
         print("record count:", count)
         vectors = collection.peek(1)

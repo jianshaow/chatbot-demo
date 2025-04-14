@@ -1,4 +1,5 @@
 import os
+import textwrap
 
 import chromadb
 from llama_index.core.vector_stores import VectorStoreQuery
@@ -15,7 +16,7 @@ if db_dir and os.path.exists((path := os.path.join(db_base_dir, db_dir))):
         result = chroma_collection.query(vectors["embeddings"][0], n_results=2)
         print("-" * 33, "chroma query", "-" * 33)
         for i in range(len(result["ids"][0])):
-            print("Text:", result["documents"][0][i][:60])
+            print("Text:", textwrap.fill(result["documents"][0][i][:347] + "..."))
             print("distance:", result["distances"][0][i])
             print("-" * 80)
 
@@ -34,7 +35,7 @@ if db_dir and os.path.exists((path := os.path.join(db_base_dir, db_dir))):
     else:
         collections = client.list_collections()
         for collection in collections:
-            print(collection)
+            print(collection.name)
 else:
     for subpath in os.listdir(db_base_dir):
         print(subpath)

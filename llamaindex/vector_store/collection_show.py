@@ -21,7 +21,7 @@ if db_dir and os.path.exists((path := os.path.join(db_base_dir, db_dir))):
     else:
         collections = client.list_collections()
         for collection in collections:
-            print(collection)
+            print(collection.name)
 else:
     for subpath in os.listdir(db_base_dir):
         print(subpath)
