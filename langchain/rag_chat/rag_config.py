@@ -129,12 +129,12 @@ def __openai_config(
     )
 
 
-def __gemini_config(
+def __google_config(
     data_dir=DEFAULT_DATA,
     defalut_question=DEFAULT_QUESTION,
 ):
     return RagChatConfig(
-        "gemini",
+        "google",
         GoogleGenerativeAIEmbeddings,
         google_embed_model,
         ChatGoogleGenerativeAI,
@@ -188,12 +188,12 @@ __config_dict = {
         data_dir=DATA_ZH,
         defalut_question=DEFAULT_QUESTION_ZH,
     ),
-    "gemini": __gemini_config(),
-    "gemini_en": __gemini_config(
+    "google": __google_config(),
+    "google_en": __google_config(
         data_dir=DATA_EN,
         defalut_question=DEFAULT_QUESTION_EN,
     ),
-    "gemini_zh": __gemini_config(
+    "google_zh": __google_config(
         data_dir=DATA_ZH,
         defalut_question=DEFAULT_QUESTION_ZH,
     ),
