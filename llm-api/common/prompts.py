@@ -1,5 +1,5 @@
 from common import get_args
-from google.ai import generativelanguage as glm
+from google.genai import types
 
 chat_system = "You are a pirate with a colorful personality."
 fn_call_system = "You are bad at math but are an expert at using a calculator"
@@ -10,7 +10,6 @@ fn_call_question = get_args(1, "What is (121 * 3) + 42?")
 fn_call_adv_question = get_args(1, "What is (121 * 3) + (6 * 7)?")
 mm_question = get_args(1, "Identify the city where this photo was taken.")
 mm_image_url = "https://storage.googleapis.com/generativeai-downloads/data/scene.jpg"
-
 
 chat_system_message = {"role": "system", "content": chat_system}
 chat_question_message = {"role": "user", "content": chat_question}
@@ -62,50 +61,52 @@ ollama_examples = [
 ]
 
 google_examples = [
-    glm.Content(
+    types.Content(
         role="user",
         parts=[
-            glm.Part(text="What is (2 + 3) * 4"),
+            types.Part(text="What is (2 + 3) * 4"),
         ],
     ),
-    glm.Content(
+    types.Content(
         role="model",
         parts=[
-            glm.Part(function_call=glm.FunctionCall(name="add", args={"a": 2, "b": 3})),
+            types.Part(
+                function_call=types.FunctionCall(name="add", args={"a": 2, "b": 3})
+            ),
         ],
     ),
-    glm.Content(
+    types.Content(
         role="user",
         parts=[
-            glm.Part(
-                function_response=glm.FunctionResponse(
+            types.Part(
+                function_response=types.FunctionResponse(
                     name="add", response={"result": 5}
                 )
             ),
         ],
     ),
-    glm.Content(
+    types.Content(
         role="model",
         parts=[
-            glm.Part(
-                function_call=glm.FunctionCall(name="multiply", args={"a": 5, "b": 4})
+            types.Part(
+                function_call=types.FunctionCall(name="multiply", args={"a": 5, "b": 4})
             ),
         ],
     ),
-    glm.Content(
+    types.Content(
         role="user",
         parts=[
-            glm.Part(
-                function_response=glm.FunctionResponse(
+            types.Part(
+                function_response=types.FunctionResponse(
                     name="multiply", response={"result": 20}
                 )
             ),
         ],
     ),
-    glm.Content(
+    types.Content(
         role="model",
         parts=[
-            glm.Part(text="(2 + 3) * 4 = 20."),
+            types.Part(text="(2 + 3) * 4 = 20."),
         ],
     ),
 ]

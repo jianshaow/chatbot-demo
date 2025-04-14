@@ -1,16 +1,15 @@
 import sys
 
-import google.generativeai as genai
 from dotenv import load_dotenv
-from google.generativeai.types import ModelsIterable
+
+from google import genai
 
 load_dotenv()
 
-genai.configure(transport="rest")
-
 verbose = len(sys.argv) > 1 and sys.argv[1] == "verbose" or False
 
-models: ModelsIterable = genai.list_models()
+client = genai.Client()
+models = client.models.list()
 print("-" * 80)
 for model in models:
     if verbose:

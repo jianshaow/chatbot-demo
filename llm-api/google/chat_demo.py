@@ -1,14 +1,17 @@
-import google.generativeai as genai
-
 from common import google_chat_model as model_name
-from common.prompts import chat_system, chat_question
+from common.prompts import chat_question, chat_system
+from google import genai
+from google.genai import types
 
 print("-" * 80)
 print("chat model:", model_name)
 
-genai.configure(transport="rest")
-model = genai.GenerativeModel(model_name, system_instruction=chat_system)
-response = model.generate_content(chat_question, stream=True)
+client = genai.Client()
+response = client.models.generate_content_stream(
+    config=types.GenerateContentConfig(system_instruction=chat_system),
+    model=model_name,
+    contents=[chat_question],
+)
 
 print("-" * 80)
 for chunk in response:

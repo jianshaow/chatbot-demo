@@ -1,59 +1,52 @@
-import google.generativeai as genai
 from common import google_fc_model as model_name
 from common import google_few_shoted as few_shoted
 from common.functions import fns
 from common.prompts import fn_call_adv_question as question
 from common.prompts import fn_call_system as system_prompt
 from common.prompts import google_examples as examples
-from google.ai import generativelanguage as glm
-
-genai.configure(transport="rest")
+from google import genai
+from google.genai import types
 
 model_kwargs = {}
-chat_kwargs = {}
+messages = []
 if few_shoted:
     model_kwargs["system_instruction"] = system_prompt
-    chat_kwargs["history"] = examples
+    messages.extend(examples)
 
-model = genai.GenerativeModel(model_name=model_name, tools=fns.values(), **model_kwargs)
+config = types.GenerateContentConfig(
+    tools=fns.values(),
+    automatic_function_calling=types.AutomaticFunctionCallingConfig(disable=True),
+    **model_kwargs,
+)
+client = genai.Client()
+
 print("-" * 80)
 print("fn call model:", model_name)
+chat = client.chats.create(config=config, model=model_name)
 
-chat = model.start_chat(**chat_kwargs)
-response = chat.send_message(question)
+messages.append(question)
+response = chat.send_message(messages)
 
-going = True
-while going:
+while response.function_calls:
     print("-" * 80)
 
     results = []
-    has_fn_call = False
-    for part in response.parts:
-        if fn := part.function_call:
-            args = (
-                "{" + ", ".join(f'"{key}": {val}' for key, val in fn.args.items()) + "}"
-            )
-            print("=== Calling Function ===")
-            print("Calling function:", fn.name, "with args:", args)
-            fn_result = fns[fn.name](**fn.args)
-            print("Got output:", fn_result)
-            print("========================\n")
-            results.append((fn.name, fn_result))
+    for fn in response.function_calls:
+        args = "{" + ", ".join(f'"{key}": {val}' for key, val in fn.args.items()) + "}"
+        print("=== Calling Function ===")
+        print("Calling function:", fn.name, "with args:", args)
+        fn_result = fns[fn.name](**fn.args)
+        print("Got output:", fn_result)
+        print("========================\n")
+        results.append((fn.name, fn_result))
 
-            has_fn_call = True
-
-    if has_fn_call:
-        response_parts = glm.Content(
-            parts=[
-                glm.Part(
-                    function_response=glm.FunctionResponse(
-                        name=fn, response={"result": result}
-                    )
-                )
-                for fn, result in results
-            ]
+    fn_response_parts = [
+        types.Part.from_function_response(
+            name=fn,
+            response={"result": result},
         )
-        response = chat.send_message(response_parts)
-    else:
-        going = False
-        print(response.text)
+        for fn, result in results
+    ]
+    response = chat.send_message(fn_response_parts)
+
+print(response.text)

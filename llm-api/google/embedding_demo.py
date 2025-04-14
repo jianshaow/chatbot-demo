@@ -1,15 +1,16 @@
-import google.generativeai as genai
-
 from common import google_embed_model as model
 from common.prompts import embed_question as question
+from google import genai
 
 print("-" * 80)
 print("embed model:", model)
 
-genai.configure(transport="rest")
-embeddings = genai.embed_content(
-    model=model, content=question, task_type="retrieval_document"
-)["embedding"]
+client = genai.Client()
+
+embeddings = client.models.embed_content(
+    model=model,
+    contents=[question],
+).embeddings[0].values
 
 print("-" * 80)
 print("dimension:", len(embeddings))
