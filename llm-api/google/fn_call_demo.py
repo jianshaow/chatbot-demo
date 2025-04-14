@@ -1,11 +1,11 @@
 import google.generativeai as genai
-
 from common import google_fc_model as model_name
 from common import google_few_shoted as few_shoted
 from common.functions import fns
 from common.prompts import fn_call_adv_question as question
 from common.prompts import fn_call_system as system_prompt
 from common.prompts import google_examples as examples
+from google.ai import generativelanguage as glm
 
 genai.configure(transport="rest")
 
@@ -43,10 +43,10 @@ while going:
             has_fn_call = True
 
     if has_fn_call:
-        response_parts = genai.protos.Content(
+        response_parts = glm.Content(
             parts=[
-                genai.protos.Part(
-                    function_response=genai.protos.FunctionResponse(
+                glm.Part(
+                    function_response=glm.FunctionResponse(
                         name=fn, response={"result": result}
                     )
                 )

@@ -1,6 +1,5 @@
-import google.generativeai as genai
-
 from common import get_args
+from google.ai import generativelanguage as glm
 
 chat_system = "You are a pirate with a colorful personality."
 fn_call_system = "You are bad at math but are an expert at using a calculator"
@@ -63,56 +62,50 @@ ollama_examples = [
 ]
 
 google_examples = [
-    genai.protos.Content(
+    glm.Content(
         role="user",
         parts=[
-            genai.protos.Part(text="What is (2 + 3) * 4"),
+            glm.Part(text="What is (2 + 3) * 4"),
         ],
     ),
-    genai.protos.Content(
+    glm.Content(
         role="model",
         parts=[
-            genai.protos.Part(
-                function_call=genai.protos.FunctionCall(
-                    name="add", args={"a": 2, "b": 3}
-                )
-            ),
+            glm.Part(function_call=glm.FunctionCall(name="add", args={"a": 2, "b": 3})),
         ],
     ),
-    genai.protos.Content(
+    glm.Content(
         role="user",
         parts=[
-            genai.protos.Part(
-                function_response=genai.protos.FunctionResponse(
+            glm.Part(
+                function_response=glm.FunctionResponse(
                     name="add", response={"result": 5}
                 )
             ),
         ],
     ),
-    genai.protos.Content(
+    glm.Content(
         role="model",
         parts=[
-            genai.protos.Part(
-                function_call=genai.protos.FunctionCall(
-                    name="multiply", args={"a": 5, "b": 4}
-                )
+            glm.Part(
+                function_call=glm.FunctionCall(name="multiply", args={"a": 5, "b": 4})
             ),
         ],
     ),
-    genai.protos.Content(
+    glm.Content(
         role="user",
         parts=[
-            genai.protos.Part(
-                function_response=genai.protos.FunctionResponse(
+            glm.Part(
+                function_response=glm.FunctionResponse(
                     name="multiply", response={"result": 20}
                 )
             ),
         ],
     ),
-    genai.protos.Content(
+    glm.Content(
         role="model",
         parts=[
-            genai.protos.Part(text="(2 + 3) * 4 = 20."),
+            glm.Part(text="(2 + 3) * 4 = 20."),
         ],
     ),
 ]
