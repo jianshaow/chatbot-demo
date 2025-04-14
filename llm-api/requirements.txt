@@ -1,4 +1,4 @@
 python-dotenv
 ollama
 openai
-google-generativeai
+google-genai
