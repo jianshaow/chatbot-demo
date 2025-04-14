@@ -1,32 +1,22 @@
 import os
 from typing import Type
+
 from llama_index.core.embeddings import BaseEmbedding
-from llama_index.embeddings.openai import OpenAIEmbedding
-from llama_index.embeddings.gemini import GeminiEmbedding
-from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 from llama_index.core.llms import LLM
-from llama_index.llms.openai import OpenAI
-from llama_index.llms.gemini import Gemini
-from llama_index.llms.ollama import Ollama
+from llama_index.embeddings.google_genai import GoogleGenAIEmbedding
+from llama_index.embeddings.huggingface import HuggingFaceEmbedding
+from llama_index.embeddings.openai import OpenAIEmbedding
+from llama_index.llms.google_genai import GoogleGenAI
 from llama_index.llms.huggingface import HuggingFaceLLM
+from llama_index.llms.ollama import Ollama
+from llama_index.llms.openai import OpenAI
 
-from common.ollama import NormOllamaEmbedding
-
-from common import (
-    db_base_dir,
-    data_base_dir,
-    ollama_base_url,
-    ollama_embed_model,
-    ollama_chat_model,
-    hf_embed_model,
-    hf_chat_model,
-    openai_embed_model,
-    openai_chat_model,
-    gemini_embed_model,
-    gemini_chat_model,
-    get_args,
-)
+from common import (data_base_dir, db_base_dir, get_args, google_chat_model,
+                    google_embed_model, hf_chat_model, hf_embed_model,
+                    ollama_base_url, ollama_chat_model, ollama_embed_model,
+                    openai_chat_model, openai_embed_model)
 from common.models import default_model_kwargs
+from common.ollama import NormOllamaEmbedding
 
 DEFAULT_DATA = "default"
 DATA_EN = "en-text"
@@ -82,7 +72,7 @@ class RagChatConfig:
             )
         if self.__embed_model == OpenAIEmbedding:
             return self.__embed_model(model=self.embed_model_name)
-        if self.__embed_model == GeminiEmbedding:
+        if self.__embed_model == GoogleGenAIEmbedding:
             return self.__embed_model(
                 model_name=self.embed_model_name, transport="rest"
             )
@@ -98,7 +88,7 @@ class RagChatConfig:
             return self.__hf_chat_model()
         if self.__chat_model == OpenAI:
             return self.__chat_model(model=self.chat_model_name)
-        if self.__chat_model == Gemini:
+        if self.__chat_model == GoogleGenAI:
             return self.__chat_model(model_name=self.chat_model_name, transport="rest")
 
         return self.__chat_model(model_name=self.chat_model_name)
@@ -132,16 +122,16 @@ def __openai_config(
     )
 
 
-def __gemini_config(
+def __google_config(
     data_dir=DEFAULT_DATA,
     defalut_question=DEFAULT_QUESTION,
 ):
     return RagChatConfig(
-        "gemini",
-        GeminiEmbedding,
-        gemini_embed_model,
-        Gemini,
-        gemini_chat_model,
+        "google",
+        GoogleGenAIEmbedding,
+        google_embed_model,
+        GoogleGenAI,
+        google_chat_model,
         data_dir=data_dir,
         defalut_question=defalut_question,
     )
@@ -191,12 +181,12 @@ __config_dict = {
         data_dir=DATA_ZH,
         defalut_question=DEFAULT_QUESTION_ZH,
     ),
-    "gemini": __gemini_config(),
-    "gemini_en": __gemini_config(
+    "google": __google_config(),
+    "google_en": __google_config(
         data_dir=DATA_EN,
         defalut_question=DEFAULT_QUESTION_EN,
     ),
-    "gemini_zh": __gemini_config(
+    "google_zh": __google_config(
         data_dir=DATA_ZH,
         defalut_question=DEFAULT_QUESTION_ZH,
     ),

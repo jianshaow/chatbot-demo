@@ -1,6 +1,6 @@
 from llama_index.llms.google_genai import GoogleGenAI
 
-from common import gemini_mm_model as model
+from common import google_mm_model as model
 from common.images import show_demo_image
 from common.models import demo_multi_modal
 
