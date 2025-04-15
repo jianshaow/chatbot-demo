@@ -11,10 +11,20 @@ from llama_index.llms.huggingface import HuggingFaceLLM
 from llama_index.llms.ollama import Ollama
 from llama_index.llms.openai import OpenAI
 
-from common import (data_base_dir, db_base_dir, get_args, google_chat_model,
-                    google_embed_model, hf_chat_model, hf_embed_model,
-                    ollama_base_url, ollama_chat_model, ollama_embed_model,
-                    openai_chat_model, openai_embed_model)
+from common import (
+    data_base_dir,
+    db_base_dir,
+    get_args,
+    google_chat_model,
+    google_embed_model,
+    hf_chat_model,
+    hf_embed_model,
+    ollama_base_url,
+    ollama_chat_model,
+    ollama_embed_model,
+    openai_chat_model,
+    openai_embed_model,
+)
 from common.models import default_model_kwargs
 from common.ollama import NormOllamaEmbedding
 
@@ -72,10 +82,6 @@ class RagChatConfig:
             )
         if self.__embed_model == OpenAIEmbedding:
             return self.__embed_model(model=self.embed_model_name)
-        if self.__embed_model == GoogleGenAIEmbedding:
-            return self.__embed_model(
-                model_name=self.embed_model_name, transport="rest"
-            )
 
         return self.__embed_model(model_name=self.embed_model_name)
 
@@ -86,12 +92,8 @@ class RagChatConfig:
             )
         if self.__chat_model == HuggingFaceLLM:
             return self.__hf_chat_model()
-        if self.__chat_model == OpenAI:
-            return self.__chat_model(model=self.chat_model_name)
-        if self.__chat_model == GoogleGenAI:
-            return self.__chat_model(model_name=self.chat_model_name, transport="rest")
 
-        return self.__chat_model(model_name=self.chat_model_name)
+        return self.__chat_model(model=self.chat_model_name)
 
     def get_question(self):
         return get_args(2, self.defalut_question)
@@ -221,8 +223,8 @@ def get_config(name="ollama"):
 
 
 if __name__ == "__main__":
-    if config_key := get_args(1, None):
-        print(vars(__config_dict[config_key]))
+    if config := get_args(1, None):
+        print(vars(__config_dict[config]))
     else:
         for config in __config_dict:
             print(config)
