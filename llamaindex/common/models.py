@@ -65,10 +65,13 @@ def demo_chat(chat_model: LLM, model: str):
 
 
 def demo_fn_call(
-    fn_call_model: FunctionCallingLLM, model_name: str, with_few_shot=False
+    fn_call_model: FunctionCallingLLM, model_name: str, tools=None, with_few_shot=False
 ):
     print("-" * 80)
     print("fn call model:", model_name)
+
+    if tools is None:
+        tools = calc_tools
 
     messages = []
     if with_few_shot:
@@ -76,7 +79,7 @@ def demo_fn_call(
         messages.extend(examples)
     messages.append(question_message)
 
-    response = fn_call_model.chat_with_tools(calc_tools, chat_history=messages)
+    response = fn_call_model.chat_with_tools(tools, chat_history=messages)
 
     while response.message.additional_kwargs.get("tool_calls"):
         print("-" * 80)
