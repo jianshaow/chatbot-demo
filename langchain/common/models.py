@@ -73,11 +73,16 @@ def demo_chat(chat_model: BaseChatModel, model: str):
     print("\n", "-" * 80, sep="")
 
 
-def demo_fn_call(fn_call_model: BaseChatModel, model: str, with_few_shot=False):
+def demo_fn_call(
+    fn_call_model: BaseChatModel, model: str, tools=None, with_few_shot=False
+):
     print("-" * 80)
     print("fn call model:", model)
 
-    llm_with_tools = fn_call_model.bind_tools(calc_tools)
+    if tools is None:
+        tools = calc_tools
+
+    llm_with_tools = fn_call_model.bind_tools(tools)
 
     messages = []
     if with_few_shot:
