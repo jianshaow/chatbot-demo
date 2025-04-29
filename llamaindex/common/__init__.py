@@ -34,6 +34,7 @@ google_mm_model = os.getenv("GOOGLE_MM_MODEL", google_llm_model)
 google_fc_model = os.getenv("GOOGLE_FC_MODEL", google_llm_model)
 google_few_shoted = os.getenv("GOOGLE_FEW_SHOTED", "false") == "true"
 
+sse_url = os.getenv("SSE_URL", "http://localhost:8000/sse")
 
 def get_env_bool(key: str, default: str = "false", target: str = "true"):
     return os.getenv(key, default) == target

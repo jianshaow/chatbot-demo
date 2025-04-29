@@ -37,7 +37,6 @@ searxng_host = os.getenv("SEARXNG_HOST", "localhost")
 searxng_username = os.getenv("SEARXNG_USERNAME", "test")
 searxng_password = os.getenv("SEARXNG_PASSWORD", "test")
 
-
 sse_url = os.getenv("SSE_URL", "http://localhost:8000/sse")
 
 
