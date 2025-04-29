@@ -4,9 +4,11 @@ from langchain_mcp_adapters.tools import load_mcp_tools
 from mcp import ClientSession
 from mcp.client.sse import sse_client
 
+from common import sse_url
+
 
 async def get_tools_async():
-    async with sse_client(url="http://localhost:8000/sse") as (read, write):
+    async with sse_client(url=sse_url) as (read, write):
         async with ClientSession(read, write) as session:
             await session.initialize()
             tools = await load_mcp_tools(session)

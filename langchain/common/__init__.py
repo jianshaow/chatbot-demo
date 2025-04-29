@@ -38,6 +38,9 @@ searxng_username = os.getenv("SEARXNG_USERNAME", "test")
 searxng_password = os.getenv("SEARXNG_PASSWORD", "test")
 
 
+sse_url = os.getenv("SSE_URL", "http://localhost:8000/sse")
+
+
 def get_env_bool(key: str, default: str = "false", target: str = "true"):
     return os.getenv(key, default) == target
 
