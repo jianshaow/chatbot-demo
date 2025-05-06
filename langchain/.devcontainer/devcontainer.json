@@ -1,6 +1,6 @@
 {
 	"name": "LANGCHAIN",
-	"image": "jianshao/langchain-demo:0.3.49",
+	"image": "jianshao/langchain-demo:0.3.58",
 	"remoteEnv": {
 		"PYTHONPATH": ".",
 		"OLLAMA_HOST": "host.docker.internal"
