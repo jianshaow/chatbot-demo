@@ -1,4 +1,3 @@
-libmagic
 unstructured
 langchainhub
 langchain
