@@ -1,4 +1,5 @@
 unstructured
+grpcio-status==1.71.0
 langchainhub
 langchain
 langchain-core>=0.3,<0.4
