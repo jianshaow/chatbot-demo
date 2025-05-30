@@ -9,7 +9,7 @@ ollama_host = os.getenv("OLLAMA_HOST", "localhost")
 ollama_base_url = os.getenv("OLLAMA_BASE_URL", f"http://{ollama_host}:11434")
 ollama_embed_model = os.getenv("OLLAMA_EMBED_MODEL", "paraphrase-multilingual:278m")
 ollama_chat_model = os.getenv("OLLAMA_CHAT_MODEL", "qwen2.5:7b")
-ollama_mm_model = os.getenv("OLLAMA_MM_MODEL", "llama3.2-vision:11b")
+ollama_mm_model = os.getenv("OLLAMA_MM_MODEL", "qwen2.5vl:7b")
 ollama_fc_model = os.getenv("OLLAMA_FC_MODEL", "qwen2.5:7b")
 
 openai_embed_model = os.getenv("OPENAI_EMBED_MODEL", "text-embedding-3-small")
