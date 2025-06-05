@@ -10,9 +10,9 @@ client = genai.Client()
 embeddings = client.models.embed_content(
     model=model,
     contents=[question],
-).embeddings[0].values
+).embeddings[0].values # type: ignore
 
 print("-" * 80)
-print("dimension:", len(embeddings))
-print(embeddings[:4])
+print("dimension:", len(embeddings)) # type: ignore
+print(embeddings[:4]) # type: ignore
 print("-" * 80, sep="")
