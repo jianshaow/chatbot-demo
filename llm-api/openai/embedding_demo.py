@@ -1,4 +1,4 @@
-from openai import OpenAI
+from clients import get_client
 
 from common import openai_embed_model as model
 from common.prompts import embed_question as question
@@ -6,7 +6,7 @@ from common.prompts import embed_question as question
 print("-" * 80)
 print("embed model:", model)
 
-client = OpenAI()
+client = get_client()
 embeddings = client.embeddings.create(model=model, input=[question]).data[0].embedding
 
 print("-" * 80)

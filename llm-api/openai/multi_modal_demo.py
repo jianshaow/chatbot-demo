@@ -1,17 +1,19 @@
+from clients import get_client
+
 from common import openai_mm_model as model
 from common.prompts import mm_question_message
-from openai import OpenAI, Stream
+from openai import Stream
 from openai.types.chat import ChatCompletionChunk
 
 print("-" * 80)
 print("multi-modal model:", model)
 
-client = OpenAI()
+client = get_client()
 response: Stream[ChatCompletionChunk] = client.chat.completions.create(
     model=model,
-    messages=[mm_question_message],
+    messages=[mm_question_message],  # type: ignore
     stream=True,
-)
+)  # type: ignore
 
 print("-" * 80)
 for chunk in response:

@@ -1,6 +1,7 @@
 import json
 
-import openai
+from clients import get_client
+
 from common import openai_fc_model as model
 from common.fn_tools import tools
 from common.functions import fns
@@ -9,13 +10,15 @@ from common.prompts import fn_call_adv_question_message as question
 print("-" * 80)
 print("fn call model:", model)
 
+client = get_client()
+
 messages = [question]
-response = openai.chat.completions.create(model=model, messages=messages, tools=tools)
+response = client.chat.completions.create(model=model, messages=messages, tools=tools)  # type: ignore
 
 while response.choices[0].finish_reason == "tool_calls":
     print("-" * 80)
-    messages.append(response.choices[0].message)
-    for tool_call in response.choices[0].message.tool_calls:
+    messages.append(response.choices[0].message)  # type: ignore
+    for tool_call in response.choices[0].message.tool_calls:  # type: ignore
         fn = fns[tool_call.function.name]
         fn_args = json.loads(tool_call.function.arguments)
         print("=== Calling Function ===")
@@ -35,8 +38,8 @@ while response.choices[0].finish_reason == "tool_calls":
                 "tool_call_id": tool_call.id,
             }
         )
-    response = openai.chat.completions.create(
-        model=model, messages=messages, tools=tools
+    response = client.chat.completions.create(
+        model=model, messages=messages, tools=tools  # type: ignore
     )
 
 print("-" * 80)
