@@ -11,9 +11,9 @@ print("multi-modal model:", model)
 client = get_client()
 response: Stream[ChatCompletionChunk] = client.chat.completions.create(
     model=model,
-    messages=[mm_question_message],  # type: ignore
+    messages=[mm_question_message], # type: ignore
     stream=True,
-)  # type: ignore
+) # type: ignore
 
 print("-" * 80)
 for chunk in response:

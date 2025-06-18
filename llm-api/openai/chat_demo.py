@@ -11,8 +11,8 @@ print("chat model:", model)
 
 client = get_client()
 response: Stream[ChatCompletionChunk] = client.chat.completions.create(
-    model=model, messages=[system_prompt, question], stream=True  # type: ignore
-)  # type: ignore
+    model=model, messages=[system_prompt, question], stream=True # type: ignore
+) # type: ignore
 
 print("-" * 80)
 for chunk in response:
