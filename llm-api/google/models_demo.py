@@ -16,4 +16,4 @@ for model in models:
         print(model)
     else:
         print(model.name)
-print("_" * 80)
+print("-" * 80)
