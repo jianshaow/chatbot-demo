@@ -13,12 +13,12 @@ print("fn call model:", model)
 client = get_client()
 
 messages = [question]
-response = openai.chat.completions.create(model=model, messages=messages, tools=tools) # type: ignore
+response = client.chat.completions.create(model=model, messages=messages, tools=tools)  # type: ignore
 
 while response.choices[0].finish_reason == "tool_calls":
     print("-" * 80)
-    messages.append(response.choices[0].message) # type: ignore
-    for tool_call in response.choices[0].message.tool_calls: # type: ignore
+    messages.append(response.choices[0].message)  # type: ignore
+    for tool_call in response.choices[0].message.tool_calls:  # type: ignore
         fn = fns[tool_call.function.name]
         fn_args = json.loads(tool_call.function.arguments)
         print("=== Calling Function ===")
@@ -38,13 +38,8 @@ while response.choices[0].finish_reason == "tool_calls":
                 "tool_call_id": tool_call.id,
             }
         )
-<<<<<<< HEAD
     response = client.chat.completions.create(
         model=model, messages=messages, tools=tools  # type: ignore
-=======
-    response = openai.chat.completions.create(
-        model=model, messages=messages, tools=tools # type: ignore
->>>>>>> fcba468 (add type ignore)
     )
 
 print("-" * 80)

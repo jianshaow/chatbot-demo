@@ -13,7 +13,7 @@ if few_shoted:
     model_kwargs["system_instruction"] = system_prompt
     messages.extend(examples)
 
-config = types.GenerateContentConfig(tools=fns.values(), **model_kwargs)
+config = types.GenerateContentConfig(tools=list(fns.values()), **model_kwargs)
 client = genai.Client()
 print("-" * 80)
 print("fn call model:", model_name)
