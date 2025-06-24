@@ -1,4 +1,5 @@
 import textwrap
+from typing import Any
 
 from langchain.agents import AgentExecutor, create_tool_calling_agent
 from langchain_chroma import Chroma
@@ -30,10 +31,10 @@ from common.tools import calc_tools
 
 
 def default_model_kwargs() -> dict[str, str]:
-    model_kwargs = {"device_map": "auto"}
+    model_kwargs: dict[str, Any] = {"device_map": "auto"}
     if get_env_bool("BNB_ENABLED"):
         import torch
-        from transformers import BitsAndBytesConfig
+        from transformers.utils.quantization_config import BitsAndBytesConfig
 
         model_kwargs["quantization_config"] = BitsAndBytesConfig(
             load_in_4bit=True, bnb_4bit_compute_dtype=torch.float16
