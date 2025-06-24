@@ -14,7 +14,7 @@ if few_shoted:
     messages.extend(examples)
 
 config = types.GenerateContentConfig(
-    tools=fns.values(),
+    tools=list(fns.values()),
     automatic_function_calling=types.AutomaticFunctionCallingConfig(disable=True),
     **model_kwargs,
 )
@@ -32,13 +32,17 @@ while response.function_calls:
 
     results = []
     for fn in response.function_calls:
-        args = "{" + ", ".join(f'"{key}": {val}' for key, val in fn.args.items()) + "}"
-        print("=== Calling Function ===")
-        print("Calling function:", fn.name, "with args:", args)
-        fn_result = fns[fn.name](**fn.args)
-        print("Got output:", fn_result)
-        print("========================\n")
-        results.append((fn.name, fn_result))
+        if fn.args:
+            args = (
+                "{" + ", ".join(f'"{key}": {val}' for key, val in fn.args.items()) + "}"
+            )
+            print("=== Calling Function ===")
+            print("Calling function:", fn.name, "with args:", args)
+            if fn.name:
+                fn_result = fns[fn.name](**fn.args)
+                print("Got output:", fn_result)
+                print("========================\n")
+                results.append((fn.name, fn_result))
 
     fn_response_parts = [
         types.Part.from_function_response(
@@ -47,6 +51,6 @@ while response.function_calls:
         )
         for fn, result in results
     ]
-    response = chat.send_message(fn_response_parts)
+    response = chat.send_message(fn_response_parts)  # type: ignore
 
 print(response.text)
