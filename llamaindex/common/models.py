@@ -80,7 +80,9 @@ def demo_fn_call(
         messages.extend(examples)
     messages.append(question_message)
 
-    response = fn_call_model.chat_with_tools(tools, chat_history=messages)
+    response = fn_call_model.chat_with_tools(
+        tools, chat_history=messages, allow_parallel_tool_calls=True
+    )
 
     while response.message.additional_kwargs.get("tool_calls"):
         print("-" * 80)
@@ -105,7 +107,9 @@ def demo_fn_call(
                     additional_kwargs={"name": fn_name, "tool_call_id": tool_call_id},
                 )
                 messages.append(tool_message)
-        response = fn_call_model.chat_with_tools(calc_tools, chat_history=messages)
+        response = fn_call_model.chat_with_tools(
+            calc_tools, chat_history=messages, allow_parallel_tool_calls=True
+        )
 
     print("-" * 80)
     print(response.message.content)
