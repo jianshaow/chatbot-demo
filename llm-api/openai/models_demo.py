@@ -1,8 +1,9 @@
 import os
 import sys
 
-from clients import get_client
 from dotenv import load_dotenv
+
+from common.openai import get_client
 
 load_dotenv()
 

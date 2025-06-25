@@ -1,6 +1,5 @@
-from clients import get_client
-
 from common import openai_embed_model as model
+from common.openai import get_client
 from common.prompts import embed_question as question
 
 print("-" * 80)

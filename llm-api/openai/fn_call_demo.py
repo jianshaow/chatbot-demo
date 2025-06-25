@@ -1,10 +1,9 @@
 import json
 
-from clients import get_client
-
 from common import openai_fc_model as model
 from common.fn_tools import tools
 from common.functions import fns
+from common.openai import get_client
 from common.prompts import fn_call_adv_question_message as question
 
 print("-" * 80)
