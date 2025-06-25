@@ -3,6 +3,7 @@ from llama_index.core.agent import AgentRunner
 from llama_index.core.embeddings import BaseEmbedding
 from llama_index.core.llms import LLM, ChatMessage
 from llama_index.core.llms.function_calling import FunctionCallingLLM
+from llama_index.core.multi_modal_llms import MultiModalLLM
 from llama_index.core.schema import ImageNode
 
 from common import demo_image_url as image_url
@@ -139,7 +140,9 @@ def demo_fn_call_agent(fn_call_model: LLM, model: str):
     print(response)
 
 
-def demo_multi_modal(mm_model: LLM, model: str, image_nodes=None, streaming=True):
+def demo_multi_modal(
+    mm_model: MultiModalLLM, model: str, image_nodes=None, streaming=True
+):
     print("-" * 80)
     print("multi-modal model:", model)
     print("-" * 80)
