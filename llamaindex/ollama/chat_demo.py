@@ -1,7 +1,6 @@
-from llama_index.llms.ollama import Ollama
-
-from common import ollama_base_url as base_url, ollama_chat_model as model
+from common import ollama_chat_model as model
 from common.models import demo_chat
+from common.ollama import get_llm_model
 
-chat_model = Ollama(base_url=base_url, model=model)
+chat_model = get_llm_model(model)
 demo_chat(chat_model, model)
