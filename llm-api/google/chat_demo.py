@@ -16,4 +16,4 @@ response = client.models.generate_content_stream(
 print("-" * 80)
 for chunk in response:
     print(chunk.text, end="")
-print("-" * 80)
+print("\n", "-" * 80)
