@@ -1,5 +1,5 @@
 from matplotlib import pyplot as plt
-from PIL import Image
+from PIL.Image import Image
 
 DPI = (72, 72)
 
@@ -13,7 +13,7 @@ def show_image(image: Image):
     fig_height = height / dpi[1]
 
     fig, ax = plt.subplots(figsize=(fig_width, fig_height), dpi=dpi[0])
-    fig.gca().set_position([0, 0, 1, 1])
+    fig.gca().set_position((0, 0, 1, 1))
     ax.axis("off")
     ax.imshow(image)
     plt.show()

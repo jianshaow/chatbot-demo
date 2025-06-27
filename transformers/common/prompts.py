@@ -2,8 +2,9 @@ from io import BytesIO
 
 import requests
 from PIL import Image
-
-from transformers import AutoTokenizer, PreTrainedTokenizer, PreTrainedTokenizerFast
+from transformers.models.auto.tokenization_auto import AutoTokenizer
+from transformers.tokenization_utils import PreTrainedTokenizer
+from transformers.tokenization_utils_fast import PreTrainedTokenizerFast
 
 SYSTEM_PROMPT = "A chat between a curious user and an artificial intelligence assistant. The assistant gives helpful, detailed, and polite answers to the user's questions."
 
@@ -32,9 +33,13 @@ def tokenizer_prompt(
         {"role": "system", "content": system_prompt},
         {"role": "user", "content": user_prompt},
     ]
-    return tokenizer.apply_chat_template(
+    result = tokenizer.apply_chat_template(
         messages, tokenize=False, add_generation_prompt=True
     )
+    if isinstance(result, str):
+        return result
+    else:
+        return ""
 
 
 def image_text_prompt(image_url: str, text: str, processor, config):

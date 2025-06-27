@@ -1,20 +1,25 @@
 from threading import Thread
 
-from common import bnb_enabled, hf_chat_model
-from transformers import (
-    AutoConfig,
-    AutoModelForCausalLM,
-    AutoProcessor,
-    AutoTokenizer,
-    MllamaForConditionalGeneration,
+from transformers.generation.streamers import TextIteratorStreamer
+from transformers.modeling_utils import PreTrainedModel
+from transformers.models.auto.configuration_auto import AutoConfig
+from transformers.models.auto.modeling_auto import AutoModelForCausalLM
+from transformers.models.auto.processing_auto import AutoProcessor
+from transformers.models.auto.tokenization_auto import AutoTokenizer
+from transformers.models.mllama.modeling_mllama import MllamaForConditionalGeneration
+from transformers.models.paligemma.modeling_paligemma import (
     PaliGemmaForConditionalGeneration,
-    PreTrainedModel,
-    PreTrainedTokenizer,
-    PreTrainedTokenizerFast,
-    Qwen2VLForConditionalGeneration,
-    Qwen2_5_VLForConditionalGeneration,
-    TextIteratorStreamer,
 )
+from transformers.models.qwen2_5_vl.modeling_qwen2_5_vl import (
+    Qwen2_5_VLForConditionalGeneration,
+)
+from transformers.models.qwen2_vl.modeling_qwen2_vl import (
+    Qwen2VLForConditionalGeneration,
+)
+from transformers.tokenization_utils import PreTrainedTokenizer
+from transformers.tokenization_utils_fast import PreTrainedTokenizerFast
+
+from common import bnb_enabled, hf_chat_model
 
 
 def default_model_kwargs() -> dict[str, str]:
@@ -22,8 +27,7 @@ def default_model_kwargs() -> dict[str, str]:
 
     if bnb_enabled:
         import torch
-
-        from transformers import BitsAndBytesConfig
+        from transformers.utils.quantization_config import BitsAndBytesConfig
 
         model_kwargs["quantization_config"] = BitsAndBytesConfig(
             load_in_4bit=True, bnb_4bit_compute_dtype=torch.float16
@@ -57,13 +61,13 @@ def new_multi_modal_model(model_name: str, model_kwargs=None):
 
     if model_kwargs is None:
         model_kwargs = default_model_kwargs()
-    model = AutoModelClass.from_pretrained(
-        model_name,
-        device_map="auto",
-        torch_dtype="auto",
-        trust_remote_code=True,
+    model_kwargs = {
         **model_kwargs,
-    )
+        "torch_dtype": "auto",
+        "device_map": "auto",
+        "trust_remote_code": True,
+    }
+    model = AutoModelClass.from_pretrained(model_name, **model_kwargs)
 
     processor = AutoProcessor.from_pretrained(model_name, trust_remote_code=True)
 

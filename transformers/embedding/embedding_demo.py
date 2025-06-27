@@ -1,8 +1,9 @@
 import torch
 import torch.nn.functional as F
+from transformers.models.auto.modeling_auto import AutoModel
+from transformers.models.auto.tokenization_auto import AutoTokenizer
 
 from common import hf_embed_model as embed_model
-from transformers import AutoModel, AutoTokenizer
 
 
 def cls_pooling(model_output, *args):

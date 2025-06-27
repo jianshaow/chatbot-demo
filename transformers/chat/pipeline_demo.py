@@ -1,4 +1,6 @@
-from transformers import pipeline, TextStreamer
+from transformers.generation.streamers import TextStreamer
+from transformers.pipelines import pipeline
+
 from common import hf_chat_model as model
 from common.models import default_model_kwargs
 
@@ -9,7 +11,9 @@ generate = pipeline(
     torch_dtype="auto",
     model_kwargs=default_model_kwargs(),
 )
-generate.generation_config.pad_token_id = generate.tokenizer.eos_token_id
+if generate.tokenizer and generate.generation_config:
+    generate.generation_config.pad_token_id = generate.tokenizer.eos_token_id
+
 print("-" * 80)
 print("chat model:", model)
 
@@ -22,7 +26,7 @@ messages = [
 ]
 
 streamer = TextStreamer(
-    generate.tokenizer,
+    generate.tokenizer,  # type: ignore
     skip_prompt=True,
     skip_special_tokens=True,
     clean_up_tokenization_spaces=True,
