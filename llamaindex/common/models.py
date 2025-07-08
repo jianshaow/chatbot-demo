@@ -1,7 +1,7 @@
 from llama_index.core import Settings, SimpleDirectoryReader, VectorStoreIndex
 from llama_index.core.agent import AgentRunner
 from llama_index.core.embeddings import BaseEmbedding
-from llama_index.core.llms import LLM, ChatMessage
+from llama_index.core.llms import LLM, ChatMessage, ImageBlock, TextBlock
 from llama_index.core.llms.function_calling import FunctionCallingLLM
 from llama_index.core.multi_modal_llms import MultiModalLLM
 from llama_index.core.schema import ImageNode
@@ -144,21 +144,19 @@ def demo_fn_call_agent(fn_call_model: LLM, model: str):
     print(response)
 
 
-def demo_multi_modal(
-    mm_model: MultiModalLLM, model: str, image_nodes=None, streaming=True
-):
+def demo_multi_modal_legacy(mm_model: MultiModalLLM, model: str, streaming=True):
     print("-" * 80)
     print("multi-modal model:", model)
     print("-" * 80)
 
-    image_documents = image_nodes if image_nodes else [ImageNode(image_url=image_url)]
+    image_documents = [ImageNode(image_path=image_url)]
 
     prompt = "Identify the city where this photo was taken."
     # prompt = "这张照片是在哪个城市拍摄的."
     print("Question:", prompt)
     complete_response = mm_model.complete(
         prompt=prompt,
-        image_documents=image_documents,
+        image_documents=image_documents,  # type: ignore
     )
     print("Answer:", complete_response)
     print("-" * 80)
@@ -172,8 +170,53 @@ def demo_multi_modal(
     print("Answer:", end="")
     stream_complete_response = mm_model.stream_complete(
         prompt=prompt,
-        image_documents=image_documents,
+        image_documents=image_documents,  # type: ignore
     )
+    for r in stream_complete_response:
+        print(r.delta, end="")
+    print("\n", "-" * 80, sep="")
+
+
+def demo_multi_modal(mm_model: LLM, model: str, image_block=None, streaming=True):
+    print("-" * 80)
+    print("multi-modal model:", model)
+    print("-" * 80)
+
+    image_block = image_block if image_block else ImageBlock(url=image_url)
+
+    prompt = "Identify the city where this photo was taken."
+    # prompt = "这张照片是在哪个城市拍摄的."
+    messages = [
+        ChatMessage(
+            role="user",
+            blocks=[
+                image_block,
+                TextBlock(text=prompt),
+            ],
+        )
+    ]
+    print("Question:", prompt)
+    complete_response = mm_model.chat(messages)
+    print("Answer:", complete_response)
+    print("-" * 80)
+
+    if not streaming:
+        return
+
+    prompt = "Give me more context for this image"
+    # prompt = "给我更多这张照片的上下文"
+    messages = [
+        ChatMessage(
+            role="user",
+            blocks=[
+                image_block,
+                TextBlock(text=prompt),
+            ],
+        )
+    ]
+    print("Question:", prompt)
+    print("Answer:", end="")
+    stream_complete_response = mm_model.stream_chat(messages)
     for r in stream_complete_response:
         print(r.delta, end="")
     print("\n", "-" * 80, sep="")
