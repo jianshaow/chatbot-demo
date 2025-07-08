@@ -24,6 +24,7 @@ from common import (
     ollama_embed_model,
     openai_chat_model,
     openai_embed_model,
+    thinking,
 )
 from common.models import default_model_kwargs
 from common.ollama import NormOllamaEmbedding
@@ -88,7 +89,7 @@ class RagChatConfig:
     def chat_model(self):
         if self.__chat_model == Ollama:
             return self.__chat_model(
-                base_url=ollama_base_url, model=self.chat_model_name
+                base_url=ollama_base_url, model=self.chat_model_name, thinking=thinking
             )
         if self.__chat_model == HuggingFaceLLM:
             return self.__hf_chat_model()
