@@ -5,6 +5,4 @@ from common import thinking
 
 
 def get_llm_model(model: str, **kwargs) -> ChatOllama:
-    return ChatOllama(
-        model=model, base_url=base_url, extract_reasoning=not thinking, **kwargs
-    )
+    return ChatOllama(model=model, base_url=base_url, reasoning=thinking, **kwargs)
