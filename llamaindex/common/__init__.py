@@ -28,6 +28,14 @@ openai_chat_model = os.getenv("OPENAI_CHAT_MODEL", openai_llm_model)
 openai_fc_model = os.getenv("OPENAI_FC_MODEL", openai_llm_model)
 openai_mm_model = os.getenv("OPENAI_MM_MODEL", openai_llm_model)
 
+openai_like_api_base = os.getenv("OPENAI_LIKE_API_BASE", "https://api.openai.com/v1")
+openai_like_api_key = os.getenv("OPENAI_LIKE_API_KEY", "empty")
+openai_like_embed_model = os.getenv("OPENAI_LIKE_EMBED_MODEL", "text-embedding-3-small")
+openai_like_llm_model = os.getenv("OPENAI_LIKE_LLM_MODEL", "gpt-4.1-mini")
+openai_like_chat_model = os.getenv("OPENAI_LIKE_CHAT_MODEL", openai_like_llm_model)
+openai_like_fc_model = os.getenv("OPENAI_LIKE_FC_MODEL", openai_like_llm_model)
+openai_like_mm_model = os.getenv("OPENAI_LIKE_MM_MODEL", openai_like_llm_model)
+
 google_embed_model = os.getenv("GOOGLE_EMBED_MODEL", "models/text-embedding-004")
 google_llm_model = os.getenv("GOOGLE_LLM_MODEL", "models/gemini-2.5-flash")
 google_chat_model = os.getenv("GOOGLE_CHAT_MODEL", google_llm_model)
@@ -36,6 +44,8 @@ google_mm_model = os.getenv("GOOGLE_MM_MODEL", google_llm_model)
 google_few_shoted = os.getenv("GOOGLE_FEW_SHOTED", "false") == "true"
 
 sse_url = os.getenv("SSE_URL", "http://localhost:8000/sse")
+
+ssl_verify = os.getenv("SSL_VERIFY", "true") == "false"
 
 thinking = os.getenv("THINK", "false") == "true"
 
