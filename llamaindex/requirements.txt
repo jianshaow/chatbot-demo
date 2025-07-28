@@ -14,5 +14,4 @@ llama-index-llms-google-genai
 llama-index-llms-ollama
 llama-index-llms-huggingface
 llama-index-multi-modal-llms-huggingface
-llama-index-agent-openai
 llama-index-tools-mcp

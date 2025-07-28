@@ -1,5 +1,5 @@
 from llama_index.core import Settings, SimpleDirectoryReader, VectorStoreIndex
-from llama_index.core.agent import AgentRunner
+from llama_index.core.agent.workflow import AgentWorkflow
 from llama_index.core.embeddings import BaseEmbedding
 from llama_index.core.llms import LLM, ChatMessage, ImageBlock, TextBlock
 from llama_index.core.llms.function_calling import FunctionCallingLLM
@@ -137,8 +137,17 @@ def demo_fn_call_agent(fn_call_model: LLM, model: str):
     print("-" * 80)
     print("fn call model:", model)
 
-    agent = AgentRunner.from_llm(calc_tools, fn_call_model, verbose=True)
-    response = agent.chat(message=tool_call_question)
+    agent = AgentWorkflow.from_tools_or_functions(
+        calc_tools, fn_call_model, verbose=True
+    )
+
+    async def run_agent():
+        response = await agent.run(tool_call_question)
+        return response
+
+    import asyncio
+
+    response = asyncio.run(run_agent())
 
     print("-" * 80)
     print(response)
