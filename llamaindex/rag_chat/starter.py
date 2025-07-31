@@ -1,10 +1,13 @@
-import os.path, sys
+import os.path
+import sys
+
 from llama_index.core import (
-    VectorStoreIndex,
     SimpleDirectoryReader,
     StorageContext,
+    VectorStoreIndex,
     load_index_from_storage,
 )
+from llama_index.core.base.response.schema import StreamingResponse
 
 DATA_PATH = "data"
 PERSIST_PATH = "storage"
@@ -21,5 +24,6 @@ question = len(sys.argv) == 2 and sys.argv[1] or "What did the author do growing
 print("Question:", question, sep="\n")
 response = query_engine.query(question)
 print("Answer:")
-response.print_response_stream()
+if isinstance(response, StreamingResponse):
+    response.print_response_stream()
 print("\n")

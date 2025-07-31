@@ -7,30 +7,29 @@ from llama_index.vector_stores.chroma import ChromaVectorStore
 
 from common import db_base_dir, get_args
 
-db_dir = get_args(1, None)
+db_dir = get_args(1)
 if db_dir and os.path.exists((path := os.path.join(db_base_dir, db_dir))):
     client = chromadb.PersistentClient(path)
     if collection := get_args(2, None):
         chroma_collection = client.get_collection(collection)
-        vectors = chroma_collection.peek(1)
-        result = chroma_collection.query(vectors["embeddings"][0], n_results=2)
+        get_result = chroma_collection.peek(1)
+        first_embedding = get_result["embeddings"][0]  # type: ignore
+        query_result = chroma_collection.query(first_embedding, n_results=2)
         print("-" * 33, "chroma query", "-" * 33)
-        for i in range(len(result["ids"][0])):
-            print("Text:", textwrap.fill(result["documents"][0][i][:347] + "..."))
-            print("distance:", result["distances"][0][i])
+        for i in range(len(query_result["ids"][0])):
+            print("Text:", textwrap.fill(query_result["documents"][0][i][:347] + "..."))  # type: ignore
+            print("distance:", query_result["distances"][0][i])  # type: ignore
             print("-" * 80)
 
         vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
         query = VectorStoreQuery(
-            query_embedding=vectors["embeddings"][0].tolist(),
-            similarity_top_k=2,
-            mode="default",
+            query_embedding=first_embedding.tolist(), similarity_top_k=2  # type: ignore
         )
         print("-" * 30, "vector store query", "-" * 30)
-        result = vector_store.query(query)
-        for i in range(len(result.ids)):
-            print(result.nodes[i])
-            print("similarity:", result.similarities[i])
+        query_result = vector_store.query(query)
+        for i in range(len(query_result.ids)):  # type: ignore
+            print(query_result.nodes[i])  # type: ignore
+            print("similarity:", query_result.similarities[i])  # type: ignore
             print("-" * 80)
     else:
         collections = client.list_collections()

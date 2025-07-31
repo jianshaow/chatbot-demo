@@ -1,5 +1,5 @@
-import chromadb, rag_config
-
+import chromadb
+import rag_config
 from llama_index.core import Settings, VectorStoreIndex
 from llama_index.vector_stores.chroma import ChromaVectorStore
 
@@ -17,7 +17,7 @@ vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
 index = VectorStoreIndex.from_vector_store(vector_store)
 
 chat_engine = index.as_chat_engine(verbose=True)
-question = config.get_question()
+question = config.get_question() or ""
 print("-" * 80)
 print("Question:", question, sep="\n")
 print("-" * 80)

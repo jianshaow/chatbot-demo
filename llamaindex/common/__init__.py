@@ -54,5 +54,5 @@ def get_env_bool(key: str, default: str = "false", target: str = "true"):
     return os.getenv(key, default) == target
 
 
-def get_args(order: int, default: str):
+def get_args(order: int, default: str | None = None):
     return len(sys.argv) > order and sys.argv[order] or default

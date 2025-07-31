@@ -4,7 +4,7 @@ import chromadb
 
 from common import db_base_dir, get_args
 
-db_dir = get_args(1, None)
+db_dir = get_args(1)
 if db_dir and os.path.exists((path := os.path.join(db_base_dir, db_dir))):
     client = chromadb.PersistentClient(path)
     collections = client.list_collections()
@@ -14,8 +14,8 @@ if db_dir and os.path.exists((path := os.path.join(db_base_dir, db_dir))):
         print("name:", collection.name)
         count = collection.count()
         print("record count:", count)
-        vectors = collection.peek(1)
-        for embeddings in vectors["embeddings"]:
+        result = collection.peek(1)
+        for embeddings in result["embeddings"]:  # type: ignore
             print("embeddings dimension:", len(embeddings))
             print(embeddings[:4])
         print("-" * 80)
