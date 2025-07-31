@@ -1,15 +1,18 @@
 import os
 from typing import Type
 
+import httpx
 from llama_index.core.embeddings import BaseEmbedding
 from llama_index.core.llms import LLM
 from llama_index.embeddings.google_genai import GoogleGenAIEmbedding
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 from llama_index.embeddings.openai import OpenAIEmbedding
+from llama_index.embeddings.openai_like import OpenAILikeEmbedding
 from llama_index.llms.google_genai import GoogleGenAI
 from llama_index.llms.huggingface import HuggingFaceLLM
 from llama_index.llms.ollama import Ollama
 from llama_index.llms.openai import OpenAI
+from llama_index.llms.openai_like import OpenAILike
 
 from common import (
     data_base_dir,
@@ -24,6 +27,11 @@ from common import (
     ollama_embed_model,
     openai_chat_model,
     openai_embed_model,
+    openai_like_api_base,
+    openai_like_api_key,
+    openai_like_chat_model,
+    openai_like_embed_model,
+    ssl_verify,
     thinking,
 )
 from common.models import default_model_kwargs
@@ -74,27 +82,41 @@ class RagChatConfig:
 
     def embed_model(self):
         if self.__embed_model == NormOllamaEmbedding:
-            return self.__embed_model(
+            return NormOllamaEmbedding(
                 base_url=ollama_base_url, model_name=self.embed_model_name
             )
         if self.__embed_model == HuggingFaceEmbedding:
-            return self.__embed_model(
+            return HuggingFaceEmbedding(
                 model_name=self.embed_model_name, trust_remote_code=True
             )
         if self.__embed_model == OpenAIEmbedding:
-            return self.__embed_model(model=self.embed_model_name)
+            return OpenAIEmbedding(model=self.embed_model_name)
+        if self.__embed_model == OpenAILikeEmbedding:
+            return OpenAILikeEmbedding(
+                api_base=openai_like_api_base,
+                api_key=openai_like_api_key,
+                model_name=self.embed_model_name,
+                http_client=httpx.Client(verify=ssl_verify),
+                async_http_client=httpx.AsyncClient(verify=ssl_verify),
+            )
 
         return self.__embed_model(model_name=self.embed_model_name)
 
     def chat_model(self):
         if self.__chat_model == Ollama:
-            return self.__chat_model(
+            return Ollama(
                 base_url=ollama_base_url, model=self.chat_model_name, thinking=thinking
             )
         if self.__chat_model == HuggingFaceLLM:
             return self.__hf_chat_model()
+        if self.__embed_model == OpenAILike:
+            return OpenAILike(
+                api_base=openai_like_api_base,
+                api_key=openai_like_api_key,
+                model=self.chat_model_name,
+            )
 
-        return self.__chat_model(model=self.chat_model_name)
+        return self.__chat_model(model=self.chat_model_name)  # type: ignore
 
     def get_question(self):
         return get_args(2, self.defalut_question)
@@ -120,6 +142,21 @@ def __openai_config(
         openai_embed_model,
         OpenAI,
         openai_chat_model,
+        data_dir=data_dir,
+        defalut_question=defalut_question,
+    )
+
+
+def __openai_like_config(
+    data_dir=DEFAULT_DATA,
+    defalut_question=DEFAULT_QUESTION,
+):
+    return RagChatConfig(
+        "openai-like",
+        OpenAILikeEmbedding,
+        openai_like_embed_model,
+        OpenAILike,
+        openai_like_chat_model,
         data_dir=data_dir,
         defalut_question=defalut_question,
     )
@@ -176,6 +213,7 @@ def __hf_config(
 
 __config_dict = {
     "openai": __openai_config(),
+    "openai-like": __openai_like_config(),
     "openai_en": __openai_config(
         data_dir=DATA_EN,
         defalut_question=DEFAULT_QUESTION_EN,
