@@ -18,7 +18,7 @@ if db_dir and os.path.exists((path := os.path.join(db_base_dir, db_dir))):
         print("=" * 33, "chroma query", "=" * 33)
         for i in range(len(query_result["ids"][0])):
             print("Node ID:", query_result["ids"][0][i])  # type: ignore
-            print("Text:", textwrap.fill(query_result["documents"][0][i][:347] + "..."))  # type: ignore
+            print(textwrap.fill("Text: " + query_result["documents"][0][i][:347] + "..."))  # type: ignore
             print("distance:", query_result["distances"][0][i])  # type: ignore
             print("-" * 80)
 
