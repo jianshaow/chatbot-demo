@@ -3,7 +3,7 @@ from llama_index.llms.huggingface import HuggingFaceLLM
 from common.models import default_model_kwargs
 
 
-def get_llm_model(model_name: str):
+def get_llm(model_name: str):
     model_kwargs = default_model_kwargs()
 
     llm = HuggingFaceLLM(
