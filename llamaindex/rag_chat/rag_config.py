@@ -109,11 +109,13 @@ class RagChatConfig:
             )
         if self.__chat_model == HuggingFaceLLM:
             return self.__hf_chat_model()
-        if self.__embed_model == OpenAILike:
+        if self.__chat_model == OpenAILike:
             return OpenAILike(
                 api_base=openai_like_api_base,
                 api_key=openai_like_api_key,
                 model=self.chat_model_name,
+                http_client=httpx.Client(verify=ssl_verify),  # type: ignore
+                async_http_client=httpx.AsyncClient(verify=ssl_verify),  # type: ignore
             )
 
         return self.__chat_model(model=self.chat_model_name)  # type: ignore
