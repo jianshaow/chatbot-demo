@@ -14,9 +14,12 @@ if db_dir and os.path.exists((path := os.path.join(db_base_dir, db_dir))):
         print("total count:", chroma_collection.count())
         print("show top", count)
         result = chroma_collection.peek(count)
-        for doc in result["documents"]:  # type: ignore
+        for node_id, embedding, doc in zip(result["ids"], result["embeddings"], result["documents"]):  # type: ignore
             print("-" * 80)
-            print(textwrap.fill(doc[:347] + "..."))
+            print("Node ID:", node_id)
+            print("Text:", textwrap.fill(doc[:347] + "..."))
+            print("Embedding dimension:", len(embedding))
+            print("Embedding:", embedding[:5])
         print("-" * 80)
     else:
         collections = client.list_collections()

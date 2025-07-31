@@ -17,7 +17,7 @@ if db_dir and os.path.exists((path := os.path.join(db_base_dir, db_dir))):
         result = collection.peek(1)
         for embeddings in result["embeddings"]:  # type: ignore
             print("embeddings dimension:", len(embeddings))
-            print(embeddings[:4])
+            print(embeddings[:5])
         print("-" * 80)
 else:
     for subpath in os.listdir(db_base_dir):

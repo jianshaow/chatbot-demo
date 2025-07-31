@@ -1,9 +1,10 @@
-import chromadb, rag_config
+import chromadb
+import rag_config
 from llama_index.core import (
     Settings,
+    SimpleDirectoryReader,
     StorageContext,
     VectorStoreIndex,
-    SimpleDirectoryReader,
 )
 from llama_index.vector_stores.chroma import ChromaVectorStore
 
@@ -28,9 +29,7 @@ if chroma_collection.count() == 0:
 else:
     index = VectorStoreIndex.from_vector_store(vector_store)
 
-retriever = index.as_retriever(
-    # similarity_top_k=4,
-)
+retriever = index.as_retriever()
 question = config.get_question()
 nodes = retriever.retrieve(question)
 print("-" * 80)
