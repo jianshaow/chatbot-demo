@@ -256,7 +256,7 @@ __config_dict = {
 }
 
 
-def get_config(name="ollama"):
+def get_config(name="google"):
     if config_key := get_args(1, None):
         return __config_dict[config_key]
     else:
