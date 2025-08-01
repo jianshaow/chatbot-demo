@@ -246,6 +246,9 @@ def demo_retrieve(
     print("embed model:", model_name)
 
     documents = SimpleDirectoryReader(data_path).load_data(show_progress=True)
+    for doc in documents:
+        doc.excluded_embed_metadata_keys.append("file_path")
+        doc.excluded_llm_metadata_keys.append("file_path")
     index = VectorStoreIndex.from_documents(
         documents,
         embed_model=embed_model,
@@ -253,7 +256,7 @@ def demo_retrieve(
     )
 
     retriever = index.as_retriever(
-        similarity_top_k=4,
+        similarity_top_k=2,
     )
     question = get_args(1, query)
     nodes = retriever.retrieve(question)
