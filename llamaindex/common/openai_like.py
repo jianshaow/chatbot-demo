@@ -1,5 +1,5 @@
 import httpx
-from llama_index.embeddings.openai_like import OpenAILikeEmbedding
+from llama_index.embeddings.openai import OpenAIEmbedding
 from llama_index.llms.openai_like import OpenAILike
 
 from common import openai_like_api_base as api_base
@@ -18,7 +18,7 @@ def get_llm(model):
 
 
 def get_embed_model(model_name):
-    return OpenAILikeEmbedding(
+    return OpenAIEmbedding(
         api_base=api_base,
         api_key=api_key,
         model_name=model_name,
