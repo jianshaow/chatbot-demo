@@ -8,7 +8,7 @@ USER root
 ARG CUDA_KEYRING_URL=https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/cuda-keyring_1.1-1_all.deb
 ADD ${CUDA_KEYRING_URL} cuda-keyring_all.deb
 RUN dpkg -i cuda-keyring_all.deb && apt update && \
-    apt install -y --no-install-recommends cuda-nvcc-12-4
+    apt install -y --no-install-recommends cuda-nvcc-12-6
 USER devel
 RUN pip wheel --no-deps flash-attn
 
