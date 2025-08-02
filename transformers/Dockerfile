@@ -1,9 +1,9 @@
 ARG BASE_IMAGE=jianshao/trfs-dev-base
 ARG TAG=4.49.0
 
-FROM ${BASE_IMAGE}:${TAG} as base
+FROM ${BASE_IMAGE}:${TAG} AS base
 
-FROM base as build
+FROM base AS build
 USER root
 ARG CUDA_KEYRING_URL=https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/cuda-keyring_1.1-1_all.deb
 ADD ${CUDA_KEYRING_URL} cuda-keyring_all.deb
