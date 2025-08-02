@@ -10,7 +10,7 @@ ADD ${CUDA_KEYRING_URL} cuda-keyring_all.deb
 RUN dpkg -i cuda-keyring_all.deb && apt update && \
     apt install -y --no-install-recommends cuda-nvcc-12-6
 USER devel
-RUN pip wheel --no-deps flash-attn
+RUN pip wheel --no-deps --use-pep517 --no-build-isolation flash-attn
 
 FROM base
 COPY --from=build $HOME/*.whl /tmp/
