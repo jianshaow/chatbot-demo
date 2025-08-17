@@ -6,8 +6,8 @@ from llama_index.core.embeddings import BaseEmbedding
 from llama_index.core.llms import LLM
 from llama_index.embeddings.google_genai import GoogleGenAIEmbedding
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
+from llama_index.embeddings.ollama import OllamaEmbedding
 from llama_index.embeddings.openai import OpenAIEmbedding
-from llama_index.embeddings.openai_like import OpenAILikeEmbedding
 from llama_index.llms.google_genai import GoogleGenAI
 from llama_index.llms.huggingface import HuggingFaceLLM
 from llama_index.llms.ollama import Ollama
@@ -35,7 +35,6 @@ from common import (
     thinking,
 )
 from common.models import default_model_kwargs
-from common.ollama import NormOllamaEmbedding
 
 DEFAULT_DATA = "default"
 DATA_EN = "en-text"
@@ -81,24 +80,24 @@ class RagChatConfig:
         return self.__data_dir + "__" + escaped
 
     def embed_model(self):
-        if self.__embed_model == NormOllamaEmbedding:
-            return NormOllamaEmbedding(
+        if self.__embed_model == OllamaEmbedding:
+            return OllamaEmbedding(
                 base_url=ollama_base_url, model_name=self.embed_model_name
             )
         if self.__embed_model == HuggingFaceEmbedding:
             return HuggingFaceEmbedding(
                 model_name=self.embed_model_name, trust_remote_code=True
             )
-        if self.__embed_model == OpenAIEmbedding:
-            return OpenAIEmbedding(model=self.embed_model_name)
-        if self.__embed_model == OpenAILikeEmbedding:
-            return OpenAILikeEmbedding(
+        if self.__chat_model == OpenAILike:
+            return OpenAIEmbedding(
                 api_base=openai_like_api_base,
                 api_key=openai_like_api_key,
                 model_name=self.embed_model_name,
                 http_client=httpx.Client(verify=ssl_verify),
                 async_http_client=httpx.AsyncClient(verify=ssl_verify),
             )
+        if self.__embed_model == OpenAIEmbedding:
+            return OpenAIEmbedding(model=self.embed_model_name)
 
         return self.__embed_model(model_name=self.embed_model_name)
 
@@ -155,7 +154,7 @@ def __openai_like_config(
 ):
     return RagChatConfig(
         "openai-like",
-        OpenAILikeEmbedding,
+        OpenAIEmbedding,
         openai_like_embed_model,
         OpenAILike,
         openai_like_chat_model,
@@ -187,7 +186,7 @@ def __ollama_config(
 ):
     return RagChatConfig(
         "ollama",
-        NormOllamaEmbedding,
+        OllamaEmbedding,
         embed_model_name,
         Ollama,
         chat_model_name,
