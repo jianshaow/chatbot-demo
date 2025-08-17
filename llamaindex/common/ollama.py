@@ -14,7 +14,7 @@ def get_additional_kwargs_from_model(
     return {k: v for k, v in response.model_dump().items() if k not in exclude}
 
 
-def get_llm(model: str, context_window=3900, **kwargs) -> Ollama:
+def get_llm(model: str, context_window=1024, **kwargs) -> Ollama:
     return Ollama(
         model=model,
         base_url=base_url,
