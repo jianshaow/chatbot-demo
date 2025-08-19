@@ -23,10 +23,8 @@ def mean_pooling(model_output, attention_mask: torch.Tensor):
 def pooling_func(model_name: str):
     if "bge" in model_name:
         return cls_pooling
-    elif "nomic" in model_name:
-        return mean_pooling
     else:
-        raise ValueError(f"Unsupported model name: {model_name}")
+        return mean_pooling
 
 
 def main():
