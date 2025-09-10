@@ -110,7 +110,7 @@ def demo_fn_call(
                 )
                 messages.append(tool_message)
         response = fn_call_model.chat_with_tools(
-            calc_tools, chat_history=messages, allow_parallel_tool_calls=True
+            tools, chat_history=messages, allow_parallel_tool_calls=True
         )
 
     print("-" * 80)
