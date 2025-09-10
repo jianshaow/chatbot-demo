@@ -36,10 +36,10 @@ def get_embed_model(model_name):
 
 
 def __get_extra_headers():
-    extra_headers_env = os.getenv("EXTRA_HEADERS", "")
-    headers_strs = extra_headers_env.split(",")
+    extra_headers_env = os.getenv("EXTRA_HEADERS", None)
+    header_strs = extra_headers_env.split(",") if extra_headers_env else []
     headers = {}
-    for header_str in headers_strs:
+    for header_str in header_strs:
         key, value = header_str.split(":")
         headers[key] = value
     return headers

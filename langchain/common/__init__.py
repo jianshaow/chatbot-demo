@@ -40,6 +40,8 @@ searxng_password = os.getenv("SEARXNG_PASSWORD", "test")
 
 sse_url = os.getenv("SSE_URL", "http://localhost:8000/sse")
 
+ssl_verify = os.getenv("SSL_VERIFY", "true") == "false"
+
 thinking = os.getenv("THINK", "false") == "true"
 
 def get_env_bool(key: str, default: str = "false", target: str = "true"):
