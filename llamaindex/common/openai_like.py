@@ -1,3 +1,5 @@
+import os
+
 import httpx
 from llama_index.embeddings.openai import OpenAIEmbedding
 from llama_index.llms.openai_like import OpenAILike
@@ -8,20 +10,36 @@ from common import ssl_verify
 
 
 def get_llm(model):
+    headers = __get_extra_headers()
+    http_client = httpx.Client(verify=ssl_verify, headers=headers)
+    async_http_client = httpx.AsyncClient(verify=ssl_verify, headers=headers)
     return OpenAILike(
         api_base=api_base,
         api_key=api_key,
         model=model,
-        http_client=httpx.Client(verify=ssl_verify),  # type: ignore
-        async_http_client=httpx.AsyncClient(verify=ssl_verify),  # type: ignore
+        http_client=http_client,  # type: ignore
+        async_http_client=async_http_client,  # type: ignore
     )
 
 
 def get_embed_model(model_name):
+    headers = __get_extra_headers()
+    http_client = httpx.Client(verify=ssl_verify, headers=headers)
+    async_http_client = httpx.AsyncClient(verify=ssl_verify, headers=headers)
     return OpenAIEmbedding(
         api_base=api_base,
         api_key=api_key,
         model_name=model_name,
-        http_client=httpx.Client(verify=ssl_verify),
-        async_http_client=httpx.AsyncClient(verify=ssl_verify),
+        http_client=http_client,
+        async_http_client=async_http_client,
     )
+
+
+def __get_extra_headers():
+    extra_headers_env = os.getenv("EXTRA_HEADERS", "")
+    headers_strs = extra_headers_env.split(",")
+    headers = {}
+    for header_str in headers_strs:
+        key, value = header_str.split(":")
+        headers[key] = value
+    return headers
