@@ -45,7 +45,7 @@ google_few_shoted = os.getenv("GOOGLE_FEW_SHOTED", "false") == "true"
 
 sse_url = os.getenv("SSE_URL", "http://localhost:8000/sse")
 
-ssl_verify = os.getenv("SSL_VERIFY", "true") == "false"
+ssl_verify = os.getenv("SSL_VERIFY", "false") == "true"
 
 thinking = os.getenv("THINK", "false") == "true"
 

@@ -40,7 +40,7 @@ searxng_password = os.getenv("SEARXNG_PASSWORD", "test")
 
 sse_url = os.getenv("SSE_URL", "http://localhost:8000/sse")
 
-ssl_verify = os.getenv("SSL_VERIFY", "true") == "false"
+ssl_verify = os.getenv("SSL_VERIFY", "false") == "true"
 
 thinking = os.getenv("THINK", "false") == "true"
 
