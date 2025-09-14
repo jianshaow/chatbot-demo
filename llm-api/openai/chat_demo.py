@@ -15,6 +15,8 @@ response: Stream[ChatCompletionChunk] = client.chat.completions.create(
 
 print("-" * 80)
 for chunk in response:
+    if len(chunk.choices) == 0:
+        continue
     if content := chunk.choices[0].delta.content:
         print(content, end="")
 print("\n", "-" * 80, sep="")
