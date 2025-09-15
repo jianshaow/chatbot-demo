@@ -5,7 +5,11 @@ from common.prompts import fn_call_adv_question as question
 from common.prompts import fn_call_system as system_prompt
 from common.prompts import google_examples as examples
 from google import genai
-from google.genai import types
+from google.genai.types import (
+    AutomaticFunctionCallingConfig,
+    GenerateContentConfig,
+    Part,
+)
 
 model_kwargs = {}
 messages = []
@@ -13,9 +17,9 @@ if few_shoted:
     model_kwargs["system_instruction"] = system_prompt
     messages.extend(examples)
 
-config = types.GenerateContentConfig(
+config = GenerateContentConfig(
     tools=list(fns.values()),
-    automatic_function_calling=types.AutomaticFunctionCallingConfig(disable=True),
+    automatic_function_calling=AutomaticFunctionCallingConfig(disable=True),
     **model_kwargs,
 )
 client = genai.Client()
@@ -45,7 +49,7 @@ while response.function_calls:
                 results.append((fn.name, fn_result))
 
     fn_response_parts = [
-        types.Part.from_function_response(
+        Part.from_function_response(
             name=fn,
             response={"result": result},
         )

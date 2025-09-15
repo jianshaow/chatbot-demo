@@ -5,19 +5,25 @@ from common.fn_tools import tools
 from common.functions import fns
 from common.openai import get_client
 from common.prompts import fn_call_adv_question_message as question
+from openai.types.chat import (
+    ChatCompletionMessage,
+    ChatCompletionMessageFunctionToolCall,
+)
 
 print("-" * 80)
 print("fn call model:", model)
 
 client = get_client()
 
-messages = [question]
+messages: list[ChatCompletionMessage | dict] = [question]
 response = client.chat.completions.create(model=model, messages=messages, tools=tools)  # type: ignore
 
-while response.choices[0].finish_reason == "tool_calls":
+while response.choices[0].message.tool_calls:
     print("-" * 80)
-    messages.append(response.choices[0].message)  # type: ignore
-    for tool_call in response.choices[0].message.tool_calls:  # type: ignore
+    messages.append(response.choices[0].message)
+    for tool_call in response.choices[0].message.tool_calls:
+        if not isinstance(tool_call, ChatCompletionMessageFunctionToolCall):
+            continue
         fn = fns[tool_call.function.name]
         fn_args = json.loads(tool_call.function.arguments)
         print("=== Calling Function ===")
