@@ -14,7 +14,7 @@ ollama_fc_model = os.getenv("OLLAMA_FC_MODEL", ollama_llm_model)
 ollama_mm_model = os.getenv("OLLAMA_MM_MODEL", "qwen2.5vl:7b")
 
 openai_embed_model = os.getenv("OPENAI_EMBED_MODEL", "text-embedding-3-small")
-openai_llm_model = os.getenv("OPENAI_LLM_MODEL", "gpt-5-mini")
+openai_llm_model = os.getenv("OPENAI_LLM_MODEL", "gpt-4.1-mini")
 openai_chat_model = os.getenv("OPENAI_CHAT_MODEL", openai_llm_model)
 openai_fc_model = os.getenv("OPENAI_FC_MODEL", openai_llm_model)
 openai_mm_model = os.getenv("OPENAI_MM_MODEL", openai_llm_model)

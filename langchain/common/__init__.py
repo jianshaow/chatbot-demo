@@ -22,7 +22,7 @@ hf_embed_model = os.getenv("HF_EMBED_MODEL", "BAAI/bge-base-en-v1.5")
 hf_chat_model = os.getenv("HF_CHAT_MODEL", "meta-llama/Llama-3.2-3B-Instruct")
 
 openai_embed_model = os.getenv("OPENAI_EMBED_MODEL", "text-embedding-3-small")
-openai_llm_model = os.getenv("OPENAI_LLM_MODEL", "gpt-5-mini")
+openai_llm_model = os.getenv("OPENAI_LLM_MODEL", "gpt-4.1-mini")
 openai_chat_model = os.getenv("OPENAI_CHAT_MODEL", openai_llm_model)
 openai_fc_model = os.getenv("OPENAI_FC_MODEL", openai_llm_model)
 openai_mm_model = os.getenv("OPENAI_MM_MODEL", openai_llm_model)
