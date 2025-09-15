@@ -6,7 +6,7 @@ tool_call_system = "You are bad at math but are an expert at using a calculator"
 
 system_message = ChatMessage(role="system", content=tool_call_system)
 
-tool_call_question = get_args(1, "What is (121 * 3) + (6 * 7)?")
+tool_call_question = get_args(1, "What is (121 * 3) + (6 * 7)?") or ""
 
 question_message = ChatMessage(role="user", content=tool_call_question)
 

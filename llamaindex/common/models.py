@@ -5,8 +5,10 @@ from llama_index.core.agent.workflow import AgentStream, AgentWorkflow, ToolCall
 from llama_index.core.embeddings import BaseEmbedding
 from llama_index.core.llms import LLM, ChatMessage, ImageBlock, TextBlock
 from llama_index.core.llms.function_calling import FunctionCallingLLM
+from llama_index.core.memory import ChatMemoryBuffer
 from llama_index.core.multi_modal_llms import MultiModalLLM
 from llama_index.core.schema import ImageNode
+from llama_index.core.tools import QueryEngineTool
 
 from common import demo_image_url as image_url
 from common import get_args, get_env_bool
@@ -65,6 +67,30 @@ def demo_chat(chat_model: LLM, model: str):
     for chunk in response:
         print(chunk.delta, end="")
     print("\n", "-" * 80, sep="")
+
+
+def demo_agent(
+    embed_model: BaseEmbedding,
+    embed_model_name: str,
+    agent_model: LLM,
+    agent_model_name: str,
+    data_path: str = "data/default",
+):
+    print("-" * 80)
+    print("embed model:", embed_model_name)
+    print("agent model:", agent_model_name)
+    print("-" * 80)
+
+    index = __get_index(embed_model, data_path)
+    query_engine_tool = QueryEngineTool.from_defaults(index.as_query_engine())
+    agent = AgentWorkflow.from_tools_or_functions([query_engine_tool], agent_model)
+    memory = ChatMemoryBuffer.from_defaults(token_limit=40000)
+
+    while True:
+        user_input = input("User: ")
+        if user_input == "exit":
+            break
+        __run_agent(agent, user_input, memory)
 
 
 def demo_fn_call(
@@ -141,19 +167,7 @@ def demo_fn_call_agent(fn_call_model: LLM, model: str):
     print("-" * 80)
 
     agent = AgentWorkflow.from_tools_or_functions(calc_tools, fn_call_model)
-
-    async def run_agent():
-        handler = agent.run(tool_call_question)
-        async for event in handler.stream_events():
-            if isinstance(event, AgentStream):
-                print(event.delta, end="", flush=True)
-            elif isinstance(event, ToolCallResult):
-                print("Tool called: ", event.tool_name)
-                print("Arguments to the tool: ", event.tool_kwargs)
-                print("Tool output: ", event.tool_output)
-                print("-" * 80)
-
-    asyncio.run(run_agent())
+    __run_agent(agent, tool_call_question)
     print()
 
 
@@ -245,15 +259,7 @@ def demo_retrieve(
     print("-" * 80)
     print("embed model:", model_name)
 
-    documents = SimpleDirectoryReader(data_path).load_data(show_progress=True)
-    for doc in documents:
-        doc.excluded_embed_metadata_keys.append("file_path")
-        doc.excluded_llm_metadata_keys.append("file_path")
-    index = VectorStoreIndex.from_documents(
-        documents,
-        embed_model=embed_model,
-        show_progress=True,
-    )
+    index = __get_index(embed_model, data_path)
 
     retriever = index.as_retriever(
         similarity_top_k=2,
@@ -263,3 +269,31 @@ def demo_retrieve(
     for node in nodes:
         print("-" * 80)
         print(node)
+
+
+def __get_index(embed_model: BaseEmbedding, data_path: str) -> VectorStoreIndex:
+    documents = SimpleDirectoryReader(data_path).load_data(show_progress=True)
+    for doc in documents:
+        doc.excluded_embed_metadata_keys.append("file_path")
+        doc.excluded_llm_metadata_keys.append("file_path")
+    return VectorStoreIndex.from_documents(
+        documents,
+        embed_model=embed_model,
+        show_progress=True,
+    )
+
+
+def __run_agent(agent: AgentWorkflow, question: str, memory=None):
+    async def run_agent():
+        handler = agent.run(question, memory=memory)
+        async for event in handler.stream_events():
+            if isinstance(event, AgentStream):
+                print(event.delta, end="", flush=True)
+            elif isinstance(event, ToolCallResult):
+                print("Tool called: ", event.tool_name)
+                print("Arguments to the tool: ", event.tool_kwargs)
+                print("Tool output: ", event.tool_output)
+                print("-" * 80)
+
+    asyncio.run(run_agent())
+    print("\n", "-" * 80, sep="")

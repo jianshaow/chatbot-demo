@@ -5,5 +5,5 @@ from common.images import show_demo_image
 from common.models import demo_multi_modal
 
 show_demo_image()
-mm_model = GoogleGenAI(model=model, transport="rest")
+mm_model = GoogleGenAI(model=model)
 demo_multi_modal(mm_model, model)
