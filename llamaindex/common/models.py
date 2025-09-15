@@ -8,7 +8,7 @@ from llama_index.core.llms.function_calling import FunctionCallingLLM
 from llama_index.core.memory import ChatMemoryBuffer
 from llama_index.core.multi_modal_llms import MultiModalLLM
 from llama_index.core.schema import ImageNode
-from llama_index.core.tools import QueryEngineTool
+from llama_index.core.tools import RetrieverTool
 
 from common import demo_image_url as image_url
 from common import get_args, get_env_bool
@@ -82,7 +82,7 @@ def demo_agent(
     print("-" * 80)
 
     index = __get_index(embed_model, data_path)
-    query_engine_tool = QueryEngineTool.from_defaults(index.as_query_engine())
+    query_engine_tool = RetrieverTool.from_defaults(index.as_retriever())
     agent = AgentWorkflow.from_tools_or_functions([query_engine_tool], agent_model)
     memory = ChatMemoryBuffer.from_defaults(token_limit=40000)
 
