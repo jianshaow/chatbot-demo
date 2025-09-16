@@ -72,18 +72,18 @@ def demo_chat(chat_model: LLM, model: str):
 def demo_agent(
     embed_model: BaseEmbedding,
     embed_model_name: str,
-    agent_model: LLM,
-    agent_model_name: str,
+    chat_model: LLM,
+    chat_model_name: str,
     data_path: str = "data/default",
 ):
     print("-" * 80)
     print("embed model:", embed_model_name)
-    print("agent model:", agent_model_name)
+    print("chat model:", chat_model_name)
     print("-" * 80)
 
     index = __get_index(embed_model, data_path)
     retriever_tool = RetrieverTool.from_defaults(index.as_retriever())
-    agent = AgentWorkflow.from_tools_or_functions([retriever_tool], agent_model)
+    agent = AgentWorkflow.from_tools_or_functions([retriever_tool], chat_model)
     memory = ChatMemoryBuffer.from_defaults(token_limit=40000)
 
     while True:
