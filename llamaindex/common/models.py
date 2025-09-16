@@ -82,8 +82,8 @@ def demo_agent(
     print("-" * 80)
 
     index = __get_index(embed_model, data_path)
-    query_engine_tool = RetrieverTool.from_defaults(index.as_retriever())
-    agent = AgentWorkflow.from_tools_or_functions([query_engine_tool], agent_model)
+    retriever_tool = RetrieverTool.from_defaults(index.as_retriever())
+    agent = AgentWorkflow.from_tools_or_functions([retriever_tool], agent_model)
     memory = ChatMemoryBuffer.from_defaults(token_limit=40000)
 
     while True:
