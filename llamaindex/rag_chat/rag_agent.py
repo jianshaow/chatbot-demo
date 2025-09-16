@@ -1,0 +1,55 @@
+import asyncio
+
+import chromadb
+import rag_config
+from llama_index.core import Settings, VectorStoreIndex
+from llama_index.core.agent.workflow import AgentStream, AgentWorkflow, ToolCallResult
+from llama_index.core.tools import RetrieverTool
+from llama_index.vector_stores.chroma import ChromaVectorStore
+
+config = rag_config.get_config()
+
+Settings.embed_model = config.embed_model()
+Settings.llm = config.chat_model()
+print("-" * 80)
+print("embed model:", config.embed_model_name)
+print("chat model:", config.chat_model_name)
+
+client = chromadb.PersistentClient(path=config.vector_db_path)
+chroma_collection = client.get_or_create_collection(config.vector_db_collection)
+vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
+index = VectorStoreIndex.from_vector_store(vector_store)
+
+retriever_tool = RetrieverTool.from_defaults(index.as_retriever())
+agent = AgentWorkflow.from_tools_or_functions([retriever_tool], Settings.llm)
+
+question = config.get_question() or ""
+print("-" * 80)
+print("Question:", question, sep="\n")
+
+
+async def run_agent():
+    handler = agent.run(question)
+    first = True
+    async for event in handler.stream_events():
+        if isinstance(event, AgentStream):
+            if first and event.response != "":
+                print("-" * 80)
+                print("Answer:")
+                first = False
+            print(event.delta, end="", flush=True)
+        elif isinstance(event, ToolCallResult):
+            print("-" * 80)
+            print("Tool called: ", event.tool_name)
+            print("Arguments: ", event.tool_kwargs)
+            nodes = event.tool_output.raw_output
+            for node in nodes:
+                print("-" * 80)
+                print(node)
+        else:
+            print("-" * 80)
+            print(event.__class__.__name__)
+
+
+asyncio.run(run_agent())
+print("\n", "-" * 80, sep="")
