@@ -63,6 +63,6 @@ def __run_agent(user_msg):
 print("-" * 80)
 while True:
     user_input = input("User: ")
-    if user_input == "exit":
+    if user_input == "bye":
         break
     __run_agent(user_input)
