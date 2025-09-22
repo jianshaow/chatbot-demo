@@ -75,6 +75,7 @@ def demo_agent(
     chat_model: LLM,
     chat_model_name: str,
     data_path: str = "data/default",
+    query="What did the author do growing up?",
 ):
     print("-" * 80)
     print("embed model:", embed_model_name)
@@ -84,13 +85,8 @@ def demo_agent(
     index = __get_index(embed_model, data_path)
     retriever_tool = RetrieverTool.from_defaults(index.as_retriever())
     agent = AgentWorkflow.from_tools_or_functions([retriever_tool], chat_model)
-    memory = ChatMemoryBuffer.from_defaults(token_limit=40000)
 
-    while True:
-        user_input = input("User: ")
-        if user_input == "exit":
-            break
-        __run_agent(agent, user_input, memory)
+    __run_agent(agent, query)
 
 
 def demo_fn_call(

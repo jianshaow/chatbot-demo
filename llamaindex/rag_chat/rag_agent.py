@@ -4,6 +4,7 @@ import chromadb
 import rag_config
 from llama_index.core import Settings, VectorStoreIndex
 from llama_index.core.agent.workflow import AgentStream, AgentWorkflow, ToolCallResult
+from llama_index.core.memory import ChatMemoryBuffer
 from llama_index.core.tools import RetrieverTool
 from llama_index.vector_stores.chroma import ChromaVectorStore
 
@@ -22,34 +23,46 @@ index = VectorStoreIndex.from_vector_store(vector_store)
 
 retriever_tool = RetrieverTool.from_defaults(index.as_retriever())
 agent = AgentWorkflow.from_tools_or_functions([retriever_tool], Settings.llm)
+memory = ChatMemoryBuffer.from_defaults(token_limit=40000)
 
-question = config.get_question() or ""
+
+def __run_agent(user_msg):
+
+    async def run_agent():
+        handler = agent.run(user_msg, memory=memory)
+        stream_started = False
+        async for event in handler.stream_events():
+            if isinstance(event, AgentStream):
+                if not stream_started and event.response != "":
+                    print("-" * 80)
+                    print("Answer:")
+                    stream_started = True
+                print(event.delta, end="", flush=True)
+            elif isinstance(event, ToolCallResult):
+                if stream_started:
+                    print()
+                    stream_started = False
+                print("-" * 80)
+                print("Tool called: ", event.tool_name)
+                print("Arguments: ", event.tool_kwargs)
+                nodes = event.tool_output.raw_output
+                for node in nodes:
+                    print("-" * 80)
+                    print(node)
+            else:
+                if stream_started:
+                    print()
+                    stream_started = False
+                print("-" * 80)
+                print(event.__class__.__name__)
+
+    asyncio.run(run_agent())
+    print("-" * 80)
+
+
 print("-" * 80)
-print("Question:", question, sep="\n")
-
-
-async def run_agent():
-    handler = agent.run(question)
-    first = True
-    async for event in handler.stream_events():
-        if isinstance(event, AgentStream):
-            if first and event.response != "":
-                print("-" * 80)
-                print("Answer:")
-                first = False
-            print(event.delta, end="", flush=True)
-        elif isinstance(event, ToolCallResult):
-            print("-" * 80)
-            print("Tool called: ", event.tool_name)
-            print("Arguments: ", event.tool_kwargs)
-            nodes = event.tool_output.raw_output
-            for node in nodes:
-                print("-" * 80)
-                print(node)
-        else:
-            print("-" * 80)
-            print(event.__class__.__name__)
-
-
-asyncio.run(run_agent())
-print("\n", "-" * 80, sep="")
+while True:
+    user_input = input("User: ")
+    if user_input == "exit":
+        break
+    __run_agent(user_input)
