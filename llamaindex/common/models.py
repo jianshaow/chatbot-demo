@@ -5,7 +5,6 @@ from llama_index.core.agent.workflow import AgentStream, AgentWorkflow, ToolCall
 from llama_index.core.embeddings import BaseEmbedding
 from llama_index.core.llms import LLM, ChatMessage, ImageBlock, TextBlock
 from llama_index.core.llms.function_calling import FunctionCallingLLM
-from llama_index.core.memory import ChatMemoryBuffer
 from llama_index.core.multi_modal_llms import MultiModalLLM
 from llama_index.core.schema import ImageNode
 from llama_index.core.tools import RetrieverTool
