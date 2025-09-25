@@ -287,7 +287,10 @@ def __run_agent(agent: AgentWorkflow, question: str, memory=None):
             elif isinstance(event, ToolCallResult):
                 print("Tool called: ", event.tool_name)
                 print("Arguments to the tool: ", event.tool_kwargs)
-                print("Tool output: ", event.tool_output)
+                if isinstance(event.tool_output.raw_output, list):
+                    print("Tool output size: ", len(event.tool_output.raw_output))
+                else:
+                    print("Tool output: ", event.tool_output.raw_output)
                 print("-" * 80)
 
     asyncio.run(run_agent())
