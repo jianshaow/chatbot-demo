@@ -5,6 +5,7 @@ from llama_index.core.agent.workflow import AgentStream, AgentWorkflow, ToolCall
 from llama_index.core.embeddings import BaseEmbedding
 from llama_index.core.llms import LLM, ChatMessage, ImageBlock, TextBlock
 from llama_index.core.llms.function_calling import FunctionCallingLLM
+from llama_index.core.memory import BaseMemory
 from llama_index.core.multi_modal_llms import MultiModalLLM
 from llama_index.core.schema import ImageNode
 from llama_index.core.tools import RetrieverTool
@@ -19,6 +20,7 @@ from common.prompts import (
     tool_call_question,
 )
 from common.tools import calc_tools
+from common.workflows import from_tools_or_functions
 
 
 def default_model_kwargs() -> dict[str, str]:
@@ -83,8 +85,7 @@ def demo_agent(
 
     index = __get_index(embed_model, data_path)
     retriever_tool = RetrieverTool.from_defaults(index.as_retriever())
-    agent = AgentWorkflow.from_tools_or_functions([retriever_tool], chat_model)
-
+    agent = from_tools_or_functions([retriever_tool], chat_model)
     __run_agent(agent, query)
 
 
@@ -161,9 +162,8 @@ def demo_fn_call_agent(fn_call_model: LLM, model: str):
     print("fn call model:", model)
     print("-" * 80)
 
-    agent = AgentWorkflow.from_tools_or_functions(calc_tools, fn_call_model)
+    agent = from_tools_or_functions(calc_tools, fn_call_model)
     __run_agent(agent, tool_call_question)
-    print()
 
 
 def demo_multi_modal_legacy(mm_model: MultiModalLLM, model: str, streaming=True):
@@ -278,7 +278,11 @@ def __get_index(embed_model: BaseEmbedding, data_path: str) -> VectorStoreIndex:
     )
 
 
-def __run_agent(agent: AgentWorkflow, question: str, memory=None):
+def __run_agent(
+    agent: AgentWorkflow,
+    question: str,
+    memory: BaseMemory | None = None,
+):
     async def run_agent():
         handler = agent.run(question, memory=memory)
         async for event in handler.stream_events():
