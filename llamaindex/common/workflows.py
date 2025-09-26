@@ -1,5 +1,6 @@
 from typing import cast
 
+from llama_index.core import Settings
 from llama_index.core.agent.workflow import AgentStream, AgentWorkflow
 from llama_index.core.llms import LLM
 from llama_index.core.workflow import Context
@@ -13,6 +14,8 @@ class ReActContext(Context):
         super().__init__(*args, **kwargs)
 
     def write_event_to_stream(self, ev: Event | None) -> None:
+        if ev is None:
+            return
         if isinstance(ev, AgentStream):
             if self.started:
                 super().write_event_to_stream(ev)
@@ -29,21 +32,32 @@ class ReActContext(Context):
             super().write_event_to_stream(ev)
 
 
+class FuncCallContext(Context):
+    def write_event_to_stream(self, ev: Event | None) -> None:
+        if ev is None:
+            return
+        if isinstance(ev, AgentStream):
+            if ev.response != "":
+                super().write_event_to_stream(ev)
+        else:
+            super().write_event_to_stream(ev)
+
+
 def from_tools_or_functions(*args, **kwargs) -> AgentWorkflow:
     agent = AgentWorkflow.from_tools_or_functions(*args, **kwargs)
 
-    def wrap_run(func):
+    llm = args[1] or kwargs.get("llm") or Settings.llm
+    llm = cast(LLM, llm)
+    if llm.metadata.is_function_calling_model:
+        ctx = FuncCallContext(agent)
+    else:
         ctx = ReActContext(agent)
 
+    def wrap_run(func):
         def wrapper(*args, **kwargs):
             return func(ctx=ctx, *args, **kwargs)
 
         return wrapper
 
-    llm = args[1] or kwargs.get("llm")
-    if llm:
-        llm = cast(LLM, llm)
-        if not llm.metadata.is_function_calling_model:
-            agent.run = wrap_run(agent.run)
-
+    agent.run = wrap_run(agent.run)
     return agent

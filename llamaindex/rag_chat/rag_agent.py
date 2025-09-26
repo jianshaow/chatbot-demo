@@ -33,7 +33,7 @@ def __run_agent(user_msg):
         stream_started = False
         async for event in handler.stream_events():
             if isinstance(event, AgentStream):
-                if not stream_started and event.response != "":
+                if not stream_started:
                     print("-" * 80)
                     print("Answer:")
                     stream_started = True
