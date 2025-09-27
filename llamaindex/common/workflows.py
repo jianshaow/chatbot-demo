@@ -32,7 +32,7 @@ class ReActContext(Context):
             super().write_event_to_stream(ev)
 
 
-class FuncCallContext(Context):
+class FunctionContext(Context):
     def write_event_to_stream(self, ev: Event | None) -> None:
         if ev is None:
             return
@@ -49,7 +49,7 @@ def from_tools_or_functions(*args, **kwargs) -> AgentWorkflow:
     llm = args[1] or kwargs.get("llm") or Settings.llm
     llm = cast(LLM, llm)
     if llm.metadata.is_function_calling_model:
-        ctx = FuncCallContext(agent)
+        ctx = FunctionContext(agent)
     else:
         ctx = ReActContext(agent)
 
