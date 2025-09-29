@@ -25,44 +25,45 @@ retriever_tool = RetrieverTool.from_defaults(index.as_retriever())
 agent = AgentWorkflow.from_tools_or_functions([retriever_tool], Settings.llm)
 memory = ChatMemoryBuffer.from_defaults(token_limit=40000)
 
+print("-" * 80)
 
-def __run_agent(user_msg):
 
-    async def run_agent():
-        handler = agent.run(user_msg, memory=memory)
-        stream_started = False
-        async for event in handler.stream_events():
-            if isinstance(event, AgentStream):
-                if not stream_started:
-                    print("-" * 80)
-                    print("Answer:")
-                    stream_started = True
-                print(event.delta, end="", flush=True)
-            elif isinstance(event, ToolCallResult):
-                if stream_started:
-                    print()
-                    stream_started = False
+async def __run_agent(user_msg):
+    handler = agent.run(user_msg, memory=memory)
+    stream_started = False
+    async for event in handler.stream_events():
+        if isinstance(event, AgentStream):
+            if not stream_started and event.delta != "":
                 print("-" * 80)
-                print("Tool called: ", event.tool_name)
-                print("Arguments: ", event.tool_kwargs)
-                nodes = event.tool_output.raw_output
-                for node in nodes:
-                    print("-" * 80)
-                    print(node)
-            else:
-                if stream_started:
-                    print()
-                    stream_started = False
-                print("-" * 80)
-                print(event.__class__.__name__)
+                print("Answer: ", end="")
+                stream_started = True
+            print(event.delta, end="", flush=True)
+        elif isinstance(event, ToolCallResult):
+            if stream_started:
+                print()
+                stream_started = False
+            print("-" * 80)
+            print("Tool called: ", event.tool_name)
+            print("Arguments: ", event.tool_kwargs)
+            nodes = event.tool_output.raw_output
+            for node in nodes:
+                print("=" * 80)
+                print(node)
+        else:
+            if stream_started:
+                print()
+                stream_started = False
 
-    asyncio.run(run_agent())
     print("-" * 80)
 
 
-print("-" * 80)
-while True:
-    user_input = input("User: ")
-    if user_input == "bye":
-        break
-    __run_agent(user_input)
+async def __main():
+    while True:
+        user_input = input("User: ")
+        if user_input == "bye":
+            break
+        await __run_agent(user_input)
+
+
+if __name__ == "__main__":
+    asyncio.run(__main())
