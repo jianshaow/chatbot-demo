@@ -6,11 +6,14 @@ from llama_index.core.llms import LLM
 from llama_index.core.workflow import Context
 from workflows.events import Event
 
+FINAL_ANSWER_PREFIX = "Answer: "
+
 
 class ReActContext(Context):
     def __init__(self, *args, **kwargs):
         self.buffer = ""
         self.started = False
+        self.final_answer = ""
         super().__init__(*args, **kwargs)
 
     def write_event_to_stream(self, ev: Event | None) -> None:
@@ -18,17 +21,21 @@ class ReActContext(Context):
             return
         if isinstance(ev, AgentStream):
             if self.started:
+                self.final_answer += ev.delta
+                ev.response = self.final_answer
                 super().write_event_to_stream(ev)
             else:
                 self.buffer += ev.delta
-                if "Answer:" in self.buffer:
+                if FINAL_ANSWER_PREFIX in self.buffer:
                     self.started = True
-                    ev.delta = self.buffer.split("Answer: ")[-1]
+                    ev.delta = self.buffer.split(FINAL_ANSWER_PREFIX)[-1]
+                    ev.response = self.final_answer = ev.delta
                     super().write_event_to_stream(ev)
 
         else:
             self.buffer = ""
             self.started = False
+            self.final_answer = ""
             super().write_event_to_stream(ev)
 
 
