@@ -15,6 +15,7 @@ Settings.llm = config.chat_model()
 print("-" * 80)
 print("embed model:", config.embed_model_name)
 print("chat model:", config.chat_model_name)
+print("-" * 80)
 
 client = chromadb.PersistentClient(path=config.vector_db_path)
 chroma_collection = client.get_or_create_collection(config.vector_db_collection)
@@ -24,8 +25,6 @@ index = VectorStoreIndex.from_vector_store(vector_store)
 retriever_tool = RetrieverTool.from_defaults(index.as_retriever())
 agent = AgentWorkflow.from_tools_or_functions([retriever_tool], Settings.llm)
 memory = ChatMemoryBuffer.from_defaults(token_limit=40000)
-
-print("-" * 80)
 
 
 async def __run_agent(user_msg):
