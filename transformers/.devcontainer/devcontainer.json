@@ -1,6 +1,6 @@
 {
 	"name": "TRANSFORMERS",
-	"image": "jianshao/transformers-demo:4.54.1",
+	"image": "jianshao/transformers-demo:latest",
 	"remoteEnv": {
 		"PYTHONPATH": "."
 	},
