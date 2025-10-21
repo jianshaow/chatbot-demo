@@ -1,6 +1,6 @@
 {
 	"name": "LLAMAINDEX",
-	"image": "jianshao/llamaindex-demo:0.14.2",
+	"image": "jianshao/llamaindex-demo:latest",
 	"remoteEnv": {
 		"PYTHONPATH": ".",
 		"OLLAMA_HOST": "host.docker.internal",
