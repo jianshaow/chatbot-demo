@@ -8,7 +8,7 @@ generate = pipeline(
     "text-generation",
     model=model,
     device_map="auto",
-    torch_dtype="auto",
+    dtype="auto",
     model_kwargs=default_model_kwargs(),
 )
 if generate.tokenizer and generate.generation_config:

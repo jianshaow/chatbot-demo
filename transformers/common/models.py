@@ -38,7 +38,7 @@ def default_model_kwargs() -> dict[str, str]:
 def new_model(model_name: str, model_kwargs=None):
     model_kwargs = default_model_kwargs() if model_kwargs is None else model_kwargs
     model = AutoModelForCausalLM.from_pretrained(
-        model_name, torch_dtype="auto", device_map="auto", **model_kwargs
+        model_name, dtype="auto", device_map="auto", **model_kwargs
     )
     tokenizer = AutoTokenizer.from_pretrained(model_name)
 
@@ -47,9 +47,9 @@ def new_model(model_name: str, model_kwargs=None):
 
 def new_multi_modal_model(model_name: str, model_kwargs=None):
     config = AutoConfig.from_pretrained(model_name, trust_remote_code=True)
-    architecture = config.architectures[0]
     AutoModelClass = AutoModelForCausalLM
 
+    architecture = config.architectures[0] if config.architectures else ""
     if "Qwen2VLForConditionalGeneration" in architecture:
         AutoModelClass = Qwen2VLForConditionalGeneration
     if "Qwen2_5_VLForConditionalGeneration" in architecture:
@@ -63,13 +63,15 @@ def new_multi_modal_model(model_name: str, model_kwargs=None):
         model_kwargs = default_model_kwargs()
     model_kwargs = {
         **model_kwargs,
-        "torch_dtype": "auto",
+        "dtype": "auto",
         "device_map": "auto",
         "trust_remote_code": True,
     }
     model = AutoModelClass.from_pretrained(model_name, **model_kwargs)
 
-    processor = AutoProcessor.from_pretrained(model_name, trust_remote_code=True)
+    processor = AutoProcessor.from_pretrained(
+        model_name, use_fast=False, trust_remote_code=True
+    )
 
     return model, processor, config
 
