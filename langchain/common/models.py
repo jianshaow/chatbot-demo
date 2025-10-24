@@ -1,7 +1,7 @@
 import textwrap
 from typing import Any
 
-from langchain.agents import AgentExecutor, create_tool_calling_agent
+from langchain.agents import create_agent
 from langchain_chroma import Chroma
 from langchain_community.document_loaders import DirectoryLoader
 from langchain_core.embeddings import Embeddings
@@ -120,26 +120,16 @@ def demo_fn_call_agent(fn_call_model: BaseChatModel, model: str, with_few_shot=F
     print("-" * 80)
     print("fn call model:", model)
 
-    prompt = ChatPromptTemplate.from_messages(
-        [
-            ("system", FN_CALL_SYSTEM),
-            ("human", "{input}"),
-            ("placeholder", "{agent_scratchpad}"),
-        ]
-    )
+    agent = create_agent(fn_call_model, calc_tools, system_prompt=FN_CALL_SYSTEM)
 
-    agent = create_tool_calling_agent(fn_call_model, calc_tools, prompt)
-    agent_executor = AgentExecutor(agent=agent, tools=calc_tools, verbose=True)
-
-    query_args = {
-        "input": fn_call_question,
-    }
+    messages = []
     if with_few_shot:
-        query_args.update({"chat_history": examples})
+        messages.extend(examples)
+    messages.append({"role": "user", "content": fn_call_question})
 
-    response = agent_executor.invoke(query_args)
+    response = agent.invoke({"messages": messages})
     print("-" * 80)
-    print(response["output"])
+    print(response["messages"][-1].content)
 
 
 def demo_multi_modal(mm_model: BaseChatModel, model: str, image_data=None):
