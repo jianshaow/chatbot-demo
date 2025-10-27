@@ -1,4 +1,5 @@
 import json
+from typing import cast
 
 from common import openai_fc_model as model
 from common.fn_tools import tools
@@ -6,8 +7,11 @@ from common.functions import fns
 from common.openai import get_client
 from common.prompts import fn_call_adv_question_message as question
 from openai.types.chat import (
-    ChatCompletionMessage,
+    ChatCompletionFunctionToolParam,
     ChatCompletionMessageFunctionToolCall,
+    ChatCompletionMessageParam,
+    ChatCompletionToolMessageParam,
+    ChatCompletionUserMessageParam,
 )
 
 print("-" * 80)
@@ -15,12 +19,16 @@ print("fn call model:", model)
 
 client = get_client()
 
-messages: list[ChatCompletionMessage | dict] = [question]
-response = client.chat.completions.create(model=model, messages=messages, tools=tools)  # type: ignore
+user_message = cast(ChatCompletionUserMessageParam, question)
+tools_message = cast(list[ChatCompletionFunctionToolParam], tools)
+messages: list[ChatCompletionMessageParam] = [user_message]
+response = client.chat.completions.create(
+    model=model, messages=messages, tools=tools_message
+)
 
 while response.choices[0].message.tool_calls:
     print("-" * 80)
-    messages.append(response.choices[0].message)
+    messages.append(cast(ChatCompletionToolMessageParam, response.choices[0].message))
     for tool_call in response.choices[0].message.tool_calls:
         if not isinstance(tool_call, ChatCompletionMessageFunctionToolCall):
             continue
@@ -44,7 +52,7 @@ while response.choices[0].message.tool_calls:
             }
         )
     response = client.chat.completions.create(
-        model=model, messages=messages, tools=tools  # type: ignore
+        model=model, messages=messages, tools=tools_message
     )
 
 print("-" * 80)
