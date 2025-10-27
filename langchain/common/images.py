@@ -4,6 +4,7 @@ from io import BytesIO
 import matplotlib.pyplot as plt
 import requests
 from PIL import Image
+from PIL.ImageFile import ImageFile
 
 from common.prompts import mm_image_url
 
@@ -24,7 +25,7 @@ def show_demo_image():
     return bytes_content, base64_content
 
 
-def show_image(image: Image.Image):
+def show_image(image: ImageFile):
     print("image size:", image.size)
     dpi = image.info.get("dpi", DPI)
     width, height = image.size
