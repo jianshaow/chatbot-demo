@@ -7,12 +7,14 @@ print("embed model:", model)
 
 client = genai.Client()
 
-embeddings = client.models.embed_content(
+response = client.models.embed_content(
     model=model,
     contents=[question],
-).embeddings[0].values # type: ignore
+)
 
-print("-" * 80)
-print("dimension:", len(embeddings)) # type: ignore
-print(embeddings[:4]) # type: ignore
-print("-" * 80, sep="")
+if response.embeddings and response.embeddings[0].values:
+    embeddings = response.embeddings[0].values
+    print("-" * 80)
+    print("dimension:", len(embeddings))
+    print(embeddings[:4])
+    print("-" * 80, sep="")

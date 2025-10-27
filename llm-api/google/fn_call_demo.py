@@ -55,6 +55,12 @@ while response.function_calls:
         )
         for fn, result in results
     ]
-    response = chat.send_message(fn_response_parts)  # type: ignore
+    response = chat.send_message(fn_response_parts)
 
-print(response.text)
+if (
+    response.candidates
+    and response.candidates[0].content
+    and response.candidates[0].content.parts
+):
+    print("-" * 80)
+    print(response.candidates[0].content.parts[0].text)

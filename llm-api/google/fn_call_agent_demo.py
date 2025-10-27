@@ -21,5 +21,10 @@ print("fn call model:", model_name)
 chat = client.chats.create(config=config, model=model_name)
 messages.append(question)
 response = chat.send_message(messages)
-print("-" * 80)
-print(response.text)
+if (
+    response.candidates
+    and response.candidates[0].content
+    and response.candidates[0].content.parts
+):
+    print("-" * 80)
+    print(response.candidates[0].content.parts[0].text)
