@@ -39,6 +39,7 @@ DEFAULT_QUESTION_ZH = "地球发动机都安装在哪里？"
 
 
 class RagChatConfig:
+
     def __init__(
         self,
         name: str,
@@ -72,31 +73,31 @@ class RagChatConfig:
         escaped = self.embed_model_name.replace(":", "_").replace("/", "_")
         return self.__data_dir + "__" + escaped
 
-    def embed_model(self):
+    def embed_model(self) -> Embeddings:
         if self.__embed_model == OllamaEmbeddings:
-            return self.__embed_model(
+            return OllamaEmbeddings(
                 base_url=ollama_base_url, model=self.embed_model_name
             )
         if self.__embed_model == GoogleGenerativeAIEmbeddings:
-            return self.__embed_model(model=self.embed_model_name, transport="rest")
+            return GoogleGenerativeAIEmbeddings(
+                model=self.embed_model_name, transport="rest"
+            )
         if self.__embed_model == HuggingFaceEmbeddings:
-            return self.__embed_model(
+            return HuggingFaceEmbeddings(
                 model_name=self.embed_model_name,
                 model_kwargs={"trust_remote_code": True},
                 encode_kwargs={"normalize_embeddings": True},
             )
-        return self.__embed_model(model=self.embed_model_name)
+        return GoogleGenerativeAIEmbeddings(model=self.embed_model_name)
 
-    def chat_model(self):
+    def chat_model(self) -> BaseChatModel:
         if self.__chat_model == ChatOllama:
-            return self.__chat_model(
-                base_url=ollama_base_url, model=self.chat_model_name
-            )
+            return ChatOllama(base_url=ollama_base_url, model=self.chat_model_name)
         if self.__chat_model == ChatGoogleGenerativeAI:
-            return self.__chat_model(model=self.chat_model_name, transport="rest")
+            return ChatGoogleGenerativeAI(model=self.chat_model_name, transport="rest")
         if self.__chat_model == ChatHuggingFace:
             return self.__hf_chat_model()
-        return self.__chat_model(model=self.chat_model_name)
+        return ChatGoogleGenerativeAI(model=self.chat_model_name)
 
     def get_question(self):
         return get_args(2, self.defalut_question)
@@ -221,11 +222,11 @@ __config_dict = {
 
 
 def get_config():
-    return __config_dict[get_args(1, "ollama")]
+    return __config_dict[get_args(1, "google")]
 
 
 if __name__ == "__main__":
-    if config_key := get_args(1, None):
+    if config_key := get_args(1, ""):
         print(vars(__config_dict[config_key]))
     else:
         for config in __config_dict:
