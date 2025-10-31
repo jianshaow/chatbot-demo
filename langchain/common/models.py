@@ -89,7 +89,7 @@ def demo_agent(
     vectorstore = get_vector_store(embed_model)
     agent = create_agent(chat_model, get_retrieve_tools(vectorstore))
 
-    messages = [
+    messages: list = [
         {"role": "user", "content": query},
     ]
     response = agent.invoke({"messages": messages})
