@@ -1,10 +1,9 @@
-import chromadb, rag_config
-from langchain import hub
+import chromadb
+import rag_config
+from langchain.agents import create_agent
 from langchain_chroma import Chroma
+from langchain_classic.tools.retriever import create_retriever_tool
 from langchain_core.documents import Document
-from langchain_core.runnables import RunnablePassthrough, RunnableSerializable
-from langchain_core.output_parsers import StrOutputParser
-
 
 config = rag_config.get_config()
 
@@ -28,20 +27,19 @@ def format_docs(docs: list[Document]):
 
 
 retriever = vectorstore.as_retriever(search_kwargs={"k": 2})
-prompt = hub.pull("rlm/rag-prompt")
-passthrough = RunnablePassthrough()
-output_parser = StrOutputParser()
-
-rag_chain: RunnableSerializable = (
-    {"context": retriever | format_docs, "question": passthrough}
-    | prompt
-    | llm
-    | output_parser
+retriever_tool = create_retriever_tool(
+    retriever, "retriever", "Retrieve information to help answer a query."
 )
+agent = create_agent(llm, [retriever_tool])
 question = config.get_question()
+
+messages: list = [
+    {"role": "user", "content": question},
+]
+
 print("-" * 80)
 print("Question:", question, sep="\n")
 print("Answer:")
-for chunk in rag_chain.stream(question):
-    print(chunk, end="", flush=True)
+for chunk, metadata in agent.stream({"messages": messages}, stream_mode="messages"):
+    print(chunk.content, end="", flush=True)
 print("\n", "-" * 80, sep="")
