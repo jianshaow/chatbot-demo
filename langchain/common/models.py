@@ -27,7 +27,7 @@ from common.prompts import (
     mm_question1,
     mm_question2,
 )
-from common.tools import calc_tools
+from common.tools import calc_tools, get_retrieve_tools
 
 
 def default_model_kwargs() -> dict[str, str]:
@@ -72,6 +72,29 @@ def demo_chat(chat_model: BaseChatModel, model: str):
     for chunk in response:
         print(chunk, end="", flush=True)
     print("\n", "-" * 80, sep="")
+
+
+def demo_agent(
+    embed_model: Embeddings,
+    embed_model_name: str,
+    chat_model: BaseChatModel,
+    chat_model_name: str,
+    query="What did the author do growing up?",
+):
+    print("-" * 80)
+    print("embed model:", embed_model_name)
+    print("chat model:", chat_model_name)
+    print("-" * 80)
+
+    vectorstore = get_vector_store(embed_model)
+    agent = create_agent(chat_model, get_retrieve_tools(vectorstore))
+
+    messages = [
+        {"role": "user", "content": query},
+    ]
+    response = agent.invoke({"messages": messages})
+    print("-" * 80)
+    print(response["messages"][-1].content)
 
 
 def demo_fn_call(
@@ -173,6 +196,19 @@ def demo_retrieve(
     data_path: str = "data/default",
     query=embed_question,
 ):
+    print("-" * 80)
+    print("embed model:", model)
+
+    question = get_args(1, query)
+    retriever = get_vector_store(embed_model, data_path).as_retriever()
+    docs = retriever.invoke(question)
+    for doc in docs:
+        print("-" * 80)
+        print(textwrap.fill(doc.page_content[:347] + "..."))
+    print("-" * 80)
+
+
+def get_vector_store(embed_model: Embeddings, data_path: str = "data/default"):
     loader = DirectoryLoader(data_path)
     text_splitter = CharacterTextSplitter.from_tiktoken_encoder(
         chunk_size=1000, chunk_overlap=200
@@ -182,13 +218,4 @@ def demo_retrieve(
         documents=documents,
         embedding=embed_model,
     )
-    print("-" * 80)
-    print("embed model:", model)
-
-    question = get_args(1, query)
-    retriever = vectorstore.as_retriever()
-    docs = retriever.invoke(question)
-    for doc in docs:
-        print("-" * 80)
-        print(textwrap.fill(doc.page_content[:347] + "..."))
-    print("-" * 80)
+    return vectorstore
