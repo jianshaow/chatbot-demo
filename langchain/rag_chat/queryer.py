@@ -41,5 +41,6 @@ print("-" * 80)
 print("Question:", question, sep="\n")
 print("Answer:")
 for chunk, metadata in agent.stream({"messages": messages}, stream_mode="messages"):
-    print(chunk.content, end="", flush=True)
+    if metadata["langgraph_step"] == 3:
+        print(chunk.content, end="", flush=True)
 print("\n", "-" * 80, sep="")

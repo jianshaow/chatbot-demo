@@ -88,7 +88,7 @@ class RagChatConfig:
                 model_kwargs={"trust_remote_code": True},
                 encode_kwargs={"normalize_embeddings": True},
             )
-        return GoogleGenerativeAIEmbeddings(model=self.embed_model_name)
+        return OpenAIEmbeddings(model=self.embed_model_name)
 
     def chat_model(self) -> BaseChatModel:
         if self.__chat_model == ChatOllama:
@@ -97,7 +97,7 @@ class RagChatConfig:
             return ChatGoogleGenerativeAI(model=self.chat_model_name, transport="rest")
         if self.__chat_model == ChatHuggingFace:
             return self.__hf_chat_model()
-        return ChatGoogleGenerativeAI(model=self.chat_model_name)
+        return ChatOpenAI(model=self.chat_model_name)
 
     def get_question(self):
         return get_args(2, self.defalut_question)
