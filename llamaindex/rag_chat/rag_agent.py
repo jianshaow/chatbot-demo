@@ -8,6 +8,8 @@ from llama_index.core.memory import ChatMemoryBuffer
 from llama_index.core.tools import RetrieverTool
 from llama_index.vector_stores.chroma import ChromaVectorStore
 
+from common.workflows import from_tools_or_functions
+
 config = rag_config.get_config()
 
 Settings.embed_model = config.embed_model()
@@ -23,7 +25,7 @@ vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
 index = VectorStoreIndex.from_vector_store(vector_store)
 
 retriever_tool = RetrieverTool.from_defaults(index.as_retriever())
-agent = AgentWorkflow.from_tools_or_functions([retriever_tool], Settings.llm)
+agent = from_tools_or_functions([retriever_tool], Settings.llm)
 memory = ChatMemoryBuffer.from_defaults(token_limit=40000)
 
 
