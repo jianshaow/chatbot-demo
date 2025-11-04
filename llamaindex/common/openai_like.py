@@ -6,7 +6,7 @@ from llama_index.llms.openai_like import OpenAILike
 
 from common import openai_like_api_base as api_base
 from common import openai_like_api_key as api_key
-from common import openai_like_is_chat_model, ssl_verify
+from common import openai_like_embed_batch_size, openai_like_is_chat_model, ssl_verify
 
 
 def get_llm(model):
@@ -31,6 +31,7 @@ def get_embed_model(model_name):
         api_base=api_base,
         api_key=api_key,
         model_name=model_name,
+        embed_batch_size=openai_like_embed_batch_size,
         http_client=http_client,
         async_http_client=async_http_client,
     )
