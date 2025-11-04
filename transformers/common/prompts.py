@@ -15,6 +15,11 @@ prompt_templates = {
 <</SYS>
 
 {user_prompt} [/INST]""",
+    "llama3": """<|begin_of_text|><|start_header_id|>system<|end_header_id|>
+{system_prompt}<|eot_id|><|start_header_id|>user<|end_header_id|>
+
+{user_prompt}<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+""",
 }
 
 
@@ -36,6 +41,7 @@ def tokenizer_prompt(
     result = tokenizer.apply_chat_template(
         messages, tokenize=False, add_generation_prompt=True
     )
+    print("tokenizer_prompt result:", result)
     if isinstance(result, str):
         return result
     else:
