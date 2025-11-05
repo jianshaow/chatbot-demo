@@ -6,7 +6,7 @@ from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from common import ssl_verify
 
 
-def get_llm(model):
+def get_chat_model(model):
     headers = __get_extra_headers()
     http_client = httpx.Client(verify=ssl_verify, headers=headers)
     http_async_client = httpx.AsyncClient(verify=ssl_verify, headers=headers)
