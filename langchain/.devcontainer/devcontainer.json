@@ -3,7 +3,6 @@
 	"image": "jianshao/langchain-demo:latest",
 	"remoteEnv": {
 		"PYTHONPATH": ".",
-		"OLLAMA_HOST": "host.docker.internal"
 	},
 	"runArgs": [
 		"--add-host=host.docker.internal:host-gateway"
