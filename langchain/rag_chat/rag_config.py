@@ -4,16 +4,11 @@ from typing import Type
 from langchain_core.embeddings import Embeddings
 from langchain_core.language_models import BaseChatModel
 from langchain_google_genai import ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings
-from langchain_huggingface import (
-    ChatHuggingFace,
-    HuggingFaceEmbeddings,
-    HuggingFacePipeline,
-)
+from langchain_huggingface import ChatHuggingFace, HuggingFaceEmbeddings
 from langchain_ollama import ChatOllama, OllamaEmbeddings
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 
 from common import (
-    add_method_kwargs,
     data_base_dir,
     db_base_dir,
     get_args,
@@ -21,13 +16,15 @@ from common import (
     google_embed_model,
     hf_chat_model,
     hf_embed_model,
-    ollama_base_url,
     ollama_chat_model,
     ollama_embed_model,
     openai_chat_model,
     openai_embed_model,
 )
-from common.models import default_model_kwargs
+from common.hgface import get_chat_model as get_hf_chat_model
+from common.hgface import get_embed_model as get_hf_embed_model
+from common.ollama import get_chat_model as get_ollama_chat_model
+from common.ollama import get_embed_model as get_ollama_embed_model
 
 DEFAULT_DATA = "default"
 DATA_EN = "en-text"
@@ -75,44 +72,26 @@ class RagChatConfig:
 
     def embed_model(self) -> Embeddings:
         if self.__embed_model == OllamaEmbeddings:
-            return OllamaEmbeddings(
-                base_url=ollama_base_url, model=self.embed_model_name
-            )
+            return get_ollama_embed_model(self.embed_model_name)
         if self.__embed_model == GoogleGenerativeAIEmbeddings:
             return GoogleGenerativeAIEmbeddings(
                 model=self.embed_model_name, transport="rest"
             )
         if self.__embed_model == HuggingFaceEmbeddings:
-            return HuggingFaceEmbeddings(
-                model_name=self.embed_model_name,
-                model_kwargs={"trust_remote_code": True},
-                encode_kwargs={"normalize_embeddings": True},
-            )
+            return get_hf_embed_model(self.embed_model_name)
         return OpenAIEmbeddings(model=self.embed_model_name)
 
     def chat_model(self) -> BaseChatModel:
         if self.__chat_model == ChatOllama:
-            return ChatOllama(base_url=ollama_base_url, model=self.chat_model_name)
+            return get_ollama_chat_model(self.chat_model_name)
         if self.__chat_model == ChatGoogleGenerativeAI:
             return ChatGoogleGenerativeAI(model=self.chat_model_name, transport="rest")
         if self.__chat_model == ChatHuggingFace:
-            return self.__hf_chat_model()
+            return get_hf_chat_model(self.chat_model_name)
         return ChatOpenAI(model=self.chat_model_name)
 
     def get_question(self):
         return get_args(2, self.defalut_question)
-
-    def __hf_chat_model(self):
-        model_kwargs = default_model_kwargs()
-        llm = HuggingFacePipeline.from_model_id(
-            model_id=self.chat_model_name,
-            task="text-generation",
-            model_kwargs=model_kwargs,
-            pipeline_kwargs={"max_new_tokens": 512},
-        )
-        chat_model = ChatHuggingFace(llm=llm)
-        add_method_kwargs(chat_model, "_generate", skip_prompt=True)
-        return chat_model
 
 
 def __openai_config(
@@ -205,7 +184,6 @@ __config_dict = {
     ),
     "ollama_zh": __ollama_config(
         data_dir=DATA_ZH,
-        embed_model_name="paraphrase-multilingual:278m",
         defalut_question=DEFAULT_QUESTION_ZH,
     ),
     "hf": __hf_config(),
@@ -215,7 +193,6 @@ __config_dict = {
     ),
     "hf_zh": __hf_config(
         data_dir=DATA_ZH,
-        embed_model_name="BAAI/bge-base-zh-v1.5",
         defalut_question=DEFAULT_QUESTION_ZH,
     ),
 }
