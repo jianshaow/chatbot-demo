@@ -93,6 +93,7 @@ def demo_agent(
     messages: list = [
         {"role": "user", "content": query},
     ]
+    streaming_started = False
     for mode, body in agent.stream(
         {"messages": messages}, stream_mode=["updates", "messages"]
     ):
@@ -100,8 +101,17 @@ def demo_agent(
             for node, update in body.items():
                 if node == "model" and "messages" in update:
                     ai_message: AIMessage = update["messages"][-1]
+                    if ai_message.tool_calls:
+                        if streaming_started:
+                            print("\n", "-" * 80, sep="")
+                            streaming_started = False
+                        print("tool called:", ai_message.tool_calls[0]["name"])
+                        print("with args:", ai_message.tool_calls[0]["args"])
                     additional_kwargs = ai_message.additional_kwargs
                     if "function_call" in additional_kwargs:
+                        if streaming_started:
+                            print("\n", "-" * 80, sep="")
+                            streaming_started = False
                         function_call = additional_kwargs["function_call"]
                         print("tool called:", function_call["name"])
                         print("with args:", function_call["arguments"])
@@ -113,6 +123,7 @@ def demo_agent(
         if mode == "messages":
             chunk, _ = body
             if isinstance(chunk, AIMessageChunk):
+                streaming_started = True
                 print(chunk.content, end="", flush=True)
     print("\n", "-" * 80, sep="")
 
