@@ -4,7 +4,7 @@ from langchain.agents import create_agent
 from langchain_chroma import Chroma
 from langchain_classic.tools.retriever import create_retriever_tool
 from langchain_core.documents import Document
-from langchain_core.messages import AIMessage
+from langchain_core.messages import AIMessageChunk
 
 config = rag_config.get_config()
 
@@ -42,11 +42,6 @@ print("-" * 80)
 print("Question:", question, sep="\n")
 print("Answer:")
 for chunk, metadata in agent.stream({"messages": messages}, stream_mode="messages"):
-    if (
-        isinstance(metadata, dict)
-        and metadata["langgraph_node"] == "model"
-        and isinstance(chunk, AIMessage)
-        and chunk.content
-    ):
+    if isinstance(chunk, AIMessageChunk) and chunk.content:
         print(chunk.content, end="", flush=True)
 print("\n", "-" * 80, sep="")
