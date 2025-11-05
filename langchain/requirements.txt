@@ -7,6 +7,6 @@ langchain-chroma
 langchain-community
 langchain-openai
 langchain-ollama
-langchain-huggingface["full"]
+langchain-huggingface[full]
 langchain-google-genai
 langchain-mcp-adapters
