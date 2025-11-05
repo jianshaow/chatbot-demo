@@ -6,6 +6,7 @@ from langchain_chroma import Chroma
 from langchain_community.document_loaders import DirectoryLoader
 from langchain_core.embeddings import Embeddings
 from langchain_core.language_models import BaseChatModel
+from langchain_core.messages import AIMessage, AIMessageChunk, ToolMessage
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate, HumanMessagePromptTemplate
 from langchain_text_splitters import CharacterTextSplitter
@@ -92,9 +93,28 @@ def demo_agent(
     messages: list = [
         {"role": "user", "content": query},
     ]
-    response = agent.invoke({"messages": messages})
-    print("-" * 80)
-    print(response["messages"][-1].content)
+    for mode, body in agent.stream(
+        {"messages": messages}, stream_mode=["updates", "messages"]
+    ):
+        if mode == "updates" and isinstance(body, dict):
+            for node, update in body.items():
+                if node == "model" and "messages" in update:
+                    ai_message: AIMessage = update["messages"][-1]
+                    additional_kwargs = ai_message.additional_kwargs
+                    if "function_call" in additional_kwargs:
+                        function_call = additional_kwargs["function_call"]
+                        print("tool called:", function_call["name"])
+                        print("with args:", function_call["arguments"])
+                if node == "tools" and "messages" in update:
+                    tool_message: ToolMessage = update["messages"][-1]
+                    print("tool returned:", tool_message.name)
+                    print("with content size:", len(tool_message.content))
+                    print("-" * 80)
+        if mode == "messages":
+            chunk, _ = body
+            if isinstance(chunk, AIMessageChunk):
+                print(chunk.content, end="", flush=True)
+    print("\n", "-" * 80, sep="")
 
 
 def demo_fn_call(
