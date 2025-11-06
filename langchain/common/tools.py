@@ -6,7 +6,7 @@ from common.calc_func import add, multiply
 calc_tools = [add, multiply]
 
 
-def get_retrieve_tools(vector_store: VectorStore):
+def get_retrieve_tool(vector_store: VectorStore):
 
     @tool(response_format="content_and_artifact")
     def retrieve_context(query: str):
@@ -18,4 +18,4 @@ def get_retrieve_tools(vector_store: VectorStore):
         )
         return serialized, retrieved_docs
 
-    return [retrieve_context]
+    return retrieve_context

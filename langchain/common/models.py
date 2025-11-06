@@ -28,7 +28,7 @@ from common.prompts import (
     mm_question1,
     mm_question2,
 )
-from common.tools import calc_tools, get_retrieve_tools
+from common.tools import calc_tools, get_retrieve_tool
 
 
 def default_model_kwargs() -> dict[str, str]:
@@ -88,7 +88,7 @@ def demo_agent(
     print("-" * 80)
 
     vectorstore = get_vector_store(embed_model)
-    agent = create_agent(chat_model, get_retrieve_tools(vectorstore))
+    agent = create_agent(chat_model, [get_retrieve_tool(vectorstore)])
 
     messages: list = [
         {"role": "user", "content": query},
