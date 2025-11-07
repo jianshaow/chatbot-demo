@@ -1,12 +1,8 @@
 import os
-from typing import Type
+from typing import Callable
 
 from langchain_core.embeddings import Embeddings
 from langchain_core.language_models import BaseChatModel
-from langchain_google_genai import ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings
-from langchain_huggingface import ChatHuggingFace, HuggingFaceEmbeddings
-from langchain_ollama import ChatOllama, OllamaEmbeddings
-from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 
 from common import (
     data_base_dir,
@@ -21,10 +17,14 @@ from common import (
     openai_chat_model,
     openai_embed_model,
 )
+from common.google import get_chat_model as get_google_chat_model
+from common.google import get_embed_model as get_google_embed_model
 from common.hgface import get_chat_model as get_hf_chat_model
 from common.hgface import get_embed_model as get_hf_embed_model
 from common.ollama import get_chat_model as get_ollama_chat_model
 from common.ollama import get_embed_model as get_ollama_embed_model
+from common.openai import get_chat_model as get_openai_chat_model
+from common.openai import get_embed_model as get_openai_embed_model
 
 DEFAULT_DATA = "default"
 DATA_EN = "en-text"
@@ -40,17 +40,17 @@ class RagChatConfig:
     def __init__(
         self,
         name: str,
-        embed_model: Type[Embeddings],
+        get_embed_model: Callable[[str], Embeddings],
         embed_model_name: str,
-        chat_model: Type[BaseChatModel],
+        get_chat_model: Callable[[str], BaseChatModel],
         chat_model_name: str,
         data_dir: str = DEFAULT_DATA,
         defalut_question: str = DEFAULT_QUESTION,
     ):
         self.name = name
-        self.__embed_model = embed_model
+        self.get_embed_model = get_embed_model
         self.embed_model_name = embed_model_name
-        self.__chat_model = chat_model
+        self.get_chat_model = get_chat_model
         self.chat_model_name = chat_model_name
         self.__data_dir = data_dir
         self.db_base_dir = db_base_dir
@@ -71,24 +71,10 @@ class RagChatConfig:
         return self.__data_dir + "__" + escaped
 
     def embed_model(self) -> Embeddings:
-        if self.__embed_model == OllamaEmbeddings:
-            return get_ollama_embed_model(self.embed_model_name)
-        if self.__embed_model == GoogleGenerativeAIEmbeddings:
-            return GoogleGenerativeAIEmbeddings(
-                model=self.embed_model_name, transport="rest"
-            )
-        if self.__embed_model == HuggingFaceEmbeddings:
-            return get_hf_embed_model(self.embed_model_name)
-        return OpenAIEmbeddings(model=self.embed_model_name)
+        return self.get_embed_model(self.embed_model_name)
 
     def chat_model(self) -> BaseChatModel:
-        if self.__chat_model == ChatOllama:
-            return get_ollama_chat_model(self.chat_model_name)
-        if self.__chat_model == ChatGoogleGenerativeAI:
-            return ChatGoogleGenerativeAI(model=self.chat_model_name, transport="rest")
-        if self.__chat_model == ChatHuggingFace:
-            return get_hf_chat_model(self.chat_model_name)
-        return ChatOpenAI(model=self.chat_model_name)
+        return self.get_chat_model(self.chat_model_name)
 
     def get_question(self):
         return get_args(2, self.defalut_question)
@@ -100,9 +86,9 @@ def __openai_config(
 ):
     return RagChatConfig(
         "openai",
-        OpenAIEmbeddings,
+        get_openai_embed_model,
         openai_embed_model,
-        ChatOpenAI,
+        get_openai_chat_model,
         openai_chat_model,
         data_dir=data_dir,
         defalut_question=defalut_question,
@@ -115,9 +101,9 @@ def __google_config(
 ):
     return RagChatConfig(
         "google",
-        GoogleGenerativeAIEmbeddings,
+        get_google_embed_model,
         google_embed_model,
-        ChatGoogleGenerativeAI,
+        get_google_chat_model,
         google_chat_model,
         data_dir=data_dir,
         defalut_question=defalut_question,
@@ -132,9 +118,9 @@ def __ollama_config(
 ):
     return RagChatConfig(
         "ollama",
-        OllamaEmbeddings,
+        get_ollama_embed_model,
         embed_model_name,
-        ChatOllama,
+        get_ollama_chat_model,
         chat_model_name,
         data_dir=data_dir,
         defalut_question=defalut_question,
@@ -149,9 +135,9 @@ def __hf_config(
 ):
     return RagChatConfig(
         "hface",
-        HuggingFaceEmbeddings,
+        get_hf_embed_model,
         embed_model_name,
-        ChatHuggingFace,
+        get_hf_chat_model,
         chat_model_name,
         data_dir=data_dir,
         defalut_question=defalut_question,
