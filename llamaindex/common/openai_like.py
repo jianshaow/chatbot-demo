@@ -9,7 +9,7 @@ from common import openai_like_api_key as api_key
 from common import openai_like_embed_batch_size, openai_like_is_chat_model, ssl_verify
 
 
-def get_llm(model):
+def get_llm(model: str) -> OpenAILike:
     headers = __get_extra_headers()
     http_client = httpx.Client(verify=ssl_verify, headers=headers)
     async_http_client = httpx.AsyncClient(verify=ssl_verify, headers=headers)
@@ -23,7 +23,7 @@ def get_llm(model):
     )
 
 
-def get_embed_model(model_name):
+def get_embed_model(model_name: str) -> OpenAIEmbedding:
     headers = __get_extra_headers()
     http_client = httpx.Client(verify=ssl_verify, headers=headers)
     async_http_client = httpx.AsyncClient(verify=ssl_verify, headers=headers)

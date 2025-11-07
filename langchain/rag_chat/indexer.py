@@ -7,7 +7,7 @@ config = rag_config.get_config()
 
 client = chromadb.PersistentClient(path=config.vector_db_path)
 chroma_collection = client.get_or_create_collection(config.vector_db_collection)
-embedding = config.embed_model()
+embedding = config.embed_model
 print("-" * 80)
 print("embed_model:", config.embed_model_name)
 

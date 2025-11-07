@@ -70,9 +70,11 @@ class RagChatConfig:
         escaped = self.embed_model_name.replace(":", "_").replace("/", "_")
         return self.__data_dir + "__" + escaped
 
+    @property
     def embed_model(self) -> Embeddings:
         return self.get_embed_model(self.embed_model_name)
 
+    @property
     def chat_model(self) -> BaseChatModel:
         return self.get_chat_model(self.chat_model_name)
 

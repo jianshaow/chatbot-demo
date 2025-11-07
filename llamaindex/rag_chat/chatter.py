@@ -5,8 +5,8 @@ from llama_index.vector_stores.chroma import ChromaVectorStore
 
 config = rag_config.get_config()
 
-Settings.embed_model = config.embed_model()
-Settings.llm = config.chat_model()
+Settings.embed_model = config.embed_model
+Settings.llm = config.llm
 print("-" * 80)
 print("embed model:", config.embed_model_name)
 print("chat model:", config.chat_model_name)

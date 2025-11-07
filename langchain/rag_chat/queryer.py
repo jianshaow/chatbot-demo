@@ -8,8 +8,8 @@ from langchain_core.messages import AIMessageChunk
 
 config = rag_config.get_config()
 
-embedding = config.embed_model()
-llm = config.chat_model()
+embed_model = config.embed_model
+chat_model = config.chat_model
 print("-" * 80)
 print("embed_model:", config.embed_model_name)
 print("chat model:", config.chat_model_name)
@@ -19,7 +19,7 @@ chroma_collection = client.get_or_create_collection(config.vector_db_collection)
 vectorstore = Chroma(
     client=client,
     collection_name=config.vector_db_collection,
-    embedding_function=embedding,
+    embedding_function=embed_model,
 )
 
 
@@ -31,7 +31,7 @@ retriever = vectorstore.as_retriever(search_kwargs={"k": 2})
 retriever_tool = create_retriever_tool(
     retriever, "retriever", "Retrieve information to help answer a query."
 )
-agent = create_agent(llm, [retriever_tool])
+agent = create_agent(chat_model, [retriever_tool])
 question = config.get_question()
 
 messages: list = [

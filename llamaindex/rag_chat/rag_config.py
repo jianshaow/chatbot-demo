@@ -1,17 +1,12 @@
 import os
-from typing import Type
+from typing import Callable
 
 from llama_index.core.embeddings import BaseEmbedding
 from llama_index.core.llms import LLM
 from llama_index.embeddings.google_genai import GoogleGenAIEmbedding
-from llama_index.embeddings.huggingface import HuggingFaceEmbedding
-from llama_index.embeddings.ollama import OllamaEmbedding
 from llama_index.embeddings.openai import OpenAIEmbedding
 from llama_index.llms.google_genai import GoogleGenAI
-from llama_index.llms.huggingface import HuggingFaceLLM
-from llama_index.llms.ollama import Ollama
 from llama_index.llms.openai import OpenAI
-from llama_index.llms.openai_like import OpenAILike
 
 from common import (
     data_base_dir,
@@ -48,17 +43,17 @@ class RagChatConfig:
     def __init__(
         self,
         name: str,
-        embed_model: Type[BaseEmbedding],
+        get_embed_model: Callable[[str], BaseEmbedding],
         embed_model_name: str,
-        chat_model: Type[LLM],
+        get_llm: Callable[[str], LLM],
         chat_model_name: str,
         data_dir: str = DEFAULT_DATA,
         defalut_question: str = DEFAULT_QUESTION,
     ):
         self.name = name
-        self.__embed_model = embed_model
+        self.get_embed_model = get_embed_model
         self.embed_model_name = embed_model_name
-        self.__chat_model = chat_model
+        self.get_llm = get_llm
         self.chat_model_name = chat_model_name
         self.__data_dir = data_dir
         self.db_base_dir = db_base_dir
@@ -78,27 +73,13 @@ class RagChatConfig:
         escaped = self.embed_model_name.replace(":", "_").replace("/", "_")
         return self.__data_dir + "__" + escaped
 
+    @property
     def embed_model(self):
-        if self.__embed_model == OllamaEmbedding:
-            return get_ollama_embed_model(model_name=self.embed_model_name)
-        if self.__embed_model == HuggingFaceEmbedding:
-            return get_hf_embed_model(model_name=self.embed_model_name)
-        if self.__chat_model == OpenAILike:
-            return get_openai_like_embed_model(model_name=self.embed_model_name)
-        if self.__embed_model == OpenAIEmbedding:
-            return OpenAIEmbedding(model=self.embed_model_name)
+        return self.get_embed_model(self.embed_model_name)
 
-        return self.__embed_model(model_name=self.embed_model_name)
-
-    def chat_model(self):
-        if self.__chat_model == Ollama:
-            return get_ollama_llm(model=self.chat_model_name)
-        if self.__chat_model == HuggingFaceLLM:
-            return get_hf_llm(model_name=self.chat_model_name)
-        if self.__chat_model == OpenAILike:
-            return get_openai_like_llm(model=self.chat_model_name)
-
-        return self.__chat_model(model=self.chat_model_name)  # type: ignore
+    @property
+    def llm(self):
+        return self.get_llm(self.chat_model_name)
 
     def get_question(self):
         return get_args(2, self.defalut_question)
@@ -125,9 +106,9 @@ def __openai_like_config(
 ):
     return RagChatConfig(
         "openai-like",
-        OpenAIEmbedding,
+        get_openai_like_embed_model,
         openai_like_embed_model,
-        OpenAILike,
+        get_openai_like_llm,
         openai_like_chat_model,
         data_dir=data_dir,
         defalut_question=defalut_question,
@@ -157,9 +138,9 @@ def __ollama_config(
 ):
     return RagChatConfig(
         "ollama",
-        OllamaEmbedding,
+        get_ollama_embed_model,
         embed_model_name,
-        Ollama,
+        get_ollama_llm,
         chat_model_name,
         data_dir=data_dir,
         defalut_question=defalut_question,
@@ -174,9 +155,9 @@ def __hf_config(
 ):
     return RagChatConfig(
         "hface",
-        HuggingFaceEmbedding,
+        get_hf_embed_model,
         embed_model_name,
-        HuggingFaceLLM,
+        get_hf_llm,
         chat_model_name,
         data_dir=data_dir,
         defalut_question=defalut_question,
