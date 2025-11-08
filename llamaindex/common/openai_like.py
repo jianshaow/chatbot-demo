@@ -1,3 +1,4 @@
+import json
 import os
 
 import httpx
@@ -38,10 +39,5 @@ def get_embed_model(model_name: str) -> OpenAIEmbedding:
 
 
 def __get_extra_headers():
-    extra_headers_env = os.getenv("EXTRA_HEADERS", None)
-    header_strs = extra_headers_env.split(",") if extra_headers_env else []
-    headers = {}
-    for header_str in header_strs:
-        key, value = header_str.split(":")
-        headers[key] = value
-    return headers
+    extra_headers_env = os.getenv("EXTRA_HEADERS", "{}")
+    return json.loads(extra_headers_env)
