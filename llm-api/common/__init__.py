@@ -26,7 +26,7 @@ google_fc_model = os.getenv("GOOGLE_FC_MODEL", google_llm_model)
 google_mm_model = os.getenv("GOOGLE_MM_MODEL", google_llm_model)
 google_few_shoted = os.getenv("GOOGLE_FEW_SHOTED", "false") == "true"
 
-ssl_verify = os.getenv("SSL_VERIFY", "false") == "true"
+ssl_verify = os.getenv("SSL_VERIFY", "true") == "true"
 
 think = os.getenv("THINK", "false") == "true"
 
