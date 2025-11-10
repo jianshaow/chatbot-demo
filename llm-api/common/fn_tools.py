@@ -1,3 +1,5 @@
+from common.functions import add, multiply
+
 tools = [
     {
         "type": "function",
@@ -36,3 +38,5 @@ tools = [
         },
     },
 ]
+
+calc_tools = [add, multiply]
