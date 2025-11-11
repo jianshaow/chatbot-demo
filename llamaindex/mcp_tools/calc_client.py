@@ -16,7 +16,7 @@ async def get_sse_tools_async():
             return tools
 
 
-def get_sse_tools():
+def get_calc_sse_tools():
     return asyncio.run(get_sse_tools_async())
 
 
@@ -32,11 +32,11 @@ async def get_stdio_tools_async():
             return tools
 
 
-def get_stdio_tools():
+def get_calc_stdio_tools():
     return asyncio.run(get_stdio_tools_async())
 
 
 if __name__ == "__main__":
-    mcp_tools = get_stdio_tools()
+    mcp_tools = get_calc_stdio_tools()
     for tool in mcp_tools:
         print(tool.metadata.name, ":", tool.metadata.description)
