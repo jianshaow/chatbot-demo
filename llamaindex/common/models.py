@@ -9,6 +9,7 @@ from llama_index.core.memory import BaseMemory
 from llama_index.core.multi_modal_llms import MultiModalLLM
 from llama_index.core.schema import ImageNode
 from llama_index.core.tools import RetrieverTool
+from mcp.types import CallToolResult
 
 from common import demo_image_url as image_url
 from common import get_args, get_env_bool
@@ -157,13 +158,18 @@ def __get_tool_call_info(tool_call):
     return tool_call_id, fn_name, fn_args
 
 
-def demo_fn_call_agent(fn_call_model: LLM, model: str):
+def demo_fn_call_agent(
+    fn_call_model: LLM, model: str, tools=None, query=tool_call_question
+):
     print("-" * 80)
     print("fn call model:", model)
     print("-" * 80)
 
-    agent = from_tools_or_functions(calc_tools, fn_call_model)
-    __run_agent(agent, tool_call_question)
+    if tools is None:
+        tools = calc_tools
+
+    agent = from_tools_or_functions(tools, fn_call_model)
+    __run_agent(agent, query)
 
 
 def demo_multi_modal_legacy(mm_model: MultiModalLLM, model: str, streaming=True):
@@ -291,10 +297,11 @@ def __run_agent(
             elif isinstance(event, ToolCallResult):
                 print("Tool called: ", event.tool_name)
                 print("Arguments to the tool: ", event.tool_kwargs)
-                if isinstance(event.tool_output.raw_output, list):
+                output = event.tool_output.raw_output
+                if isinstance(output, list):
                     print("Tool output size: ", len(event.tool_output.raw_output))
-                else:
-                    print("Tool output: ", event.tool_output.raw_output)
+                elif isinstance(output, CallToolResult):
+                    print("Tool output size: ", len(output.content))
                 print("-" * 80)
 
     asyncio.run(run_agent())
