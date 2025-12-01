@@ -28,11 +28,13 @@ if __name__ == "__main__":
             kwargs = {"libraryName": "spring-boot"}
             print("calling tool", tool_name, "with args:", kwargs)
             output: ToolOutput = tool.call(**kwargs)
-            callToolResult: CallToolResult = output.raw_output
-            text = (
-                callToolResult.content[0].text
-                if isinstance(callToolResult.content[0], TextContent)
-                else callToolResult.content[0]
+            result: CallToolResult = output.raw_output
+            text = text = "\n".join(
+                [
+                    block.text
+                    for block in result.content
+                    if isinstance(block, TextContent)
+                ]
             )
             print("-" * 80)
             print("tool result:")
