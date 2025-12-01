@@ -1,39 +1,45 @@
 import asyncio
+from contextlib import asynccontextmanager
 
 from llama_index.tools.mcp import McpToolSpec
-from mcp import ClientSession, StdioServerParameters
-from mcp.client.sse import sse_client
-from mcp.client.stdio import stdio_client
+from mcp import StdioServerParameters
 
 from common import sse_url
+from mcp_tools import sse_session, stdio_session
 
 
-async def get_sse_tools_async():
-    async with sse_client(url=sse_url) as (read, write):
-        async with ClientSession(read, write) as session:
-            await session.initialize()
-            tools = await McpToolSpec(session).to_tool_list_async()
-            return tools
+@asynccontextmanager
+async def sse_tools_context():
+    async with sse_session(sse_url) as session:
+        tools = await McpToolSpec(session).to_tool_list_async()
+        yield tools
 
 
 def get_calc_sse_tools():
-    return asyncio.run(get_sse_tools_async())
+    async def get_sse_tools():
+        async with sse_tools_context() as sse_tools:
+            return sse_tools
+
+    return asyncio.run(get_sse_tools())
 
 
-async def get_stdio_tools_async():
+@asynccontextmanager
+async def stdio_tools_context():
     server_params = StdioServerParameters(
         command="python",
         args=["mcp_tools/calc_stdio_server.py"],
     )
-    async with stdio_client(server_params) as (read, write):
-        async with ClientSession(read, write) as session:
-            await session.initialize()
-            tools = await McpToolSpec(session).to_tool_list_async()
-            return tools
+    async with stdio_session(server_params) as session:
+        tools = await McpToolSpec(session).to_tool_list_async()
+        yield tools
 
 
 def get_calc_stdio_tools():
-    return asyncio.run(get_stdio_tools_async())
+    async def get_stdio_tools():
+        async with stdio_tools_context() as stdio_tools:
+            return stdio_tools
+
+    return asyncio.run(get_stdio_tools())
 
 
 if __name__ == "__main__":

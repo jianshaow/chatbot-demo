@@ -172,6 +172,20 @@ def demo_fn_call_agent(
     __run_agent(agent, query)
 
 
+async def demo_fn_call_agent_async(
+    fn_call_model: LLM, model: str, tools=None, query=tool_call_question
+):
+    print("-" * 80)
+    print("fn call model:", model)
+    print("-" * 80)
+
+    if tools is None:
+        tools = calc_tools
+
+    agent = from_tools_or_functions(tools, fn_call_model)
+    await __run_agent_async(agent, query)
+
+
 def demo_multi_modal_legacy(mm_model: MultiModalLLM, model: str, streaming=True):
     print("-" * 80)
     print("multi-modal model:", model)
@@ -284,25 +298,30 @@ def __get_index(embed_model: BaseEmbedding, data_path: str) -> VectorStoreIndex:
     )
 
 
+async def __run_agent_async(
+    agent: AgentWorkflow, question: str, memory: BaseMemory | None = None
+):
+    handler = agent.run(question, memory=memory)
+    async for event in handler.stream_events():
+        if isinstance(event, AgentStream):
+            print(event.delta, end="", flush=True)
+        elif isinstance(event, ToolCallResult):
+            print("Tool called: ", event.tool_name)
+            print("Arguments to the tool: ", event.tool_kwargs)
+            output = event.tool_output.raw_output
+            if isinstance(output, list):
+                print("Tool output size: ", len(event.tool_output.raw_output))
+            elif isinstance(output, CallToolResult):
+                print("Tool output size: ", len(output.content))
+            print("-" * 80)
+    print("\n", "-" * 80, sep="")
+
+
 def __run_agent(
     agent: AgentWorkflow,
     question: str,
     memory: BaseMemory | None = None,
 ):
-    async def run_agent():
-        handler = agent.run(question, memory=memory)
-        async for event in handler.stream_events():
-            if isinstance(event, AgentStream):
-                print(event.delta, end="", flush=True)
-            elif isinstance(event, ToolCallResult):
-                print("Tool called: ", event.tool_name)
-                print("Arguments to the tool: ", event.tool_kwargs)
-                output = event.tool_output.raw_output
-                if isinstance(output, list):
-                    print("Tool output size: ", len(event.tool_output.raw_output))
-                elif isinstance(output, CallToolResult):
-                    print("Tool output size: ", len(output.content))
-                print("-" * 80)
 
-    asyncio.run(run_agent())
+    asyncio.run(__run_agent_async(agent, question, memory))
     print("\n", "-" * 80, sep="")
