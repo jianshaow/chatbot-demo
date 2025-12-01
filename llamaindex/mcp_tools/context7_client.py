@@ -29,7 +29,7 @@ if __name__ == "__main__":
             print("calling tool", tool_name, "with args:", kwargs)
             output: ToolOutput = tool.call(**kwargs)
             result: CallToolResult = output.raw_output
-            text = text = "\n".join(
+            text = "\n".join(
                 [
                     block.text
                     for block in result.content
