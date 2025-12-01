@@ -1,6 +1,8 @@
 import asyncio
 
+from llama_index.core.tools.types import ToolOutput
 from llama_index.tools.mcp import BasicMCPClient, McpToolSpec
+from mcp.types import CallToolResult, TextContent
 
 
 async def get_sse_tools_async():
@@ -17,7 +19,22 @@ def get_sse_tools():
 if __name__ == "__main__":
     mcp_tools = get_sse_tools()
     for tool in mcp_tools:
-        print("tool name:", tool.metadata.name)
+        tool_name = tool.metadata.name
+        print("tool name:", tool_name)
         print("-" * 80)
+        print("tool description:")
         print(tool.metadata.description)
+        if tool_name == "resolve-library-id":
+            kwargs = {"libraryName": "spring-boot"}
+            print("calling tool", tool_name, "with args:", kwargs)
+            output: ToolOutput = tool.call(**kwargs)
+            callToolResult: CallToolResult = output.raw_output
+            text = (
+                callToolResult.content[0].text
+                if isinstance(callToolResult.content[0], TextContent)
+                else callToolResult.content[0]
+            )
+            print("-" * 80)
+            print("tool result:")
+            print(text)
         print("=" * 80)
