@@ -23,6 +23,21 @@
 			"source": "${localEnv:HOME}/.ssh",
 			"target": "/home/devel/.ssh",
 			"type": "bind"
+		},
+		{
+			"source": "/usr/bin/docker",
+			"target": "/usr/bin/docker",
+			"type": "bind"
+		},
+		{
+			"source": "/usr/libexec/docker/cli-plugins",
+			"target": "/usr/libexec/docker/cli-plugins",
+			"type": "bind"
+		},
+		{
+			"source": "/var/run/docker.sock",
+			"target": "/var/run/docker.sock",
+			"type": "bind"
 		}
 	],
 	"customizations": {
