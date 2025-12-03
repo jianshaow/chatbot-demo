@@ -2,6 +2,7 @@ import asyncio
 from typing import List, Optional
 
 from llama_index.tools.mcp import BasicMCPClient
+from mcp.types import TextContent
 
 
 def get_docker_mcp_client(
@@ -28,7 +29,9 @@ async def call_tool(
     arguments: Optional[dict] = None,
 ):
     result = await client.call_tool(tool_name, arguments=arguments)
-    print(result)
+    for content in result.content:
+        if isinstance(content, TextContent):
+            print(content.text)
 
 
 if __name__ == "__main__":
