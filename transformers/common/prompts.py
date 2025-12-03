@@ -41,7 +41,10 @@ def tokenizer_prompt(
     result = tokenizer.apply_chat_template(
         messages, tokenize=False, add_generation_prompt=True
     )
-    print("tokenizer_prompt result:", result)
+    print("=" * 80)
+    print("tokenizer_prompt result:")
+    print("=" * 80)
+    print(result)
     if isinstance(result, str):
         return result
     else:
