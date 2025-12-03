@@ -331,4 +331,3 @@ def __run_agent(
 ):
 
     asyncio.run(__run_agent_async(agent, question, memory))
-    print("\n", "-" * 80, sep="")
