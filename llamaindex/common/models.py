@@ -1,9 +1,16 @@
 import asyncio
+import json
 
 from llama_index.core import Settings, SimpleDirectoryReader, VectorStoreIndex
 from llama_index.core.agent.workflow import AgentStream, AgentWorkflow, ToolCallResult
+from llama_index.core.base.llms.types import (
+    ChatMessage,
+    ImageBlock,
+    TextBlock,
+    ToolCallBlock,
+)
 from llama_index.core.embeddings import BaseEmbedding
-from llama_index.core.llms import LLM, ChatMessage, ImageBlock, TextBlock
+from llama_index.core.llms import LLM
 from llama_index.core.llms.function_calling import FunctionCallingLLM
 from llama_index.core.memory import BaseMemory
 from llama_index.core.multi_modal_llms import MultiModalLLM
@@ -109,12 +116,22 @@ def demo_fn_call(
         tools, chat_history=messages, allow_parallel_tool_calls=True
     )
 
-    while response.message.additional_kwargs.get("tool_calls"):
+    has_tool_call = True
+    while has_tool_call:
         print("-" * 80)
         messages.append(response.message)
-        if tool_calls := response.message.additional_kwargs.get("tool_calls"):
-            for tool_call in tool_calls:
-                tool_call_id, fn_name, fn_args = __get_tool_call_info(tool_call)
+        has_tool_call = False
+        for block in response.message.blocks:
+            if isinstance(block, ToolCallBlock):
+                has_tool_call = True
+
+                tool_call_id = block.tool_call_id
+                fn_name = block.tool_name
+                fn_args = (
+                    json.loads(block.tool_kwargs)
+                    if isinstance(block.tool_kwargs, str)
+                    else block.tool_kwargs
+                )
                 print("=== Calling Function ===")
                 print(
                     "Calling function:",
@@ -123,39 +140,29 @@ def demo_fn_call(
                     fn_args,
                 )
                 fn = fns[fn_name]
+                fn_args = (
+                    json.loads(block.tool_kwargs)
+                    if isinstance(block.tool_kwargs, str)
+                    else block.tool_kwargs
+                )
                 fn_result = fn(**fn_args)
                 print("Got output:", fn_result)
                 print("========================\n")
                 tool_message = ChatMessage(
                     content=str(fn_result),
                     role="tool",
-                    additional_kwargs={"name": fn_name, "tool_call_id": tool_call_id},
+                    additional_kwargs={
+                        "name": fn_name,
+                        "tool_call_id": tool_call_id,
+                    },
                 )
                 messages.append(tool_message)
-        response = fn_call_model.chat_with_tools(
-            tools, chat_history=messages, allow_parallel_tool_calls=True
-        )
-
-    print("-" * 80)
-    print(response.message.content)
-
-
-def __get_tool_call_info(tool_call):
-    tool_call_id = getattr(tool_call, "id", None)
-    if hasattr(tool_call, "function"):
-        import json
-
-        fn_name = tool_call.function.name
-        fn_args = (
-            json.loads(tool_call.function.arguments)
-            if isinstance(tool_call.function.arguments, str)
-            else tool_call.function.arguments
-        )
-    else:
-        fn_name = str(tool_call["name"])
-        fn_args = dict(tool_call["args"])
-
-    return tool_call_id, fn_name, fn_args
+            elif isinstance(block, TextBlock):
+                print(block.text)
+        if has_tool_call:
+            response = fn_call_model.chat_with_tools(
+                tools, chat_history=messages, allow_parallel_tool_calls=True
+            )
 
 
 def demo_fn_call_agent(
