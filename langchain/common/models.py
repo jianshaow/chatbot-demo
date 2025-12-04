@@ -198,7 +198,7 @@ def demo_multi_modal(mm_model: BaseChatModel, model: str, image_data=None):
         query_args = {"image_url": mm_image_url}
 
     template = HumanMessagePromptTemplate.from_template(
-        [{"text": "{input}"}, {"image_url": {"url": image_placeholder}}]
+        [{"image_url": {"url": image_placeholder}}, {"text": "{input}"}]
     )
     prompt = ChatPromptTemplate.from_messages([template])
 
