@@ -8,7 +8,7 @@ agent = Agent(
     model=model,
     name="Assistant",
     instructions="You are a helpful assistant",
-    tools=calc_tools,
+    tools=list(calc_tools),
 )
 
 result = Runner.run_sync(agent, question)

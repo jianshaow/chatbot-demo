@@ -18,9 +18,8 @@ client = genai.Client()
 print("-" * 80)
 print("fn call model:", model_name)
 
-chat = client.chats.create(config=config, model=model_name)
-messages.append(question)
-response = chat.send_message(messages)
+chat = client.chats.create(config=config, model=model_name, history=messages)
+response = chat.send_message(question)
 if (
     response.candidates
     and response.candidates[0].content

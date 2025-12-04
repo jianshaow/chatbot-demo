@@ -7,11 +7,9 @@ from common.functions import fns
 from common.openai import get_client
 from common.prompts import fn_call_adv_question_message as question
 from openai.types.chat import (
-    ChatCompletionFunctionToolParam,
     ChatCompletionMessageFunctionToolCall,
     ChatCompletionMessageParam,
     ChatCompletionToolMessageParam,
-    ChatCompletionUserMessageParam,
 )
 
 print("-" * 80)
@@ -19,12 +17,8 @@ print("fn call model:", model)
 
 client = get_client()
 
-user_message = cast(ChatCompletionUserMessageParam, question)
-tools_message = cast(list[ChatCompletionFunctionToolParam], tools)
-messages: list[ChatCompletionMessageParam] = [user_message]
-response = client.chat.completions.create(
-    model=model, messages=messages, tools=tools_message
-)
+messages: list[ChatCompletionMessageParam] = [question]
+response = client.chat.completions.create(model=model, messages=messages, tools=tools)
 
 while response.choices[0].message.tool_calls:
     print("-" * 80)
@@ -52,7 +46,7 @@ while response.choices[0].message.tool_calls:
             }
         )
     response = client.chat.completions.create(
-        model=model, messages=messages, tools=tools_message
+        model=model, messages=messages, tools=tools
     )
 
 print("-" * 80)

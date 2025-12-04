@@ -1,6 +1,9 @@
-from common.functions import add, multiply
+from agents import function_tool
 
-tools = [
+from common.functions import add, multiply
+from openai.types.chat import ChatCompletionFunctionToolParam
+
+tools: list[ChatCompletionFunctionToolParam] = [
     {
         "type": "function",
         "function": {
@@ -39,4 +42,4 @@ tools = [
     },
 ]
 
-calc_tools = [add, multiply]
+calc_tools = [function_tool(add), function_tool(multiply)]

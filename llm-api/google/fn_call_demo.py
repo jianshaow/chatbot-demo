@@ -26,10 +26,9 @@ client = genai.Client()
 
 print("-" * 80)
 print("fn call model:", model_name)
-chat = client.chats.create(config=config, model=model_name)
+chat = client.chats.create(model=model_name, config=config, history=messages)
 
-messages.append(question)
-response = chat.send_message(messages)
+response = chat.send_message(question)
 
 while response.function_calls:
     print("-" * 80)
