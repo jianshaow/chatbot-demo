@@ -120,11 +120,6 @@ def generate(
 
 
 def image_text_to_text(model: PreTrainedModel, processor, inputs):
-    if isinstance(inputs, tuple):
-        images, text = inputs
-        inputs = processor(
-            text=text, images=images, padding=True, return_tensors="pt"
-        )
     inputs = inputs.to(model.device)
     generated_ids = model.generate(**inputs, max_new_tokens=256)
     generated_ids = [

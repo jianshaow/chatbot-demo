@@ -53,32 +53,15 @@ def tokenizer_prompt(
 
 def image_text_prompt(image_url: str, text: str, processor, config):
     architecture = config.architectures[0]
-    if "Phi3VForCausalLM" in architecture:
-        return phi3v_prompt(image_url, text, processor)
-    # elif "Florence2ForConditionalGeneration" in architecture:
-    #     pass
-    elif (
+    if (
         "Qwen2_5_VLForConditionalGeneration" in architecture
         or "Qwen2VLForConditionalGeneration" in architecture
     ):
         return qwen2vl_prompt(image_url, text, processor)
-    # elif "PaliGemmaForConditionalGeneration" in architecture:
-    #     pass
-    # elif "MllamaForConditionalGeneration" in architecture:
-    #     pass
     elif "Qwen3VLForConditionalGeneration" in architecture:
         return qwen3vl_prompt(image_url, text, processor)
     else:
         raise ValueError(f"architecture {architecture} not supported")
-
-
-def phi3v_prompt(image_url: str, text: str, processor):
-    image = Image.open(BytesIO(requests.get(image_url, timeout=10).content))
-    messages = [{"role": "user", "content": f"<|image_1|>\n{text}"}]
-    text = processor.tokenizer.apply_chat_template(
-        messages, tokenize=False, add_generation_prompt=True
-    )
-    return [image], text
 
 
 def qwen2vl_prompt(image_url: str, text: str, processor):
@@ -101,7 +84,7 @@ def qwen2vl_prompt(image_url: str, text: str, processor):
     text = processor.apply_chat_template(
         messages, tokenize=False, add_generation_prompt=True
     )
-    return images, text
+    return processor(text=text, images=images, padding=True, return_tensors="pt")
 
 
 def qwen3vl_prompt(image_url: str, text: str, processor):
@@ -117,14 +100,13 @@ def qwen3vl_prompt(image_url: str, text: str, processor):
             ],
         }
     ]
-    inputs = processor.apply_chat_template(
+    return processor.apply_chat_template(
         messages,
         tokenize=True,
         add_generation_prompt=True,
         return_dict=True,
         return_tensors="pt",
     )
-    return inputs
 
 
 def main():
