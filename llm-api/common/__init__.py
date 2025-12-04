@@ -11,7 +11,7 @@ ollama_embed_model = os.getenv("OLLAMA_EMBED_MODEL", "paraphrase-multilingual:27
 ollama_llm_model = os.getenv("OLLAMA_LLM_MODEL", "deepseek-v3.1:671b-cloud")
 ollama_chat_model = os.getenv("OLLAMA_CHAT_MODEL", ollama_llm_model)
 ollama_fc_model = os.getenv("OLLAMA_FC_MODEL", ollama_llm_model)
-ollama_mm_model = os.getenv("OLLAMA_MM_MODEL", "qwen3-vl:235b-cloud")
+ollama_mm_model = os.getenv("OLLAMA_MM_MODEL", "qwen3-vl:235b-instruct-cloud")
 
 openai_embed_model = os.getenv("OPENAI_EMBED_MODEL", "text-embedding-3-small")
 openai_llm_model = os.getenv("OPENAI_LLM_MODEL", "gpt-4o-mini")
