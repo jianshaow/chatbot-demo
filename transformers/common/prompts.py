@@ -54,21 +54,22 @@ def tokenizer_prompt(
 def image_text_prompt(image_url: str, text: str, processor, config):
     architecture = config.architectures[0]
     if "Phi3VForCausalLM" in architecture:
-        images, text = phi3v_prompt(image_url, text, processor)
+        return phi3v_prompt(image_url, text, processor)
     # elif "Florence2ForConditionalGeneration" in architecture:
     #     pass
     elif (
         "Qwen2_5_VLForConditionalGeneration" in architecture
         or "Qwen2VLForConditionalGeneration" in architecture
     ):
-        images, text = qwen2vl_prompt(image_url, text, processor)
+        return qwen2vl_prompt(image_url, text, processor)
     # elif "PaliGemmaForConditionalGeneration" in architecture:
     #     pass
     # elif "MllamaForConditionalGeneration" in architecture:
     #     pass
+    elif "Qwen3VLForConditionalGeneration" in architecture:
+        return qwen3vl_prompt(image_url, text, processor)
     else:
         raise ValueError(f"architecture {architecture} not supported")
-    return images, text
 
 
 def phi3v_prompt(image_url: str, text: str, processor):
@@ -101,6 +102,29 @@ def qwen2vl_prompt(image_url: str, text: str, processor):
         messages, tokenize=False, add_generation_prompt=True
     )
     return images, text
+
+
+def qwen3vl_prompt(image_url: str, text: str, processor):
+    messages = [
+        {
+            "role": "user",
+            "content": [
+                {
+                    "type": "image",
+                    "image": image_url,
+                },
+                {"type": "text", "text": text},
+            ],
+        }
+    ]
+    inputs = processor.apply_chat_template(
+        messages,
+        tokenize=True,
+        add_generation_prompt=True,
+        return_dict=True,
+        return_tensors="pt",
+    )
+    return inputs
 
 
 def main():

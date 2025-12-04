@@ -16,6 +16,9 @@ from transformers.models.qwen2_5_vl.modeling_qwen2_5_vl import (
 from transformers.models.qwen2_vl.modeling_qwen2_vl import (
     Qwen2VLForConditionalGeneration,
 )
+from transformers.models.qwen3_vl.modeling_qwen3_vl import (
+    Qwen3VLForConditionalGeneration,
+)
 from transformers.tokenization_utils import PreTrainedTokenizer
 from transformers.tokenization_utils_fast import PreTrainedTokenizerFast
 
@@ -54,6 +57,8 @@ def new_multi_modal_model(model_name: str, model_kwargs=None):
         AutoModelClass = Qwen2VLForConditionalGeneration
     if "Qwen2_5_VLForConditionalGeneration" in architecture:
         AutoModelClass = Qwen2_5_VLForConditionalGeneration
+    if "Qwen3VLForConditionalGeneration" in architecture:
+        AutoModelClass = Qwen3VLForConditionalGeneration
     if "PaliGemmaForConditionalGeneration" in architecture:
         AutoModelClass = PaliGemmaForConditionalGeneration
     if "MllamaForConditionalGeneration" in architecture:
@@ -114,10 +119,13 @@ def generate(
         )[0]
 
 
-def image_text_to_text(model: PreTrainedModel, processor, images, text):
-    inputs = processor(text=text, images=images, padding=True, return_tensors="pt").to(
-        model.device
-    )
+def image_text_to_text(model: PreTrainedModel, processor, inputs):
+    if isinstance(inputs, tuple):
+        images, text = inputs
+        inputs = processor(
+            text=text, images=images, padding=True, return_tensors="pt"
+        )
+    inputs = inputs.to(model.device)
     generated_ids = model.generate(**inputs, max_new_tokens=256)
     generated_ids = [
         out_ids[len(in_ids) :]
