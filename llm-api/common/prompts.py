@@ -1,11 +1,7 @@
 from common import get_args
 from google.genai import types
 from openai.types.chat import (
-    ChatCompletionFunctionToolParam,
-    ChatCompletionMessageFunctionToolCall,
-    ChatCompletionMessageParam,
     ChatCompletionSystemMessageParam,
-    ChatCompletionToolMessageParam,
     ChatCompletionUserMessageParam,
 )
 
