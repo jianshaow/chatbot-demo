@@ -1,10 +1,12 @@
 import sys
 
-import ollama
+from ollama import Client
+
+client = Client()
 
 verbose = len(sys.argv) > 1 and sys.argv[1] == "verbose" or False
 
-models = ollama.list()["models"]
+models = client.list()["models"]
 print("-" * 80)
 for model in models:
     if verbose:

@@ -1,13 +1,15 @@
-import ollama
 from common import ollama_chat_model as model
 from common import think
 from common.prompts import chat_question_message as question
 from common.prompts import chat_system_message as system_prompt
+from ollama import Client
 
 print("-" * 80)
 print("chat model:", model)
 
-response = ollama.chat(
+client = Client()
+
+response = client.chat(
     model=model, messages=[system_prompt, question], think=think, stream=True
 )
 
