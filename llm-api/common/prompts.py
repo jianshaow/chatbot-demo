@@ -40,11 +40,11 @@ fn_call_adv_question_message: ChatCompletionUserMessageParam = {
 mm_question_message: ChatCompletionUserMessageParam = {
     "role": "user",
     "content": [
-        {"type": "text", "text": mm_question},
         {
             "type": "image_url",
             "image_url": {"url": mm_image_url},
         },
+        {"type": "text", "text": mm_question},
     ],
 }
 
