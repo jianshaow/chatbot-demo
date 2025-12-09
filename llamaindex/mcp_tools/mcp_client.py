@@ -35,14 +35,5 @@ async def call_tool(
 
 
 if __name__ == "__main__":
-    mcp_client = get_docker_mcp_client(
-        "mcp/filesystem",
-        [
-            "-v",
-            "/:/workspace",
-        ],
-        args=["/workspace"],
-    )
-    asyncio.run(
-        call_tool(mcp_client, "list_directory", arguments={"path": "/workspace"})
-    )
+    mcp_client = get_docker_mcp_client("mcp/filesystem", ["-v", "/:/chroot"], args=["/chroot"])
+    asyncio.run(call_tool(mcp_client, "list_directory", arguments={"path": "/chroot"}))
