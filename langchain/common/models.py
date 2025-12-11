@@ -129,7 +129,11 @@ def demo_agent(
 
 
 def demo_fn_call(
-    fn_call_model: BaseChatModel, model: str, tools=None, with_few_shot=False
+    fn_call_model: BaseChatModel,
+    model: str,
+    tools=None,
+    with_system_prompt=False,
+    with_few_shot=False,
 ):
     print("-" * 80)
     print("fn call model:", model)
@@ -140,8 +144,9 @@ def demo_fn_call(
     llm_with_tools = fn_call_model.bind_tools(tools)
 
     messages = []
-    if with_few_shot:
+    if with_system_prompt:
         messages.append(fn_call_system_message)
+    if with_few_shot:
         messages.extend(examples)
     messages.append(question_message)
 
