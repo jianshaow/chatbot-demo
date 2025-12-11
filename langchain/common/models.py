@@ -175,13 +175,20 @@ def demo_fn_call(
     print(response.content)
 
 
-def demo_fn_call_agent(fn_call_model: BaseChatModel, model: str, with_few_shot=False):
+def demo_fn_call_agent(
+    fn_call_model: BaseChatModel,
+    model: str,
+    with_system_prompt=False,
+    with_few_shot=False,
+):
     print("-" * 80)
     print("fn call model:", model)
 
     agent = create_agent(fn_call_model, calc_tools, system_prompt=FN_CALL_SYSTEM)
 
     messages = []
+    if with_system_prompt:
+        messages.append(fn_call_system_message)
     if with_few_shot:
         messages.extend(examples)
     messages.append({"role": "user", "content": fn_call_question})
