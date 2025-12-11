@@ -124,7 +124,7 @@ def demo_agent(
             chunk, _ = body
             if isinstance(chunk, AIMessageChunk):
                 streaming_started = True
-                print(chunk.content, end="", flush=True)
+                print(chunk.text, end="", flush=True)
     print("\n", "-" * 80, sep="")
 
 
@@ -183,7 +183,7 @@ def demo_fn_call_agent(fn_call_model: BaseChatModel, model: str, with_few_shot=F
 
     response = agent.invoke({"messages": messages})
     print("-" * 80)
-    print(response["messages"][-1].content)
+    print(response["messages"][-1].text)
 
 
 def demo_multi_modal(mm_model: BaseChatModel, model: str, image_data=None):
