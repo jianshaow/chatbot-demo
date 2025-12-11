@@ -10,6 +10,7 @@ from langchain_core.messages import AIMessage, AIMessageChunk, ToolMessage
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate, HumanMessagePromptTemplate
 from langchain_text_splitters import CharacterTextSplitter
+from langgraph.graph.state import CompiledStateGraph
 
 from common import get_args, get_env_bool
 from common.calc_func import fns
@@ -85,47 +86,15 @@ def demo_agent(
     print("-" * 80)
     print("embed model:", embed_model_name)
     print("chat model:", chat_model_name)
-    print("-" * 80)
 
-    vectorstore = get_vector_store(embed_model)
+    vectorstore = __get_vector_store(embed_model)
     agent = create_agent(chat_model, [get_retrieve_tool(vectorstore)])
 
     messages: list = [
         {"role": "user", "content": query},
     ]
-    streaming_started = False
-    for mode, body in agent.stream(
-        {"messages": messages}, stream_mode=["updates", "messages"]
-    ):
-        if mode == "updates" and isinstance(body, dict):
-            for node, update in body.items():
-                if node == "model" and "messages" in update:
-                    ai_message: AIMessage = update["messages"][-1]
-                    if ai_message.tool_calls:
-                        if streaming_started:
-                            print("\n", "-" * 80, sep="")
-                            streaming_started = False
-                        print("tool called:", ai_message.tool_calls[0]["name"])
-                        print("with args:", ai_message.tool_calls[0]["args"])
-                    additional_kwargs = ai_message.additional_kwargs
-                    if "function_call" in additional_kwargs:
-                        if streaming_started:
-                            print("\n", "-" * 80, sep="")
-                            streaming_started = False
-                        function_call = additional_kwargs["function_call"]
-                        print("tool called:", function_call["name"])
-                        print("with args:", function_call["arguments"])
-                if node == "tools" and "messages" in update:
-                    tool_message: ToolMessage = update["messages"][-1]
-                    print("tool returned:", tool_message.name)
-                    print("with content size:", len(tool_message.content))
-                    print("-" * 80)
-        if mode == "messages":
-            chunk, _ = body
-            if isinstance(chunk, AIMessageChunk):
-                streaming_started = True
-                print(chunk.text, end="", flush=True)
-    print("\n", "-" * 80, sep="")
+
+    __run_agent(agent, messages)
 
 
 def demo_fn_call(
@@ -193,9 +162,7 @@ def demo_fn_call_agent(
         messages.extend(examples)
     messages.append({"role": "user", "content": fn_call_question})
 
-    response = agent.invoke({"messages": messages})
-    print("-" * 80)
-    print(response["messages"][-1].text)
+    __run_agent(agent, messages)
 
 
 def demo_multi_modal(mm_model: BaseChatModel, model: str, image_data=None):
@@ -243,7 +210,7 @@ def demo_retrieve(
     print("embed model:", model)
 
     question = get_args(1, query)
-    retriever = get_vector_store(embed_model, data_path).as_retriever()
+    retriever = __get_vector_store(embed_model, data_path).as_retriever()
     docs = retriever.invoke(question)
     for doc in docs:
         print("-" * 80)
@@ -251,7 +218,7 @@ def demo_retrieve(
     print("-" * 80)
 
 
-def get_vector_store(embed_model: Embeddings, data_path: str = "data/default"):
+def __get_vector_store(embed_model: Embeddings, data_path: str = "data/default"):
     loader = DirectoryLoader(data_path)
     text_splitter = CharacterTextSplitter.from_tiktoken_encoder(
         chunk_size=1000, chunk_overlap=200
@@ -262,3 +229,43 @@ def get_vector_store(embed_model: Embeddings, data_path: str = "data/default"):
         embedding=embed_model,
     )
     return vectorstore
+
+
+def __run_agent(agent: CompiledStateGraph, messages: list[dict[str, Any]]):
+    print("-" * 80)
+    streaming_started = False
+    for mode, body in agent.stream(
+        {"messages": messages}, stream_mode=["updates", "messages"]
+    ):
+        if mode == "updates" and isinstance(body, dict):
+            for node, update in body.items():
+                if node == "model" and "messages" in update:
+                    ai_message: AIMessage = update["messages"][-1]
+                    additional_kwargs = ai_message.additional_kwargs
+                    if ai_message.tool_calls:
+                        if streaming_started:
+                            print("\n", "-" * 80, sep="")
+                            streaming_started = False
+                        print("tool called:", ai_message.tool_calls[0]["name"])
+                        print("with args:", ai_message.tool_calls[0]["args"])
+                    elif "function_call" in additional_kwargs:
+                        if streaming_started:
+                            print("\n", "-" * 80, sep="")
+                            streaming_started = False
+                        function_call = additional_kwargs["function_call"]
+                        print("tool called:", function_call["name"])
+                        print("with args:", function_call["arguments"])
+                if node == "tools" and "messages" in update:
+                    tool_message: ToolMessage = update["messages"][-1]
+                    print("tool returned:", tool_message.name)
+                    if tool_message.artifact:
+                        print("with content size:", len(tool_message.artifact))
+                    else:
+                        print("with content:", tool_message.content)
+                    print("-" * 80)
+        if mode == "messages":
+            chunk, _ = body
+            if isinstance(chunk, AIMessageChunk):
+                streaming_started = True
+                print(chunk.text, end="", flush=True)
+    print("\n", "-" * 80, sep="")
