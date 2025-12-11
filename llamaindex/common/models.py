@@ -98,7 +98,11 @@ def demo_agent(
 
 
 def demo_fn_call(
-    fn_call_model: FunctionCallingLLM, model_name: str, tools=None, with_few_shot=False
+    fn_call_model: FunctionCallingLLM,
+    model_name: str,
+    tools=None,
+    with_system_prompt=False,
+    with_few_shot=False,
 ):
     print("-" * 80)
     print("fn call model:", model_name)
@@ -107,8 +111,9 @@ def demo_fn_call(
         tools = calc_tools
 
     messages = []
-    if with_few_shot:
+    if with_system_prompt:
         messages.append(system_message)
+    if with_few_shot:
         messages.extend(examples)
     messages.append(question_message)
 
