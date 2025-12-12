@@ -269,8 +269,9 @@ async def __run_agent_async(agent: CompiledStateGraph, messages: list[dict[str, 
                         if streaming_started:
                             print("\n", "-" * 80, sep="")
                             streaming_started = False
-                        print("tool called:", ai_message.tool_calls[0]["name"])
-                        print("with args:", ai_message.tool_calls[0]["args"])
+                        for tool_call in ai_message.tool_calls:
+                            print("tool called:", tool_call["name"])
+                            print("with args:", tool_call["args"])
                     elif "function_call" in additional_kwargs:
                         if streaming_started:
                             print("\n", "-" * 80, sep="")
