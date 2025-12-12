@@ -1,3 +1,4 @@
+import asyncio
 import textwrap
 from typing import Any
 
@@ -147,13 +148,31 @@ def demo_fn_call(
 def demo_fn_call_agent(
     fn_call_model: BaseChatModel,
     model: str,
+    tools=None,
+    with_system_prompt=False,
+    with_few_shot=False,
+):
+    asyncio.run(
+        demo_fn_call_agent_async(
+            fn_call_model, model, tools, with_system_prompt, with_few_shot
+        )
+    )
+
+
+async def demo_fn_call_agent_async(
+    fn_call_model: BaseChatModel,
+    model: str,
+    tools=None,
     with_system_prompt=False,
     with_few_shot=False,
 ):
     print("-" * 80)
     print("fn call model:", model)
 
-    agent = create_agent(fn_call_model, calc_tools, system_prompt=FN_CALL_SYSTEM)
+    if tools is None:
+        tools = calc_tools
+
+    agent = create_agent(fn_call_model, tools, system_prompt=FN_CALL_SYSTEM)
 
     messages = []
     if with_system_prompt:
@@ -162,7 +181,7 @@ def demo_fn_call_agent(
         messages.extend(examples)
     messages.append({"role": "user", "content": fn_call_question})
 
-    __run_agent(agent, messages)
+    await __run_agent_async(agent, messages)
 
 
 def demo_multi_modal(mm_model: BaseChatModel, model: str, image_data=None):
@@ -232,9 +251,13 @@ def __get_vector_store(embed_model: Embeddings, data_path: str = "data/default")
 
 
 def __run_agent(agent: CompiledStateGraph, messages: list[dict[str, Any]]):
+    asyncio.run(__run_agent_async(agent, messages))
+
+
+async def __run_agent_async(agent: CompiledStateGraph, messages: list[dict[str, Any]]):
     print("-" * 80)
     streaming_started = False
-    for mode, body in agent.stream(
+    async for mode, body in agent.astream(
         {"messages": messages}, stream_mode=["updates", "messages"]
     ):
         if mode == "updates" and isinstance(body, dict):

@@ -174,15 +174,11 @@ def demo_fn_call(
 def demo_fn_call_agent(
     fn_call_model: LLM, model: str, tools=None, query=tool_call_question
 ):
-    print("-" * 80)
-    print("fn call model:", model)
-    print("-" * 80)
-
-    if tools is None:
-        tools = calc_tools
-
-    agent = from_tools_or_functions(tools, fn_call_model)
-    __run_agent(agent, query)
+    asyncio.run(
+        demo_fn_call_agent_async(
+            fn_call_model=fn_call_model, model=model, tools=tools, query=query
+        )
+    )
 
 
 async def demo_fn_call_agent_async(
@@ -190,7 +186,6 @@ async def demo_fn_call_agent_async(
 ):
     print("-" * 80)
     print("fn call model:", model)
-    print("-" * 80)
 
     if tools is None:
         tools = calc_tools
@@ -314,11 +309,17 @@ def __get_index(embed_model: BaseEmbedding, data_path: str) -> VectorStoreIndex:
 async def __run_agent_async(
     agent: AgentWorkflow, question: str, memory: BaseMemory | None = None
 ):
+    print("-" * 80)
+    streaming_started = False
     handler = agent.run(question, memory=memory)
     async for event in handler.stream_events():
         if isinstance(event, AgentStream):
+            streaming_started = True
             print(event.delta, end="", flush=True)
         elif isinstance(event, ToolCallResult):
+            if streaming_started:
+                print("\n" + "-" * 80)
+                streaming_started = False
             print("Tool called: ", event.tool_name)
             print("Arguments to the tool: ", event.tool_kwargs)
             output = event.tool_output.raw_output
