@@ -15,12 +15,12 @@ async def sse_tools_context():
         yield tools
 
 
-def get_calc_sse_tools():
-    async def get_sse_tools():
+def get_sse_tools():
+    async def aget_sse_tools():
         async with sse_tools_context() as sse_tools:
             return sse_tools
 
-    return asyncio.run(get_sse_tools())
+    return asyncio.run(aget_sse_tools())
 
 
 @asynccontextmanager
@@ -34,15 +34,15 @@ async def stdio_tools_context():
         yield tools
 
 
-def get_calc_stdio_tools():
-    async def get_stdio_tools():
+def get_stdio_tools():
+    async def aget_stdio_tools():
         async with stdio_tools_context() as stdio_tools:
             return stdio_tools
 
-    return asyncio.run(get_stdio_tools())
+    return asyncio.run(aget_stdio_tools())
 
 
 if __name__ == "__main__":
-    mcp_tools = get_calc_stdio_tools()
+    mcp_tools = get_stdio_tools()
     for tool in mcp_tools:
         print(tool.metadata.name, ":", tool.metadata.description)
