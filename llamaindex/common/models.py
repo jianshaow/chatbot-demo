@@ -164,6 +164,7 @@ def demo_fn_call(
                 messages.append(tool_message)
             elif isinstance(block, TextBlock):
                 print(block.text)
+                print("-" * 80)
         if has_tool_call:
             response = fn_call_model.chat_with_tools(
                 tools, chat_history=messages, allow_parallel_tool_calls=True
