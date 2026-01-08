@@ -7,4 +7,4 @@ from common.models import demo_agent
 
 embed_model = GoogleGenAIEmbedding(model_name=embed_model_name)
 chat_model = GoogleGenAI(model=chat_model_name)
-demo_agent(embed_model, embed_model_name, chat_model, chat_model_name)
+demo_agent(embed_model, chat_model)

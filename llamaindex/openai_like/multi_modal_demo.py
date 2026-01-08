@@ -6,4 +6,4 @@ from common.openai_like import get_llm
 
 mm_model = get_llm(model=model)
 show_demo_image()
-demo_multi_modal(mm_model, model)
+demo_multi_modal(mm_model)

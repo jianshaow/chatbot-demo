@@ -46,11 +46,10 @@ def default_model_kwargs() -> dict[str, str]:
 
 def demo_embed(
     embed_model: BaseEmbedding,
-    model_name: str,
     query="What did the author do growing up?",
 ):
     print("-" * 80)
-    print("embed model:", model_name)
+    print("embed model:", embed_model.model_name)
 
     question = get_args(1, query)
     embedding = embed_model.get_text_embedding(question)
@@ -60,9 +59,9 @@ def demo_embed(
     print("-" * 80)
 
 
-def demo_chat(chat_model: LLM, model: str):
+def demo_chat(chat_model: LLM):
     print("-" * 80)
-    print("chat model:", model)
+    print("chat model:", chat_model.metadata.model_name)
 
     messages = [
         ChatMessage(
@@ -80,15 +79,13 @@ def demo_chat(chat_model: LLM, model: str):
 
 def demo_agent(
     embed_model: BaseEmbedding,
-    embed_model_name: str,
     chat_model: LLM,
-    chat_model_name: str,
     data_path: str = "data/default",
     query="What did the author do growing up?",
 ):
     print("-" * 80)
-    print("embed model:", embed_model_name)
-    print("chat model:", chat_model_name)
+    print("embed model:", embed_model.model_name)
+    print("chat model:", chat_model.metadata.model_name)
     print("-" * 80)
 
     index = __get_index(embed_model, data_path)
@@ -99,13 +96,12 @@ def demo_agent(
 
 def demo_fn_call(
     fn_call_model: FunctionCallingLLM,
-    model_name: str,
     tools=None,
     with_system_prompt=False,
     with_few_shot=False,
 ):
     print("-" * 80)
-    print("fn call model:", model_name)
+    print("fn call model:", fn_call_model.metadata.model_name)
 
     if tools is None:
         tools = calc_tools
@@ -171,21 +167,17 @@ def demo_fn_call(
             )
 
 
-def demo_fn_call_agent(
-    fn_call_model: LLM, model: str, tools=None, query=tool_call_question
-):
+def demo_fn_call_agent(fn_call_model: LLM, tools=None, query=tool_call_question):
     asyncio.run(
-        demo_fn_call_agent_async(
-            fn_call_model=fn_call_model, model=model, tools=tools, query=query
-        )
+        demo_fn_call_agent_async(fn_call_model=fn_call_model, tools=tools, query=query)
     )
 
 
 async def demo_fn_call_agent_async(
-    fn_call_model: LLM, model: str, tools=None, query=tool_call_question
+    fn_call_model: LLM, tools=None, query=tool_call_question
 ):
     print("-" * 80)
-    print("fn call model:", model)
+    print("fn call model:", fn_call_model.metadata.model_name)
 
     if tools is None:
         tools = calc_tools
@@ -194,9 +186,9 @@ async def demo_fn_call_agent_async(
     await __run_agent_async(agent, query)
 
 
-def demo_multi_modal_legacy(mm_model: MultiModalLLM, model: str, streaming=True):
+def demo_multi_modal_legacy(mm_model: MultiModalLLM, streaming=True):
     print("-" * 80)
-    print("multi-modal model:", model)
+    print("multi-modal model:", mm_model.metadata.model_name)
     print("-" * 80)
 
     image_documents = [ImageNode(image_path=image_url)]
@@ -227,9 +219,9 @@ def demo_multi_modal_legacy(mm_model: MultiModalLLM, model: str, streaming=True)
     print("\n", "-" * 80, sep="")
 
 
-def demo_multi_modal(mm_model: LLM, model: str, image_block=None, streaming=True):
+def demo_multi_modal(mm_model: LLM, image_block=None, streaming=True):
     print("-" * 80)
-    print("multi-modal model:", model)
+    print("multi-modal model:", mm_model.metadata.model_name)
     print("-" * 80)
 
     image_block = image_block if image_block else ImageBlock(url=image_url)
@@ -274,13 +266,12 @@ def demo_multi_modal(mm_model: LLM, model: str, image_block=None, streaming=True
 
 def demo_retrieve(
     embed_model: BaseEmbedding,
-    model_name: str,
     data_path: str = "data/default",
     query="What did the author do growing up?",
 ):
     Settings.embed_model = embed_model
     print("-" * 80)
-    print("embed model:", model_name)
+    print("embed model:", embed_model.model_name)
 
     index = __get_index(embed_model, data_path)
 

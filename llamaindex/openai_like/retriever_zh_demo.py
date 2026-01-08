@@ -3,4 +3,4 @@ from common.models import demo_retrieve
 from common.openai_like import get_embed_model
 
 embed_model = get_embed_model(model_name=model_name)
-demo_retrieve(embed_model, model_name, "data/zh-text", "地球发动机都安装在哪里？")
+demo_retrieve(embed_model, "data/zh-text", "地球发动机都安装在哪里？")

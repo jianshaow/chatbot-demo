@@ -7,4 +7,4 @@ from common.models import demo_agent
 
 embed_model = OpenAIEmbedding(model=embed_model_name)
 chat_model = OpenAI(model=chat_model_name)
-demo_agent(embed_model, embed_model_name, chat_model, chat_model_name)
+demo_agent(embed_model, chat_model)

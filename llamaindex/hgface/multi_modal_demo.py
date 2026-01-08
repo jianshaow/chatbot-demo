@@ -7,4 +7,4 @@ model_kwargs = default_model_kwargs()
 
 show_demo_image()
 mm_model = get_llm(model_name)
-demo_multi_modal(mm_model, model_name, streaming=False)
+demo_multi_modal(mm_model, streaming=False)

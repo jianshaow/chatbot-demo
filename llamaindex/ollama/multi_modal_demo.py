@@ -5,4 +5,4 @@ from common.ollama import get_llm
 
 show_demo_image()
 mm_model = get_llm(model)
-demo_multi_modal(mm_model, model)
+demo_multi_modal(mm_model)

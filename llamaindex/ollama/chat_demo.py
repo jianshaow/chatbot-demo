@@ -3,4 +3,4 @@ from common.models import demo_chat
 from common.ollama import get_llm
 
 chat_model = get_llm(chat_model_name)
-demo_chat(chat_model, chat_model_name)
+demo_chat(chat_model)

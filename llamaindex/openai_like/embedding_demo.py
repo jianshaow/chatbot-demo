@@ -3,4 +3,4 @@ from common.models import demo_embed
 from common.openai_like import get_embed_model
 
 embed_model = get_embed_model(model_name=model_name)
-demo_embed(embed_model, model_name)
+demo_embed(embed_model)

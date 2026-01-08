@@ -4,4 +4,4 @@ from common import openai_fc_model as model
 from common.models import demo_fn_call_agent
 
 fn_call_model = OpenAI(model=model)
-demo_fn_call_agent(fn_call_model, model)
+demo_fn_call_agent(fn_call_model)

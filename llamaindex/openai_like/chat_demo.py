@@ -3,4 +3,4 @@ from common.models import demo_chat
 from common.openai_like import get_llm
 
 chat_model = get_llm(model=model)
-demo_chat(chat_model, model)
+demo_chat(chat_model)
