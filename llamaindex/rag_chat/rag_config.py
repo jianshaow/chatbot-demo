@@ -91,7 +91,7 @@ def __openai_config(
 ):
     return RagChatConfig(
         "openai",
-        OpenAIEmbedding,
+        lambda model: OpenAIEmbedding(model=model),
         openai_embed_model,
         OpenAI,
         openai_chat_model,
