@@ -150,8 +150,10 @@ def demo_fn_call(
                 print("Got output:", fn_result)
                 print("========================\n")
                 tool_message = ChatMessage(
-                    content=str(fn_result),
                     role="tool",
+                    blocks=[
+                        TextBlock(block_type="text", text=str(fn_result)),
+                    ],
                     additional_kwargs={
                         "name": fn_name,
                         "tool_call_id": tool_call_id,

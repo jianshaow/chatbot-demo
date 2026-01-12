@@ -1,3 +1,4 @@
+from llama_index.core.base.llms.types import TextBlock, ToolCallBlock
 from llama_index.core.llms import ChatMessage
 
 from common import get_args
@@ -13,34 +14,48 @@ question_message = ChatMessage(role="user", content=tool_call_question)
 examples = [
     ChatMessage(
         role="user",
-        content="What is (2 + 3) * 4",
+        blocks=[
+            TextBlock(block_type="text", text="What is (2 + 3) * 4"),
+        ],
     ),
     ChatMessage(
         role="assistant",
-        content="",
-        additional_kwargs={
-            "tool_calls": [{"function": {"name": "add", "arguments": {"a": 2, "b": 3}}}]
-        },
+        blocks=[
+            ToolCallBlock(
+                block_type="tool_call",
+                tool_call_id="call_H8CcFDO4O51jD5aJBp7N3eKh",
+                tool_name="add",
+                tool_kwargs={"a": 2, "b": 3},
+            ),
+        ],
     ),
     ChatMessage(
         role="tool",
-        content="5",
+        blocks=[
+            TextBlock(block_type="text", text="5"),
+        ],
     ),
     ChatMessage(
         role="assistant",
-        content="",
-        additional_kwargs={
-            "tool_calls": [
-                {"function": {"name": "multiply", "arguments": {"a": 5, "b": 4}}}
-            ]
-        },
+        blocks=[
+            ToolCallBlock(
+                block_type="tool_call",
+                tool_call_id="call_C1nzoLmWboI6SvIwzp57dvHe",
+                tool_name="multiply",
+                tool_kwargs={"a": 5, "b": 4},
+            ),
+        ],
     ),
     ChatMessage(
         role="tool",
-        content="20",
+        blocks=[
+            TextBlock(block_type="text", text="20"),
+        ],
     ),
     ChatMessage(
         role="assistant",
-        content="(2 + 3) * 4 = 20.",
+        blocks=[
+            TextBlock(block_type="text", text="(2 + 3) * 4 = 20."),
+        ],
     ),
 ]
