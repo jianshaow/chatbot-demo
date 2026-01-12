@@ -3,7 +3,7 @@ import asyncio
 import chromadb
 import rag_config
 from llama_index.core import Settings, VectorStoreIndex
-from llama_index.core.agent.workflow import AgentStream, AgentWorkflow, ToolCallResult
+from llama_index.core.agent.workflow import AgentStream, ToolCallResult
 from llama_index.core.memory import ChatMemoryBuffer
 from llama_index.core.tools import RetrieverTool
 from llama_index.vector_stores.chroma import ChromaVectorStore
