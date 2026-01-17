@@ -2,7 +2,7 @@
 	"name": "LANGCHAIN",
 	"image": "jianshao/langchain-demo:latest",
 	"remoteEnv": {
-		"PYTHONPATH": ".",
+		"PYTHONPATH": "."
 	},
 	"runArgs": [
 		"--add-host=host.docker.internal:host-gateway"
