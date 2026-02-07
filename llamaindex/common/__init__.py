@@ -40,7 +40,7 @@ openai_like_mm_model = os.getenv("OPENAI_LIKE_MM_MODEL", openai_like_llm_model)
 openai_like_is_chat_model = os.getenv("OPENAI_LIKE_IS_CHAT_MODEL", "true") == "true"
 openai_like_embed_batch_size = int(os.getenv("OPENAI_LIKE_EMBED_BATCH_SIZE", "10"))
 
-google_embed_model = os.getenv("GOOGLE_EMBED_MODEL", "models/text-embedding-004")
+google_embed_model = os.getenv("GOOGLE_EMBED_MODEL", "models/gemini-embedding-001")
 google_llm_model = os.getenv("GOOGLE_LLM_MODEL", "models/gemini-2.5-flash")
 google_chat_model = os.getenv("GOOGLE_CHAT_MODEL", google_llm_model)
 google_fc_model = os.getenv("GOOGLE_FC_MODEL", google_llm_model)
