@@ -1,6 +1,6 @@
+from common import ollama_embed_model as model_name
 from ollama import Client
 
-model_name = "paraphrase-multilingual:278m"
 print("-" * 80)
 print("embed model:", model_name)
 
