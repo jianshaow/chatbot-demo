@@ -10,8 +10,6 @@ from common import (
     get_args,
     google_chat_model,
     google_embed_model,
-    hf_chat_model,
-    hf_embed_model,
     ollama_chat_model,
     ollama_embed_model,
     openai_chat_model,
@@ -19,8 +17,6 @@ from common import (
 )
 from common.google import get_chat_model as get_google_chat_model
 from common.google import get_embed_model as get_google_embed_model
-from common.hgface import get_chat_model as get_hf_chat_model
-from common.hgface import get_embed_model as get_hf_embed_model
 from common.ollama import get_chat_model as get_ollama_chat_model
 from common.ollama import get_embed_model as get_ollama_embed_model
 from common.openai import get_chat_model as get_openai_chat_model
@@ -129,23 +125,6 @@ def __ollama_config(
     )
 
 
-def __hf_config(
-    embed_model_name=hf_embed_model,
-    chat_model_name=hf_chat_model,
-    data_dir=DEFAULT_DATA,
-    defalut_question=DEFAULT_QUESTION,
-):
-    return RagChatConfig(
-        "hface",
-        get_hf_embed_model,
-        embed_model_name,
-        get_hf_chat_model,
-        chat_model_name,
-        data_dir=data_dir,
-        defalut_question=defalut_question,
-    )
-
-
 __config_dict = {
     "openai": __openai_config(),
     "openai_en": __openai_config(
@@ -171,15 +150,6 @@ __config_dict = {
         defalut_question=DEFAULT_QUESTION_EN,
     ),
     "ollama_zh": __ollama_config(
-        data_dir=DATA_ZH,
-        defalut_question=DEFAULT_QUESTION_ZH,
-    ),
-    "hf": __hf_config(),
-    "hf_en": __hf_config(
-        data_dir=DATA_EN,
-        defalut_question=DEFAULT_QUESTION_EN,
-    ),
-    "hf_zh": __hf_config(
         data_dir=DATA_ZH,
         defalut_question=DEFAULT_QUESTION_ZH,
     ),

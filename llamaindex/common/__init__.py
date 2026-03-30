@@ -18,12 +18,6 @@ ollama_chat_model = os.getenv("OLLAMA_CHAT_MODEL", ollama_llm_model)
 ollama_fc_model = os.getenv("OLLAMA_FC_MODEL", ollama_llm_model)
 ollama_mm_model = os.getenv("OLLAMA_MM_MODEL", "qwen3-vl:235b-instruct-cloud")
 
-hf_embed_model = os.getenv(
-    "HF_EMBED_MODEL", "sentence-transformers/paraphrase-multilingual-mpnet-base-v2"
-)
-hf_chat_model = os.getenv("HF_CHAT_MODEL", "meta-llama/Llama-3.2-3B-Instruct")
-hf_mm_model = os.getenv("HF_MM_MODEL", "Qwen/Qwen2-VL-2B-Instruct")
-
 openai_embed_model = os.getenv("OPENAI_EMBED_MODEL", "text-embedding-3-small")
 openai_llm_model = os.getenv("OPENAI_LLM_MODEL", "gpt-4o-mini")
 openai_chat_model = os.getenv("OPENAI_CHAT_MODEL", openai_llm_model)
