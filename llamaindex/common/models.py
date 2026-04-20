@@ -19,7 +19,7 @@ from llama_index.core.tools import RetrieverTool
 from mcp.types import CallToolResult
 
 from common import demo_image_url as image_url
-from common import get_args, get_env_bool
+from common import get_args
 from common.calc_func import fns
 from common.prompts import (
     examples,
@@ -29,19 +29,6 @@ from common.prompts import (
 )
 from common.tools import calc_tools
 from common.workflows import from_tools_or_functions
-
-
-def default_model_kwargs() -> dict[str, str]:
-    model_kwargs = {}
-    bnb_enabled = get_env_bool("BNB_ENABLED")
-    if bnb_enabled:
-        import torch
-        from transformers.utils.quantization_config import BitsAndBytesConfig
-
-        model_kwargs["quantization_config"] = BitsAndBytesConfig(
-            load_in_4bit=True, bnb_4bit_compute_dtype=torch.float16
-        )
-    return model_kwargs
 
 
 def demo_embed(
