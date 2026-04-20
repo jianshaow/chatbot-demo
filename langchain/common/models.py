@@ -13,7 +13,7 @@ from langchain_core.prompts import ChatPromptTemplate, HumanMessagePromptTemplat
 from langchain_text_splitters import CharacterTextSplitter
 from langgraph.graph.state import CompiledStateGraph
 
-from common import get_args, get_env_bool
+from common import get_args
 from common.calc_func import fns
 from common.prompts import (
     CHAT_SYSTEM,
@@ -31,18 +31,6 @@ from common.prompts import (
     mm_question2,
 )
 from common.tools import calc_tools, get_retrieve_tool
-
-
-def default_model_kwargs() -> dict[str, str]:
-    model_kwargs: dict[str, Any] = {"device_map": "auto"}
-    if get_env_bool("BNB_ENABLED"):
-        import torch
-        from transformers.utils.quantization_config import BitsAndBytesConfig
-
-        model_kwargs["quantization_config"] = BitsAndBytesConfig(
-            load_in_4bit=True, bnb_4bit_compute_dtype=torch.float16
-        )
-    return model_kwargs
 
 
 def demo_embed(embed_model: Embeddings, model: str, query=embed_question):
