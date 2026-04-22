@@ -8,6 +8,7 @@ tools: list[ChatCompletionFunctionToolParam] = [
         "type": "function",
         "function": {
             "name": "multiply",
+            "description": "multiply(a: int, b: int) -> int",
             "parameters": {
                 "type": "object",
                 "properties": {
@@ -26,6 +27,7 @@ tools: list[ChatCompletionFunctionToolParam] = [
         "type": "function",
         "function": {
             "name": "add",
+                "description": "add(a: int, b: int) -> int",
             "parameters": {
                 "type": "object",
                 "properties": {
