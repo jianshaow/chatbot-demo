@@ -6,21 +6,7 @@ from transformers.models.auto.configuration_auto import AutoConfig
 from transformers.models.auto.modeling_auto import AutoModelForCausalLM
 from transformers.models.auto.processing_auto import AutoProcessor
 from transformers.models.auto.tokenization_auto import AutoTokenizer
-from transformers.models.mllama.modeling_mllama import MllamaForConditionalGeneration
-from transformers.models.paligemma.modeling_paligemma import (
-    PaliGemmaForConditionalGeneration,
-)
-from transformers.models.qwen2_5_vl.modeling_qwen2_5_vl import (
-    Qwen2_5_VLForConditionalGeneration,
-)
-from transformers.models.qwen2_vl.modeling_qwen2_vl import (
-    Qwen2VLForConditionalGeneration,
-)
-from transformers.models.qwen3_vl.modeling_qwen3_vl import (
-    Qwen3VLForConditionalGeneration,
-)
-from transformers.tokenization_utils import PreTrainedTokenizer
-from transformers.tokenization_utils_fast import PreTrainedTokenizerFast
+from transformers.tokenization_python import PreTrainedTokenizer
 
 from common import bnb_enabled, hf_chat_model
 
@@ -33,7 +19,8 @@ def default_model_kwargs() -> dict[str, str]:
         from transformers.utils.quantization_config import BitsAndBytesConfig
 
         model_kwargs["quantization_config"] = BitsAndBytesConfig(
-            load_in_4bit=True, bnb_4bit_compute_dtype=torch.float16
+            load_in_4bit=True,
+            bnb_4bit_compute_dtype=torch.bfloat16,
         )
     return model_kwargs
 
@@ -48,24 +35,10 @@ def new_model(model_name: str, model_kwargs=None):
     return model, tokenizer
 
 
-def new_multi_modal_model(model_name: str, model_kwargs=None):
+def new_multi_modal_model(model_name: str, model_kwargs={}):
     config = AutoConfig.from_pretrained(model_name, trust_remote_code=True)
     AutoModelClass = AutoModelForCausalLM
 
-    architecture = config.architectures[0] if config.architectures else ""
-    if "Qwen2VLForConditionalGeneration" in architecture:
-        AutoModelClass = Qwen2VLForConditionalGeneration
-    if "Qwen2_5_VLForConditionalGeneration" in architecture:
-        AutoModelClass = Qwen2_5_VLForConditionalGeneration
-    if "Qwen3VLForConditionalGeneration" in architecture:
-        AutoModelClass = Qwen3VLForConditionalGeneration
-    if "PaliGemmaForConditionalGeneration" in architecture:
-        AutoModelClass = PaliGemmaForConditionalGeneration
-    if "MllamaForConditionalGeneration" in architecture:
-        AutoModelClass = MllamaForConditionalGeneration
-
-    if model_kwargs is None:
-        model_kwargs = default_model_kwargs()
     model_kwargs = {
         **model_kwargs,
         "dtype": "auto",
@@ -74,16 +47,14 @@ def new_multi_modal_model(model_name: str, model_kwargs=None):
     }
     model = AutoModelClass.from_pretrained(model_name, **model_kwargs)
 
-    processor = AutoProcessor.from_pretrained(
-        model_name, use_fast=False, trust_remote_code=True
-    )
+    processor = AutoProcessor.from_pretrained(model_name, trust_remote_code=True)
 
     return model, processor, config
 
 
 def generate(
     model: PreTrainedModel,
-    tokenizer: PreTrainedTokenizer | PreTrainedTokenizerFast,
+    tokenizer: PreTrainedTokenizer,
     prompt: str,
     streaming=False,
 ):
@@ -100,33 +71,30 @@ def generate(
             tokenizer,  # type: ignore
             skip_prompt=True,
             skip_special_tokens=True,
-            clean_up_tokenization_spaces=True,
         )
         generation_kwargs = {**generation_kwargs, "streamer": streamer}
 
-        thread = Thread(target=model.generate, kwargs=generation_kwargs)
+        thread = Thread(target=model.generate, kwargs=generation_kwargs)  # type: ignore
         thread.start()
 
         return streamer
     else:
-        outputs = model.generate(**generation_kwargs)
+        outputs = model.generate(**generation_kwargs)  # type: ignore
         token_ids = [
             output_ids[len(input_ids) :]
             for input_ids, output_ids in zip(inputs.input_ids, outputs)
         ]
-        return tokenizer.batch_decode(
-            token_ids, skip_special_tokens=True, clean_up_tokenization_spaces=True
-        )[0]
+        return tokenizer.batch_decode(token_ids, skip_special_tokens=True)[0]
 
 
 def image_text_to_text(model: PreTrainedModel, processor, inputs):
     inputs = inputs.to(model.device)
-    generated_ids = model.generate(**inputs, max_new_tokens=256)
+    generated_ids = model.generate(**inputs, max_new_tokens=512)  # type: ignore
     generated_ids = [
         out_ids[len(in_ids) :]
         for in_ids, out_ids in zip(inputs.input_ids, generated_ids)
     ]
-    output_text = processor.batch_decode(
+    output_text = processor.decode(
         generated_ids,
         skip_special_tokens=True,
         clean_up_tokenization_spaces=False,

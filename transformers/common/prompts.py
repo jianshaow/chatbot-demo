@@ -3,8 +3,7 @@ from io import BytesIO
 import requests
 from PIL import Image
 from transformers.models.auto.tokenization_auto import AutoTokenizer
-from transformers.tokenization_utils import PreTrainedTokenizer
-from transformers.tokenization_utils_fast import PreTrainedTokenizerFast
+from transformers.tokenization_python import PreTrainedTokenizer
 
 SYSTEM_PROMPT = "A chat between a curious user and an artificial intelligence assistant. The assistant gives helpful, detailed, and polite answers to the user's questions."
 
@@ -30,7 +29,7 @@ def chat_prompt(user_prompt, system_prompt=SYSTEM_PROMPT, model_type="vicuna"):
 
 
 def tokenizer_prompt(
-    tokenizer: PreTrainedTokenizer | PreTrainedTokenizerFast,
+    tokenizer: PreTrainedTokenizer,
     user_prompt: str,
     system_prompt=SYSTEM_PROMPT,
 ):
@@ -58,10 +57,9 @@ def image_text_prompt(image_url: str, text: str, processor, config):
         or "Qwen2VLForConditionalGeneration" in architecture
     ):
         return qwen2vl_prompt(image_url, text, processor)
-    elif "Qwen3VLForConditionalGeneration" in architecture:
-        return qwen3vl_prompt(image_url, text, processor)
     else:
-        raise ValueError(f"architecture {architecture} not supported")
+        return common_prompt(image_url, text, processor)
+        # raise ValueError(f"architecture {architecture} not supported")
 
 
 def qwen2vl_prompt(image_url: str, text: str, processor):
@@ -87,7 +85,7 @@ def qwen2vl_prompt(image_url: str, text: str, processor):
     return processor(text=text, images=images, padding=True, return_tensors="pt")
 
 
-def qwen3vl_prompt(image_url: str, text: str, processor):
+def common_prompt(image_url: str, text: str, processor):
     messages = [
         {
             "role": "user",
@@ -103,9 +101,9 @@ def qwen3vl_prompt(image_url: str, text: str, processor):
     return processor.apply_chat_template(
         messages,
         tokenize=True,
-        add_generation_prompt=True,
         return_dict=True,
         return_tensors="pt",
+        add_generation_prompt=True,
     )
 
 

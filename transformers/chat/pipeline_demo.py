@@ -11,7 +11,8 @@ generate = pipeline(
     dtype="auto",
     model_kwargs=default_model_kwargs(),
 )
-if generate.tokenizer and generate.generation_config:
+generate.generation_config.max_new_tokens = 256
+if generate.tokenizer:
     generate.generation_config.pad_token_id = generate.tokenizer.eos_token_id
 
 print("-" * 80)
@@ -29,13 +30,11 @@ streamer = TextStreamer(
     generate.tokenizer,  # type: ignore
     skip_prompt=True,
     skip_special_tokens=True,
-    clean_up_tokenization_spaces=True,
 )
 
 print("-" * 80)
 generate(
     messages,
-    max_new_tokens=256,
     streamer=streamer,
 )
 print("-" * 80)
