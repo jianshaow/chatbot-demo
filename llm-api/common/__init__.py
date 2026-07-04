@@ -7,7 +7,7 @@ load_dotenv()
 
 ollama_host = os.getenv("OLLAMA_HOST", "localhost")
 ollama_base_url = os.getenv("OLLAMA_BASE_URL", f"http://{ollama_host}:11434")
-ollama_embed_model = os.getenv("OLLAMA_EMBED_MODEL", "nomic-embed-text-v2-moe:latest")
+ollama_embed_model = os.getenv("OLLAMA_EMBED_MODEL", "qwen3-embedding:0.6b")
 ollama_llm_model = os.getenv("OLLAMA_LLM_MODEL", "minimax-m3:cloud")
 ollama_chat_model = os.getenv("OLLAMA_CHAT_MODEL", ollama_llm_model)
 ollama_fc_model = os.getenv("OLLAMA_FC_MODEL", ollama_llm_model)
