@@ -26,7 +26,7 @@ openai_mm_model = os.getenv("OPENAI_MM_MODEL", openai_llm_model)
 
 openai_like_api_base = os.getenv("OPENAI_LIKE_API_BASE", "https://api.openai.com/v1")
 openai_like_api_key = os.getenv("OPENAI_LIKE_API_KEY", "empty")
-openai_like_embed_model = os.getenv("OPENAI_LIKE_EMBED_MODEL", "text-embedding-3-small")
+openai_like_embed_model = os.getenv("OPENAI_LIKE_EMBED_MODEL", openai_embed_model)
 openai_like_llm_model = os.getenv("OPENAI_LIKE_LLM_MODEL", openai_llm_model)
 openai_like_chat_model = os.getenv("OPENAI_LIKE_CHAT_MODEL", openai_like_llm_model)
 openai_like_fc_model = os.getenv("OPENAI_LIKE_FC_MODEL", openai_like_llm_model)
