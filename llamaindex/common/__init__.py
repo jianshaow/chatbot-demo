@@ -32,6 +32,9 @@ openai_like_chat_model = os.getenv("OPENAI_LIKE_CHAT_MODEL", openai_like_llm_mod
 openai_like_fc_model = os.getenv("OPENAI_LIKE_FC_MODEL", openai_like_llm_model)
 openai_like_mm_model = os.getenv("OPENAI_LIKE_MM_MODEL", openai_like_llm_model)
 openai_like_is_chat_model = os.getenv("OPENAI_LIKE_IS_CHAT_MODEL", "true") == "true"
+openai_like_is_function_calling_model = (
+    os.getenv("OPENAI_LIKE_IS_FUNCTION_CALLING_MODEL", "true") == "true"
+)
 openai_like_embed_batch_size = int(os.getenv("OPENAI_LIKE_EMBED_BATCH_SIZE", "10"))
 
 google_embed_model = os.getenv("GOOGLE_EMBED_MODEL", "models/gemini-embedding-001")
@@ -42,9 +45,7 @@ google_mm_model = os.getenv("GOOGLE_MM_MODEL", google_llm_model)
 google_few_shoted = os.getenv("GOOGLE_FEW_SHOTED", "false") == "true"
 
 sse_url = os.getenv("SSE_URL", "http://localhost:8000/sse")
-
 ssl_verify = os.getenv("SSL_VERIFY", "true") == "true"
-
 thinking = os.getenv("THINK", "false") == "true"
 
 
