@@ -170,7 +170,6 @@ __config_dict = {
     ),
     "ollama_zh": __ollama_config(
         data_dir=DATA_ZH,
-        embed_model_name="paraphrase-multilingual:278m",
         defalut_question=DEFAULT_QUESTION_ZH,
     ),
 }
