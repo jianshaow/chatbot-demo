@@ -14,7 +14,7 @@ client = get_client()
 models = client.models.list()
 print("-" * 80)
 for model in models:
-    if model.owned_by != owned_by:
+    if owned_by and model.owned_by != owned_by:
         continue
     if verbose:
         print(model)
