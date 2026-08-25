@@ -2,11 +2,23 @@ import os
 
 from langchain.embeddings.base import Embeddings
 from langchain_chroma import Chroma
+from langchain_core.documents import Document
+from langchain_core.vectorstores import VectorStore
 from langchain_text_splitters import CharacterTextSplitter
 from langchain_unstructured.document_loaders import UnstructuredLoader
 
 
-def get_vector_store(embed_model: Embeddings, data_path: str = "data/default"):
+def get_vector_store(
+    embed_model: Embeddings, data_path: str = "data/default"
+) -> VectorStore:
+    vectorstore = Chroma.from_documents(
+        documents=parse_documents(data_path),
+        embedding=embed_model,
+    )
+    return vectorstore
+
+
+def parse_documents(data_path: str) -> list[Document]:
     loader = UnstructuredLoader(
         __list_file(data_path),
         chunking_strategy="basic",
@@ -16,15 +28,10 @@ def get_vector_store(embed_model: Embeddings, data_path: str = "data/default"):
     text_splitter = CharacterTextSplitter.from_tiktoken_encoder(
         chunk_size=1000, chunk_overlap=200
     )
-    documents = text_splitter.split_documents(loader.load())
-    vectorstore = Chroma.from_documents(
-        documents=documents,
-        embedding=embed_model,
-    )
-    return vectorstore
+    return text_splitter.split_documents(loader.load())
 
 
-def __list_file(data_path: str):
+def __list_file(data_path: str) -> list[str]:
     return [
         os.path.join(data_path, f)
         for f in os.listdir(data_path)

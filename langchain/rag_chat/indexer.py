@@ -1,7 +1,10 @@
-import chromadb, textwrap, rag_config
+import textwrap
+
+import chromadb
+import rag_config
 from langchain_chroma import Chroma
-from langchain_community.document_loaders import DirectoryLoader
-from langchain_text_splitters import CharacterTextSplitter
+
+from common.vectorstores import parse_documents
 
 config = rag_config.get_config()
 
@@ -12,11 +15,7 @@ print("-" * 80)
 print("embed_model:", config.embed_model_name)
 
 if chroma_collection.count() == 0:
-    loader = DirectoryLoader(config.data_dir, show_progress=True)
-    text_splitter = CharacterTextSplitter.from_tiktoken_encoder(
-        chunk_size=1000, chunk_overlap=200
-    )
-    documents = text_splitter.split_documents(loader.load())
+    documents = parse_documents(config.data_dir)
     vectorstore = Chroma.from_documents(
         client=client,
         collection_name=config.vector_db_collection,

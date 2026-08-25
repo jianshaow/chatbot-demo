@@ -2,9 +2,9 @@ import chromadb
 import rag_config
 from langchain.agents import create_agent
 from langchain_chroma import Chroma
-from langchain_classic.tools.retriever import create_retriever_tool
 from langchain_core.documents import Document
 from langchain_core.messages import AIMessageChunk
+from langchain_core.tools.retriever import create_retriever_tool
 
 config = rag_config.get_config()
 
