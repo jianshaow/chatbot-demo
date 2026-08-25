@@ -38,7 +38,7 @@ else:
         documents=result["documents"],
         metadatas=result["metadatas"],
         uris=result["uris"],
-        images=result["data"],
+        images=result["data"],  # type: ignore
     )
 
     print("data migrated:", tgt_collection.count())
