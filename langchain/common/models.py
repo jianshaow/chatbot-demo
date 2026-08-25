@@ -130,7 +130,7 @@ def demo_fn_call(
         response = llm_with_tools.invoke(messages)
 
     print("-" * 80)
-    print(response.content)
+    print(response.text)
 
 
 def demo_fn_call_agent(
