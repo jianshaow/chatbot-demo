@@ -1,15 +1,16 @@
 import os
+import textwrap
 
 import chromadb
 from langchain_chroma import Chroma
-import textwrap
 
 from common import db_base_dir, get_args
 
 base_dir = os.getenv("CHROMA_BASE_DIR", "chroma")
 
-db_dir = get_args(1, None)
-if db_dir and os.path.exists(path := os.path.join(db_base_dir, db_dir)):
+if (db_dir := get_args(1, None)) and os.path.exists(
+    path := os.path.join(db_base_dir, db_dir)
+):
     client = chromadb.PersistentClient(path)
     if collection := get_args(2, None):
         chroma_collection = client.get_collection(collection)

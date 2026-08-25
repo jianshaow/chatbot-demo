@@ -7,8 +7,9 @@ from llama_index.vector_stores.chroma import ChromaVectorStore
 
 from common import db_base_dir, get_args
 
-db_dir = get_args(1)
-if db_dir and os.path.exists((path := os.path.join(db_base_dir, db_dir))):
+if (db_dir := get_args(1)) and os.path.exists(
+    (path := os.path.join(db_base_dir, db_dir))
+):
     client = chromadb.PersistentClient(path)
     if collection := get_args(2, None):
         chroma_collection = client.get_collection(collection)
