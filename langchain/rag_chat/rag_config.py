@@ -157,7 +157,7 @@ __config_dict = {
 
 
 def get_config():
-    return __config_dict[get_args(1, "google")]
+    return __config_dict[get_args(1, "google") or ""]
 
 
 if __name__ == "__main__":

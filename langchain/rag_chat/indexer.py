@@ -32,7 +32,7 @@ else:
 retriever = vectorstore.as_retriever(
     search_kwargs={"k": 2},
 )
-question = config.get_question()
+question = config.get_question() or ""
 docs = retriever.invoke(question)
 for doc in docs:
     print("-" * 80)
