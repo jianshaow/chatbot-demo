@@ -12,7 +12,10 @@ def get_chat_model(model):
     http_client = httpx.Client(verify=ssl_verify, headers=headers)
     http_async_client = httpx.AsyncClient(verify=ssl_verify, headers=headers)
     return ChatOpenAI(
-        model=model, http_client=http_client, http_async_client=http_async_client
+        model=model,
+        http_client=http_client,
+        http_async_client=http_async_client,
+        http_socket_options=(),
     )
 
 
