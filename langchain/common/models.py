@@ -3,14 +3,11 @@ import textwrap
 from typing import Any
 
 from langchain.agents import create_agent
-from langchain_chroma import Chroma
-from langchain_community.document_loaders import DirectoryLoader
 from langchain_core.embeddings import Embeddings
 from langchain_core.language_models import BaseChatModel
 from langchain_core.messages import AIMessage, AIMessageChunk, ToolMessage
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate, HumanMessagePromptTemplate
-from langchain_text_splitters import CharacterTextSplitter
 from langgraph.graph.state import CompiledStateGraph
 
 from common import get_args
@@ -31,6 +28,7 @@ from common.prompts import (
     mm_question2,
 )
 from common.tools import calc_tools, get_retrieve_tool
+from common.vectorstores import get_vector_store
 
 
 def demo_embed(embed_model: Embeddings, model: str, query=embed_question):
@@ -76,7 +74,7 @@ def demo_agent(
     print("embed model:", embed_model_name)
     print("chat model:", chat_model_name)
 
-    vectorstore = __get_vector_store(embed_model)
+    vectorstore = get_vector_store(embed_model)
     agent = create_agent(chat_model, [get_retrieve_tool(vectorstore)])
 
     messages: list = [
@@ -217,25 +215,12 @@ def demo_retrieve(
     print("embed model:", model)
 
     question = get_args(1, query)
-    retriever = __get_vector_store(embed_model, data_path).as_retriever()
+    retriever = get_vector_store(embed_model, data_path).as_retriever()
     docs = retriever.invoke(question)
     for doc in docs:
         print("-" * 80)
         print(textwrap.fill(doc.page_content[:347] + "..."))
     print("-" * 80)
-
-
-def __get_vector_store(embed_model: Embeddings, data_path: str = "data/default"):
-    loader = DirectoryLoader(data_path)
-    text_splitter = CharacterTextSplitter.from_tiktoken_encoder(
-        chunk_size=1000, chunk_overlap=200
-    )
-    documents = text_splitter.split_documents(loader.load())
-    vectorstore = Chroma.from_documents(
-        documents=documents,
-        embedding=embed_model,
-    )
-    return vectorstore
 
 
 def __run_agent(agent: CompiledStateGraph, messages: list[dict[str, Any]]):
