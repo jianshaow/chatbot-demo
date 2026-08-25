@@ -10,15 +10,16 @@ if db_dir and os.path.exists((path := os.path.join(db_base_dir, db_dir))):
     collections = client.list_collections()
     print("collections size:", len(collections))
     print("=" * 80)
-    for collection_name in collections:
-        print("name:", collection_name)
-        collection = client.get_collection(collection_name)
+    for collection in collections:
+        print("name:", collection.name)
         count = collection.count()
         print("record count:", count)
-        vectors = collection.peek(1)
-        for embeddings in vectors["embeddings"]:
-            print("embeddings dimension:", len(embeddings))
-            print(embeddings[:4])
+        result = collection.peek(1) or {"embeddings": []}
+        embeddings = result.get("embeddings")
+        if embeddings is not None:
+            for embedding in embeddings:
+                print("embeddings dimension:", len(embedding))
+                print(embedding[:4])
         print("-" * 80)
 else:
     for subpath in os.listdir(db_base_dir):

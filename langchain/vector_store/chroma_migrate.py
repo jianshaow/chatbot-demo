@@ -31,14 +31,14 @@ else:
     src_collection = src_client.get_collection(src_name)
     tgt_collection = tgt_client.get_or_create_collection(tgt_name)
 
-    vectors = src_collection.peek(src_collection.count())
+    result = src_collection.peek(src_collection.count())
     tgt_collection.add(
-        ids=vectors["ids"],
-        embeddings=vectors["embeddings"],
-        documents=vectors["documents"],
-        metadatas=vectors["metadatas"],
-        uris=vectors["uris"],
-        images=vectors["data"],
+        ids=result["ids"],
+        embeddings=result["embeddings"],
+        documents=result["documents"],
+        metadatas=result["metadatas"],
+        uris=result["uris"],
+        images=result["data"],
     )
 
     print("data migrated:", tgt_collection.count())
