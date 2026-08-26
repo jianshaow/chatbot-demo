@@ -11,12 +11,12 @@ from common import get_args
 CHAT_SYSTEM = "You are a pirate with a colorful personality."
 FN_CALL_SYSTEM = "You are bad at math but are an expert at using a calculator"
 
-embed_question = get_args(1, "What did the author do growing up?")
-chat_question = get_args(1, "What is your name?")
-fn_call_question = get_args(1, "What is (121 * 3) + 42?")
-fn_call_adv_question = get_args(1, "What is (121 * 3) + (6 * 7)?")
-mm_question1 = get_args(1, "Identify the city where this photo was taken.")
-mm_question2 = get_args(1, "Give me more context for this image.")
+embed_question = get_args(1, "What did the author do growing up?") or ""
+chat_question = get_args(1, "What is your name?") or ""
+fn_call_question = get_args(1, "What is (121 * 3) + 42?") or ""
+fn_call_adv_question = get_args(1, "What is (121 * 3) + (6 * 7)?") or ""
+mm_question1 = get_args(1, "Identify the city where this photo was taken.") or ""
+mm_question2 = get_args(1, "Give me more context for this image.") or ""
 mm_image_url = "https://storage.googleapis.com/generativeai-downloads/data/scene.jpg"
 
 fn_call_system_message = SystemMessage(FN_CALL_SYSTEM)

@@ -35,7 +35,7 @@ def demo_embed(embed_model: Embeddings, model: str, query=embed_question):
     print("-" * 80)
     print("embed model:", model)
 
-    question = get_args(1, query)
+    question = get_args(1, query) or ""
     embedding = embed_model.embed_query(question)
     print("-" * 80)
     print("dimension:", len(embedding))
@@ -214,7 +214,7 @@ def demo_retrieve(
     print("-" * 80)
     print("embed model:", model)
 
-    question = get_args(1, query)
+    question = get_args(1, query) or ""
     retriever = get_vector_store(embed_model, data_path).as_retriever()
     docs = retriever.invoke(question)
     for doc in docs:
