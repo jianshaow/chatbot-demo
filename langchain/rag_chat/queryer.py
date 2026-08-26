@@ -42,6 +42,6 @@ print("-" * 80)
 print("Question:", question, sep="\n")
 print("Answer:")
 for chunk, metadata in agent.stream({"messages": messages}, stream_mode="messages"):
-    if isinstance(chunk, AIMessageChunk) and chunk.content:
-        print(chunk.content, end="", flush=True)
+    if isinstance(chunk, AIMessageChunk):
+        print(chunk.text, end="", flush=True)
 print("\n", "-" * 80, sep="")
