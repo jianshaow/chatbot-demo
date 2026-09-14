@@ -81,7 +81,7 @@ def demo_agent(
         {"role": "user", "content": query},
     ]
 
-    __run_agent(agent, messages)
+    asyncio.run(__run_agent_async(agent, messages))
 
 
 def demo_fn_call(
@@ -221,10 +221,6 @@ def demo_retrieve(
         print("-" * 80)
         print(textwrap.fill(doc.page_content[:347] + "..."))
     print("-" * 80)
-
-
-def __run_agent(agent: CompiledStateGraph, messages: list[dict[str, Any]]):
-    asyncio.run(__run_agent_async(agent, messages))
 
 
 async def __run_agent_async(agent: CompiledStateGraph, messages: list[dict[str, Any]]):
