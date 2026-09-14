@@ -2,6 +2,7 @@ import asyncio
 import textwrap
 from typing import Any
 
+from deepagents import create_deep_agent
 from langchain.agents import create_agent
 from langchain_core.embeddings import Embeddings
 from langchain_core.language_models import BaseChatModel
@@ -168,6 +169,31 @@ async def demo_fn_call_agent_async(
     messages.append({"role": "user", "content": fn_call_question})
 
     await __run_agent_async(agent, messages)
+
+
+def demo_harness(
+    fn_call_model: BaseChatModel,
+    model: str,
+    tools=None,
+    with_system_prompt=False,
+    with_few_shot=False,
+):
+    print("-" * 80)
+    print("fn call model:", model)
+
+    if tools is None:
+        tools = calc_tools
+
+    agent = create_deep_agent(fn_call_model, tools, system_prompt=FN_CALL_SYSTEM)
+
+    messages = []
+    if with_system_prompt:
+        messages.append(fn_call_system_message)
+    if with_few_shot:
+        messages.extend(examples)
+    messages.append({"role": "user", "content": fn_call_question})
+
+    asyncio.run(__run_agent_async(agent, messages))
 
 
 def demo_multi_modal(mm_model: BaseChatModel, model: str, image_data=None):
