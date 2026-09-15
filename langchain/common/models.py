@@ -89,7 +89,7 @@ def demo_fn_call(
     fn_call_model: BaseChatModel,
     model: str,
     tools=None,
-    with_system_prompt=False,
+    with_system_prompt=True,
     with_few_shot=False,
 ):
     print("-" * 80)

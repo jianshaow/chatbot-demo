@@ -6,6 +6,7 @@ from common.fn_tools import tools
 from common.functions import fns
 from common.openai import get_client
 from common.prompts import fn_call_adv_question_message as question
+from common.prompts import fn_call_system_message as system
 from openai.types.chat import (
     ChatCompletionMessageFunctionToolCall,
     ChatCompletionMessageParam,
@@ -17,7 +18,7 @@ print("fn call model:", model)
 
 client = get_client()
 
-messages: list[ChatCompletionMessageParam] = [question]
+messages: list[ChatCompletionMessageParam] = [system, question]
 response = client.chat.completions.create(model=model, messages=messages, tools=tools)
 
 while response.choices[0].message.tool_calls:

@@ -84,7 +84,7 @@ def demo_agent(
 def demo_fn_call(
     fn_call_model: FunctionCallingLLM,
     tools=None,
-    with_system_prompt=False,
+    with_system_prompt=True,
     with_few_shot=False,
 ):
     print("-" * 80)
