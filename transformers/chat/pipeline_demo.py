@@ -11,9 +11,6 @@ generate = pipeline(
     dtype="auto",
     model_kwargs=default_model_kwargs(),
 )
-generate.generation_config.max_new_tokens = 256
-if generate.tokenizer:
-    generate.generation_config.pad_token_id = generate.tokenizer.eos_token_id
 
 print("-" * 80)
 print("chat model:", model)
